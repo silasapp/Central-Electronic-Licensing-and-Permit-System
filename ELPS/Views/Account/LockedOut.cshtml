@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.vLockedOutUser>
+
+@{
+    ViewBag.Title = "Locked Out Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<div class="">
+    <div class="clear-float">
+        <h1 class="text-light place-left">Locked Out Users</h1>
+
+        @*<div class="place-right margin10 no-margin-left no-margin-right no-margin-bottom">
+                <button class="button warning viewToggle" data-view="Chart"><span class="mif-chart-line"></span> Chart</button>
+                <button class="button success viewToggle" data-view="Combined"><span class="mif-list"></span> Combined</button>
+            </div>*@
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    <table class="table bordered border hovered dataTable">
+        <tr>
+            <th class="sortable-column">#</th>
+            <th class="sortable-column">
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Company Name
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.UserId)
+                </th>*@
+            <th>
+                Locked out Reason
+            </th>
+            <th class="sortable-column">
+                @Html.DisplayNameFor(model => model.Resolved)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.CompanyId)
+                </th>*@
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompanyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reason)
+                </td>
+                <td class="align-center">
+                    @if (item.Resolved)
+                    {
+                        <span class="tag ep success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="tag ep warning">No</span>
+                    }
+                </td>
+                <td>
+                    @if (!item.Resolved)
+                    {
+                        <a class="unlock button mini-button warning epBtn" href="/Account/Resolve/@item.Id">Resolve</a>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkStaff").addClass("active open").find("a[href='/Account/LockedOut']").parent("li").addClass("selected");
+        });
+    </script>
+}

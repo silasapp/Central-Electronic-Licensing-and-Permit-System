@@ -1,0 +1,151 @@
+﻿@model ELPS.Domain.Entities.Company_Key_Staff
+@using ELPS.Domain.Entities
+
+@{ 
+    Layout = null;
+
+    var sCert = ViewBag.KSCert != null ? (List<Key_Staff_Certificate>)ViewBag.KSCert : null;
+}
+
+
+<div class="panel">
+    <div class="heading">
+        <span class="icon mif-home"></span>
+        <span class="title">Key Staff Details</span>
+    </div>
+    <div class="padding10">
+        <div class="grid">
+            <div class="row cells2">
+                <div class="cell colspan6">
+                    <div style="margin-right: 15px;">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @tabindex = 1, @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nationality</label>
+                            <div class="input-control select full-size">
+                                <select id="Nationality" name="Nationality" class="form-control" tabindex="3" required disabled>
+                                    <option value="">Select Nationality</option>
+                                    @foreach (var item in (List<Country>)ViewBag.country)
+                                    {
+                                        if (Model.Id > 0 && item.Name.ToLower() == Model.Nationality.ToLower())
+                                        {
+                                            <option value="@item.Name" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Name">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+
+                                @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Years_Of_Exp, htmlAttributes: new { @class = "control-label" })
+                            <br />
+                            <div class="input-control text">
+                                @Html.TextBoxFor(model => model.Years_Of_Exp, new { @tabindex = 5, @readonly = "readonly", @maxlength = "2" })
+                                @Html.ValidationMessageFor(model => model.Years_Of_Exp, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Skills)
+                            <div class="input-control textarea full-size">
+                                @Html.TextAreaFor(model => model.Skills, new { htmlAttributes = new { @tabindex = 7, @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Skills, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell colspan6">
+                    <div style="margin-right: 15px;">
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @tabindex = 2, @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Designation)
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @tabindex = 4, @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Qualification)
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @tabindex = 6, @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="">Professional Certification</h4>
+                <div id="sCertDiv" class="flex-grid">
+                    @if (sCert != null && sCert.Any() && sCert.FirstOrDefault().Id > 0)
+                    {
+                        for (int i = 0; i < sCert.Count; i++)
+                        {
+                            <div class="row cells4">
+                                <div class="cell colspan3">
+                                    <div class="form-group">
+                                        <label>Certificate Name</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" value="@sCert[i].Name" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell colspan3">
+                                    <div class="form-group">
+                                        <label>Certificate Issuer</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" value="@sCert[i].Issuer" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell colspan3">
+                                    <div class="form-group">
+                                        <label>Certificate No.</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" value="@sCert[i].Cert_No" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell colspan3">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" readonly value="@sCert[i].Year" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p>No Certification</p>
+                    }
+                </div>
+
+        </div>
+    </div>
+
+</div>
+
+

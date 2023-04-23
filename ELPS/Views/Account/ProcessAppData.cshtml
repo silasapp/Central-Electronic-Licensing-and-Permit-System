@@ -1,0 +1,61 @@
+﻿@model ELPS.Domain.ViewDTOs.AccountProcessDataDTO
+@{ 
+    Layout = null;
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page - NUPRC RCS</title>
+    <!-- <link rel="shortcut icon" type="image/x-icon" href="/assets/images/coat-of-arm1.jpg" /> -->
+
+    <link rel="stylesheet" href="~/Content/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/assets/css/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Content/assets/css/font.css" />
+    <link rel="stylesheet" href="~/Content/assets/css/Loader.css" />
+    <link rel="stylesheet" href="~/Content/assets/css/custom.css" />
+
+
+    <!--Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div class="RedirectLoader d-flex align-items-center justify-content-center">
+        <div class="lds-default">
+            <div></div><div></div><div>
+            </div><div></div><div></div>
+            <div></div><div></div><div>
+            </div><div></div><div></div>
+            <div></div><div></div>
+        </div>
+        <div>&nbsp; Redirecting to Portal....</div>
+    </div>
+    <div id="redirectForm" style="display:none">
+        <form action='@Model.Url' id='frmTest' method='post'>
+            <input type='hidden' name='email' value='@Model.Email' />
+            <input type='hidden' name='code' value='@Model.Code' />
+            <button type="submit"></button>
+        </form>
+    </div>
+
+
+    <script src="~/Content/assets/Js/jquery-3.5.1.min.js"></script>
+    <script src="~/Content/assets/Js/bootstrap.bundle.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $("#redirectForm button").trigger("click");
+            }, 1000);
+           
+        })
+    </script>
+
+
+
+</body>
+</html>
+
+

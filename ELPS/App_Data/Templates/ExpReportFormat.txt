@@ -1,0 +1,37 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body style="margin: 0; padding: 0;">
+    <div style="width: 700px; display: block; margin-bottom: 20px; padding: 20px; background-color: #1e232a; color: #FFF; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+        <div style=" width:680px; background-color: #ece8d4; padding: 5px 0 5px 0; margin: 10px auto;">
+            <img src="https://elps.nuprc.gov.ng/Content/Images/mainlogo.png" alt="Logo" style="width: 100%; display: block; margin: 0 auto;" />
+        </div>
+        
+        <h1 style="font-weight: 400; font-size: 36px; text-align: center; padding: 15px 10px;">{0}</h1>
+
+        <div style="display: block; width: 70%; border-radius: 15px; background-color: #393944; box-shadow: 0px 7px 14px -5px #000; min-height: 200px; margin: 10px auto 20px; padding: 20px">
+            <h1 style="text-align: center; font-size: 50px;">{1}</h1>
+            <p style="font-weight: 100; text-align: center;">
+                Licenses/Permits expired this month. Break down is as follows:
+                <table style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th style="width: 50%;text-align: right; padding: 10px;">License/Permit name</th>
+                            <th style="text-align: left; padding: 10px;">Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {2}
+                    </tbody>
+                </table>
+            </p>
+        </div>
+
+        <p style="text-align: center; font-size: 12px; margin-top: 40px; line-height: 1.7;">
+            &copy; {3} Electronics Licenseing &amp; Permit System<br />The  Nigerian Upstream Petroleum Regulatory Commission
+        </p>
+    </div>
+</body>
+</html>

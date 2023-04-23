@@ -1,0 +1,218 @@
+﻿@using ELPS.Domain.Entities
+@using ELPS.Helpers
+@using ELPS.Models
+@model IEnumerable<RemitaPaymentStatus>
+
+@{
+    ViewBag.Title = "Orphan Transactions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var sd = ViewBag.SD;// == null ? "" : ViewBag.SD.ToString("dd/MM/yyyy");
+    var ed = ViewBag.ED;// == null ? "" : ViewBag.ED.ToString("dd/MM/yyyy");
+    bool useDate = (bool)ViewBag.UseDate;
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+}
+<link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+<div class="">
+
+    <input type="hidden" name="url" id="url" value="@Url.Action("LazyLoadOrphanTransaction", "Payment")" />
+    @*, new { startDate = ViewBag.SD, endDate = ViewBag.ED, useDate = useDate })" />*@
+
+    <div class="clear-float">
+        <h1 class="text-light place-left" style="margin: 0;">
+            <span class="mif-dollars icon "></span>
+            @ViewBag.Title
+        </h1>
+        <div class="clear-float"></div>
+        <div class="place-left">
+            @*Showing result: From @sd.ToShortDateString() to @ed.ToShortDateString() @ViewBag.ResultTitle*@
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    @if (ViewBag.Alert != null)
+    {
+        AlertBox alert = (AlertBox)ViewBag.Alert;
+        string alerttype = (alert.ButtonType == 4 ? "alert-danger"
+        : (alert.ButtonType == 3 ? "alert-warning"
+        : (alert.ButtonType == 2 ? "alert-info" : "alert-success")));
+
+        <div class="col-md-12">
+            <div class="alert @alerttype" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong>@alert.Title</strong> @alert.Message
+            </div>
+        </div>
+    }
+
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("OrphanTransaction", "Payment", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text">
+                </div>
+                <input type="hidden" name="useDate" value="True" />
+                <input type="submit" value="Filter" class="righty btn btn-success input-append" />
+            }
+        </div>
+    </div>
+    <hr class="thin bg-grayLighter">
+
+    <table id="orTable" class="table hovered border bordered striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>RRR</th>
+                <th>Channel</th>
+                <th>Amount</th>
+                <th>Order Ref.</th>
+                <th>Payer</th>
+                <th>Debit Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/js/DT/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.flash.min.js"></script>
+    <script src="~/Scripts/js/DT/jszip.min.js"></script>
+    <script src="~/Scripts/js/DT/pdfmake.min.js"></script>
+    <script src="~/Scripts/js/DT/vfs_fonts.js"></script>
+    <script src="~/Scripts/js/DT/buttons.html5.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkPayTransReport").addClass("active");
+            let url = `${$('#url').val()}?startDate=@ViewBag.SD&endDate=@ViewBag.ED&useDate=@useDate`;
+            //console.log(url);
+
+             $('#orTable').dataTable({
+                fixedHeader: true,
+                responsive: true,
+                dom: '<"grid"<"row cells3"<"cell"l><"cell"f><"cell text-right"B>>><t><"row"<"col-md-6"i><"col-md-6"p>>', //'Bfrtip',
+                buttons: [
+                    { extend: 'copy', attr: { id: 'allan' } }, 'excel', 'print'
+                ],
+                lengthMenu: [[250, 500, 1000, -1], [250, 500, 1000, "All"]],
+                "bServerSide": true,
+                "sAjaxSource": url,
+                "bProcessing": true,
+                "pageLength": 250,
+                "aoColumns": [
+                    {
+                        "sName": "Index",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[0] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "rrr",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[1] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "channnel",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[2] + '</span>';
+                        }
+                    },    //Reference
+                    {
+                        "sName": "amount",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[3] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "orderRef",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[4] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "payerName",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[5] + '<br />' +
+                                oObj[6] + '<br />' +
+                                (oObj[7] !== oObj[6] ? oObj[7] : '') +
+                                '</span>';
+                        }
+                    },
+                    {
+                        "sName": "debitdate",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[8] + '</span>';
+                        }
+                    }
+                    //{
+                    //    "sName": "Other_Charges",
+                    //    "className": "dt-body-right",
+                    //    "mRender": function (data, type, oObj) {
+                    //        //parseBreakdown(oObj[12]);
+                    //        return '<span>' + formatNumber(parseBreakdown(oObj[12], oObj[11], 'oth')) + '</span>';
+                    //    }
+                    //},
+                    //{
+                    //    "sName": "Transaction_Amount",
+                    //    "className": "dt-body-right",
+                    //    "mRender": function (data, type, oObj) {
+                    //        return '<span>' + formatNumber(oObj[4]) + '</span>';
+                    //    }
+                    //},
+                    //{
+                    //    "sName": "Response_code",
+                    //    "mRender": function (data, type, oObj) {
+                    //        if (oObj[8] === "01" || oObj[6] === "DPR-ELPS") {
+                    //            return '<span style="color: green;" data-p="' + oObj[8] + '">COMPLETED</span>';
+                    //        }
+                    //        else {
+                    //            return '<span style="color: red;" data-p="' + oObj[8] + '">NOT COMPLETED</span>';
+                    //        }
+                    //    }
+                    //},
+                    ////ApplicationStatus
+                    ////{ "sName": "Response_Description" },
+                    //{
+                    //    "sName": "Payment_type",
+                    //    "mRender": function (data, type, oObj) {
+                    //        return '<span>' + oObj[7] + '</span>';
+                    //    }
+                    //},
+                    //{
+                    //    "sName": "Id",
+                    //    "bSearchable": false,
+                    //    "bSortable": false,
+                    //    "mRender": function (data, type, oObj) {
+                    //        if (!oObj[9]) {
+                    //            return '<a class="btn btn-xs btn-success" disabled href="/Payment/TransactionDetail/' + oObj[9] + '">' + 'View ' + '<i class="icon-login"></i></a>';
+                    //        }
+                    //        else {
+                    //            return '<a class="button info mini-button epBtn" href="/Payment/TransactionDetail/' + oObj[9] + '">' + 'View' + '<i class="icon-login"></i></a>';
+                    //        }
+                    //    }
+                    //}
+                ]
+            });
+
+        });
+    </script>
+}

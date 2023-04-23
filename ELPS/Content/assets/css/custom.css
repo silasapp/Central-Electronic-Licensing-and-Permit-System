@@ -1,0 +1,590 @@
+body {
+    position:relative;
+    font-family: 'Work Sans',sans-serif,Arial;
+    font-size: 12px;
+}
+
+body a {
+    text-decoration: none !important;
+}
+div.PageLoader {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    z-index: 2000;
+    display: none;
+    background-color: white;
+    opacity: 0.8;
+}
+
+div.RedirectLoader {
+    min-height: 100%;
+    min-width: 100%;
+    z-index: 2000;
+    background-color: gray;
+}
+
+div.PageLoader.active {
+  
+    display: block;
+}
+
+.main {
+    min-height: 100vh;
+}
+
+.text-warning {
+    color: #E6B136 !important;
+}
+
+
+.bg-warning, .btn-warning, .badge-warning {
+    background-color: #E6B136 !important;
+    border-color: #E6B136 !important;
+}
+/*main .NotificationLauncher, main .ErrorLauncher{
+    display:none;
+}
+*/
+.notificationIcon{
+    display:none;
+}
+
+.notificationIcon.active{
+    display:inline!important;
+}
+.modal .modal-body{
+    color:black !important;
+}
+.NotFound{
+    height:100vh;
+    width:100%;
+}
+.NotFound .text-bold{
+    font-weight:700;
+}
+
+/*-----------------------------select styling--------------------------*/
+/* class applies to select element itself, not a wrapper element */
+/*.select-css {
+    display: block;
+    font-size: 16px;*/
+/*    font-family: sans-serif;*/
+    /*font-weight: 700;
+    color: #444;
+    line-height: 1.3;
+    padding: .6em 1.4em .5em .8em;
+    width: 100%;
+    max-width: 100%;*/ /* useful when width is set to anything other than 100% */
+    /*box-sizing: border-box;
+    margin: 0;
+    border: 1px solid #aaa;
+    box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+    border-radius: .5em;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;*/
+    /* note: bg image below uses 2 urls. The first is an svg data uri for the arrow icon, and the second is the gradient. 
+        for the icon, if you want to change the color, be sure to use `%23` instead of `#`, since it's a url. You can also swap in a different svg icon or an external image reference
+        
+    */
+    /*background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'), linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+    background-repeat: no-repeat, repeat;*/
+    /* arrow icon position (1em from the right, 50% vertical) , then gradient position*/
+    /*background-position: right .7em top 50%, 0 0;*/
+    /* icon size, then gradient */
+    /*background-size: .65em auto, 100%;
+}*/
+    /* Hide arrow icon in IE browsers */
+    /*.select-css::-ms-expand {
+        display: none;
+    }*/
+    /* Hover style */
+    /*.select-css:hover {
+        border-color: #888;
+    }*/
+    /* Focus style */
+    /*.select-css:focus {
+        border-color: #aaa;*/
+        /* It'd be nice to use -webkit-focus-ring-color here but it doesn't work on box-shadow */
+        /*box-shadow: 0 0 1px 3px rgba(59, 153, 252, .7);
+        box-shadow: 0 0 0 3px -moz-mac-focusring;
+        color: #222;
+        outline: none;
+    }*/
+
+    /* Set options to normal weight */
+    /*.select-css option {
+        font-weight: normal;
+    }*/
+
+/* Support for rtl text, explicit support for Arabic and Hebrew */
+/**[dir="rtl"] .select-css, :root:lang(ar) .select-css, :root:lang(iw) .select-css {
+    background-position: left .7em top 50%, 0 0;
+    padding: .6em .8em .5em 1.4em;
+}*/
+
+/* Disabled styles */
+/*.select-css:disabled, .select-css[aria-disabled=true] {
+    color: graytext;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22graytext%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'), linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%);
+}
+
+    .select-css:disabled:hover, .select-css[aria-disabled=true] {
+        border-color: #aaa;
+    }*/
+
+
+
+/*------------------------------- left Side General ------------------------------- */
+#leftSide {
+    position: relative;
+    color: white;
+    min-height: 100vh;
+    padding-left: 8%;
+    padding-right: 8%;
+    background: url(../img/Left_image.png)center/cover no-repeat;
+}
+
+#leftSide .bodyContent {
+    padding-top: 5%;
+    position: relative;
+    max-width: 445px;
+    height: 100%;
+    margin: auto;
+}
+
+.left-title {
+    font-size: 1rem;
+    line-height: 1.2rem;
+    width: 65%;
+    margin-left: 5%;
+}
+
+#leftSide .title-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.829);
+}
+
+.left-sub-title {
+    line-height: 1.2rem;
+    width: 60%;
+    font-size: 0.9rem;
+}
+
+.left-sub-acronym {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-right: 10%;
+}
+
+.left-sub-title-divider {
+    border-top: 3px solid #E6B136;
+    width: 30%;
+}
+
+.login-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.badge.selected.badge-pill {
+    padding: 0.3rem 0.4rem;
+    border-radius: 8px;
+    font-size: 0.6rem;
+    font-weight: 400;
+}
+
+#leftSide section.form {
+    padding-bottom: 27%;
+}
+
+#leftSide .formHeader .links {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+#leftSide label {
+    font-size: 0.6rem;
+}
+
+#leftSide ::placeholder 
+{
+    color: white;
+    opacity: 1; 
+}
+
+#leftSide :-ms-input-placeholder 
+{  
+    color: white;
+}
+
+#leftSide ::-ms-input-placeholder 
+{ 
+    color: white;
+}
+
+#leftSide .form-control, #rightSide .form-control {
+    height: 50px !important;
+    font-size: 0.8rem !important;
+    padding: 0.375rem 1.2rem !important;
+    background-color: rgba(231, 224, 228, 0.158);
+    border-radius: .4rem !important;
+}
+#leftSide select.input-control {
+    width: 100%;
+    height: 50px!important;
+    border-radius: .4rem;
+    padding: 0rem 1.2rem !important;
+    font-size: 0.8rem;
+    outline:none;
+    background-color: rgba(231, 224, 228, 0.158);
+    color: white;
+    border: 1px solid #ced4da;
+    -webkit-appearance:none;
+}
+
+#leftSide select.input-control option {
+    color: white;
+}
+
+    #leftSide .form-control:focus,
+    #leftSide input.input-validation-error.form-control,
+    #leftSide select.input-control:focus,
+    #leftSide select.input-control:checked {
+        border: 1px solid #ffc107 !important;
+        box-shadow: 0 2px 5px 2px rgba(204, 186, 23, 0.05) !important;
+    }
+
+
+.btn.submit {
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: .6rem 1.3rem;
+}
+
+section.Payments {
+    padding-bottom: 3%;
+    /* width:100%; */
+}
+
+
+#leftSide footer .content {
+    border-top: 1px solid white;
+}
+
+#leftSide footer .content a {
+    color: white
+}
+
+
+
+
+
+
+
+
+/*----------------------------------- left Side Register --------------------------------------*/
+.Register .formStep {
+    display: none;
+}
+
+.Register .formStep.active {
+    display: block;
+}
+form .btn.btnLink.btn-back {
+    color: #fff;
+    background-color: #a2a7ab;
+    border-color: #6c757d;
+}
+
+
+
+
+
+
+/* ---------------------------------RightSide----------------------------------- */
+#rightSide {
+    position: relative;
+    min-height: 100vh;
+    color: black;
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.Portal {
+    color: black;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-right: 8%;
+}
+
+#rightSide .title-divider {
+    border-top: 1px Solid rgba(167, 162, 162, 0.938);
+}
+
+#rightSide .bodyContent {
+    padding-top: 5%;
+    height: 100%;
+    position: relative;
+    max-width: 542px;
+    margin: auto;
+}
+
+#rightSide .form-group.has-search {
+    position: relative;
+}
+
+#rightSide .form-group.has-search .fa-search {
+    position: absolute;
+    top: 43%;
+    right: 5%;
+    color: rgba(0,0,0,.4);
+}
+
+.search-options-list {
+    position: absolute;
+    top: 104%;
+    display: none;
+    background-color: white;
+    border: 1px Solid rgba(167, 162, 162, 0.938);
+    border-bottom-left-radius: 0.4rem;
+    border-bottom-right-radius: 0.4rem;
+    z-index: 99;
+}
+
+.search-options-list .option {
+    border-top: 1px Solid rgba(167, 162, 162, 0.938);
+    padding: 2% 4%;
+    line-height: 1rem;
+}
+
+.search-options-list .option .option-title {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+
+.search-options-list .option .option-details {
+    font-size: 0.6rem;
+}
+
+#rightSide .form-control:focus, .search-options-list .option.active {
+    box-shadow: 0 1px 3px 1px rgba(54, 54, 51, 0.445);
+    border-color: grey;
+    background-color: rgba(207, 203, 203, 0.404);
+}
+
+/* #rightSide .form-group.has-search input[type="search"]{
+    
+} */
+
+#accordionCont {
+    /* border-top:1px Solid rgba(167, 162, 162, 0.938); */
+    /* border-bottom:1px Solid rgba(167, 162, 162, 0.938); */
+    height: 70vh;
+    overflow-y: auto;
+}
+
+
+
+#rightSide .accordion .card {
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px Solid rgba(167, 162, 162, 0.938);
+}
+
+.accordion .card-header.Accord .textValue {
+    font-size: 1.2rem !important;
+    font-weight: 600;
+}
+
+.Accord {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    background-color: transparent !important;
+    /* border-bottom: 1px solid black; */
+}
+
+.card-header.Accord {
+    border-bottom: none !important;
+}
+
+
+
+
+.accordion a {
+    text-decoration: none;
+}
+
+
+.smaller-card {
+    position: relative;
+    border: 1px solid rgba(185, 181, 181, 0.473);
+    border-radius: 0.7rem;
+    min-height: 110px;
+    width: 30%;
+    padding-top: 20px;
+    padding-bottom: 8px;
+    box-shadow: 0 2px 5px 2px rgba(0,0,0,.05);
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+
+    .smaller-card .content-card {
+        width: 80%;
+        margin: auto;
+        color: #6c757d;
+    }
+        /* datalist .option-select{
+    display:none;
+    color:red;
+}
+datalist .option-select :hover{
+    display:inline-flex important;
+} */
+        .smaller-card .content-card .smaller-card-title {
+            /* line-height: 1rem; */
+            padding-bottom: 5%;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: black;
+        }
+
+
+
+    .smaller-card .content-card .smaller-card-details,
+    smaller-card .smaller-card-title .fa {
+        /* line-height: 1rem; */
+        font-size: 0.6rem;
+    }
+
+    .smaller-card .check-icon {
+        position: absolute;
+        top: 7%;
+        right: 5%;
+    }
+
+        .smaller-card .check-icon span.fa-check {
+            display: none;
+        }
+
+    .smaller-card.Active {
+        border: 1px solid green !important;
+    }
+
+        .smaller-card.Active .check-icon span.fa-check {
+            display: inline !important;
+        }
+#leftSide .selectedInfo .fa-pencil-square {
+    display: none;
+}
+
+
+#rightSide footer .content {
+    border-top: 1px Solid rgba(167, 162, 162, 0.938);
+}
+
+    #rightSide footer .content a {
+        color: grey;
+    }
+
+.LargerScreen {
+    display: none;
+}
+
+
+
+
+
+
+/* -----------------------------------General footer design-------------------------------- */
+footer {
+    position: absolute;
+    bottom: 1vh;
+    right: 0;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    z-index: 199;
+}
+
+.Register .LoginFooter{
+    display:none;
+}
+
+.Login .RegisterFooter {
+    display: none;
+}
+/* footer #LinkContent{
+    bottom:2vh;
+} */
+
+
+
+
+
+/* ----------------------------------------screen size designs------------------------------ */
+
+@media (min-width: 768px) {
+    .col-cm-5 {
+        flex: 0 0 45% !important;
+        max-width: 45% !important;
+    }
+
+    .col-cm-7 {
+        flex: 0 0 55% !important;
+        max-width: 55% !important;
+    }
+
+    .SinglePage .MainContents {
+        min-height: 65%;
+        border: 1px solid white;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    .SinglePage .SmallerScreen {
+        display: none;
+    }
+
+    .LargerScreen {
+        display: block;
+    }
+
+        .LargerScreen.Footer a {
+            color: white;
+        }
+}
+@media(max-width:767px){
+    div#leftSide.inactive{
+        display:none !important;
+    }
+    #leftSide .selectedInfo .fa-pencil-square{
+        display:inline !important;
+        margin-left:3px;
+    }
+/*    #leftSide .selectedInfo .fa-pencil-square::before{
+        content:"  "
+    }*/
+        div#rightSide.active{
+            display:block;
+        }
+        div#rightSide {
+            display: none;
+        }
+}
+@media(max-width:460px){
+    .smaller-card {
+
+        width: 45% !important;
+
+    }
+}

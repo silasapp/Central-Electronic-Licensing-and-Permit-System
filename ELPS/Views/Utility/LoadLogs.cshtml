@@ -1,0 +1,80 @@
+﻿@model List<DateTime>
+@{
+    ViewBag.Title = "LoadLogs";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    //var _model = new List<DateTime>();
+    //foreach (var m in Model)
+    //{
+    //    var _m = m.Replace("_", "/");
+    //    _model.Add(DateTime.Parse(_m));
+    //}
+}
+<style type="text/css">
+    .list-group-item {
+        padding: 0 !important;
+    }
+
+        .list-group-item:hover, .list-group-item.active {
+            background-color: #f8f8f8;
+        }
+
+        .list-group-item a {
+            display: block;
+            padding: 10px 15px;
+        }
+</style>
+<div class="">
+    <div class="clear-float">
+        <h1 class="text-light">
+            Utility Log
+        </h1>
+    </div>
+    <hr class="thin bg-grayLighter">
+
+    <div class="grid">
+        <div class="row cells4">
+            <div class="cell">
+                @if (ViewBag.ErrMessage != null)
+                {
+                    <span>@ViewBag.ErrMessage</span>
+                }
+                else
+                {
+                    <div class="" style="max-height: 505px; overflow-y: auto; border: 1px solid #ddd;">
+                        <ul class="list-group">
+                            @foreach (var item in Model.OrderByDescending(a => a))
+                            {
+                                <li class="list-group-item"><a href="@Url.Action("Log", new { folder = item.Date.ToString("dd_MM_yyyy") })" class="log">@item.Date.ToString("dd_MM_yyyy")</a></li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+            <div class="cell colspan3">
+                <div id="showLog" class="input-control text full-size">
+                    @*<textarea class="form-control" style="min-height: 500px;"></textarea>*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $(".log").on("click", function (e) {
+                e.preventDefault();
+                $("#showLog").html("<h4>Please Wait...</h4>");
+                $(this).parent("li").siblings().removeClass("active");
+                $(this).parent().toggleClass("active");
+                var url = $(this).attr("href");
+                //console.log(url);
+                $.get(url, function (data) {
+                    $("#showLog").html(data);
+                });
+            });
+
+        });
+    </script>
+}

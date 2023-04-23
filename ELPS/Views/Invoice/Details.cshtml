@@ -1,0 +1,110 @@
+﻿@model ELPS.Domain.Entities.vInvoice
+
+@{
+    ViewBag.Title = "Invoice Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="content">
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LicenseShortName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LicenseShortName)
+        </dd>
+        <dt>
+            Category Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+
+        <dt>
+            Invoice Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Model.Amount.ToString("N2") @*@Html.DisplayFor(model => model.Amount).ToString("N2")*@
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.Payment_Code)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Payment_Code)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Payment_Type)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Payment_Type)
+            </dd>*@
+
+
+        <dt>
+            Date Created
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date_Added)
+        </dd>
+
+        <dt>
+            Date Paid
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date_Paid)
+        </dd>
+
+        @*<dt>
+                @Html.DisplayNameFor(model => model.PaymentTransaction_Id)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.PaymentTransaction_Id)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LicenseId)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LicenseId)
+            </dd>*@
+
+
+    </dl>
+</div>

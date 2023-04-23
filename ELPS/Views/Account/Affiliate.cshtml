@@ -1,0 +1,149 @@
+﻿@using ELPS.Models
+
+
+@{
+    ViewBag.Title = "Affiliate";
+    Layout = null;
+
+    var _model = (NonCompanyUserModel)ViewBag.Model;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+
+    <link href="/Content/Metro/metro.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-icons.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-responsive.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/xtrastyle.less")
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="/Scripts/jquery.dataTables.min.js"></script>
+    <script src="/Scripts/Metro/metro.js"></script>
+
+</head>
+
+<body>
+    <div class="">
+        <header class="app-bar fixed-top header" data-role="appbar">
+            <div class="container">
+                <a href="/" class="app-bar-element branding no-padding">
+                    <img src="~/Content/Images/logo.jpg" style="height: 80%;" />
+                </a>
+
+
+                <span class="app-bar-pull"></span>
+
+            </div>
+        </header>
+    </div>
+
+    <div class="">
+        <div class="container body-content">
+            <div class="row">
+                <div class="pageTitle bg1">
+                    <h2 class="lefty">&nbsp; New ELPS Account Creation</h2>
+                    <div class="righty">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div style="background-color: #ece8d4; padding:30px; margin-top:10px;">
+                        <p>
+                            <strong>Company Exists</strong>
+                        </p>
+                        <p>
+                            One or more of the information you provided already exists on NUPRC's record. Details is as follows:
+                        </p>
+                        <p>
+                            <ul style="margin: 0; padding: 0; padding-left: 20px;">
+                                <li>Company Name: <b>@_model.ParentCoyName </b></li>
+                            </ul>
+                        </p>
+                        <p>
+                            If you are an Affiliate to this company, please click on "<b>I'm an Affiliate</b>" button bellow and if not, click on "<b>Go Back</b>" button and try your registration again.
+                        </p>
+                        <br /><br />
+                        <p>
+                            <a href="/Account/Register" class="button danger"><span class="icon mif-chevron-left"></span> Go Back</a>
+                            <button type="button" class="button success" id="btnAffiliate">I'm an Affiliate <span class="icon mif-thumbs-up mif-ani-horizontal"></span></button>
+                            @if (_model != null)
+                            {
+                                <input type="hidden" name="AppId" id="AppId" value="@_model.AppId" />
+                                <input type="hidden" name="Email" id="Email" value="@_model.Email" />
+                                <input type="hidden" name="ParentCoyId" id="ParentCoyId" value="@_model.ParentCoyId" />
+                                <input type="hidden" name="Password" id="Password" value="@_model.Password" />
+                                <input type="hidden" name="PhoneNumber" id="PhoneNumber" value="@_model.PhoneNumber" />
+                                <input type="hidden" name="ChildCoyName" id="ChildCoyName" value="@_model.ChildCoyName" />
+                                <input type="hidden" name="BizType" id="BizType" value="@_model.BizType" />
+                            }
+                            <br /><br />
+                            <span id="errMsg"></span>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <footer class="clear-float">
+                <div class="place-left">&copy; @DateTime.Now.Year - NUPRC Electronic Licensing And Permit System</div>
+                <div class="place-right align-right">
+                    <ul>
+                        <li><a href="#">About ELPS</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </footer>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnAffiliate").on("click", function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                btn.html('Please Wait... <span class="mif-spinner2 mif-ani-spin"></span>').attr("disabled", "disabled");
+                $.post('/Account/RegisterNonCompanyUser',
+                    {
+                        AppId: $('#AppId').val(),
+                        Email: $('#Email').val(),
+                        ParentCoyId: $('#ParentCoyId').val(),
+                        Password: $('#Password').val(),
+                        PhoneNumber: $('#PhoneNumber').val(),
+                        ChildCoyName: $('#ChildCoyName').val(),
+                        BizType: $('#BizType').val()
+                    }, function (data) {
+                        console.log(data);
+                        if (data.status === 1) {
+                            window.location = "/Account/Login?AppId=" + $('#AppId').val();
+                        }
+                        else {
+                            btn.removeAttr("disabled").html("I'm an Affiliate <span class=\"icon mif-thumbs-up mif-ani-horizontal\"></span>");
+                            $("#errMsg").text(data.message);
+                        }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

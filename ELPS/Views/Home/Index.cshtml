@@ -1,0 +1,83 @@
+﻿@using ELPS.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+
+    @Styles.Render("~/Content/Motro")
+    <link href="~/Content/Metro/metro-icons.css" rel="stylesheet" />
+    <link href="~/Content/Metro/metro.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/xtrastyle.less")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/Metro")
+
+</head>
+<body>
+    <header id="header">
+        <div id="navbar" class="navbar ">
+            <div class="container inner">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="">
+        <div class="jumbo">
+            <div class="screen-overlay"></div>
+            <img src="~/Content/Images/banner2.jpg" />
+        </div>
+        <div class="container body-content">
+            <div class="row">
+                <div class="col-md-4">
+                    
+                </div>
+                <div class="col-md-4">
+                    <section id="socialLoginForm">
+                        
+                    </section>
+                </div>
+            </div>
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/Metro/metro.js"></script>
+    <script src="~/Scripts/xtrascript.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+</body>
+</html>

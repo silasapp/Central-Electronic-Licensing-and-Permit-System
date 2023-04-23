@@ -1,0 +1,195 @@
+﻿@using ELPS.Models
+
+@{
+    ViewBag.Title = "Application Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var lnc = (List<ELPS.Domain.Entities.AppIdentity>)ViewBag.licenses;
+    int counter = 0;
+    List<BasicReportModel> appList = (List<BasicReportModel>)ViewBag.Counter;
+    var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+
+}
+
+<div class="">
+    <div class="clear-float">
+        <h1 class="text-light place-left">Application Report <small>from @ViewBag.SD.ToString("dd/MM/yyyy") to @ViewBag.ED.ToString("dd/MM/yyyy")</small> </h1>
+
+        <div class="place-right margin10 no-margin-left no-margin-right no-margin-bottom">
+            <button class="button warning viewToggle" data-view="Chart"><span class="mif-chart-line"></span> Chart</button>
+            <button class="button success viewToggle" data-view="Combined"><span class="mif-list"></span> Combined</button>
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("ApplicationReport", "Reports", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text">
+                </div>
+                <select class="righty input-control" name="license" id="license" style="width:190px;">
+
+                    <option value="0">Select License</option>
+                    <option value="0">All</option>
+                    @foreach (var item in lnc)
+                    {
+                        <option value="@item.Id">@item.ShortName</option>
+                    }
+                </select>
+
+
+                @*<select class="righty input-control" name="location" id="location" style="width:190px;">
+
+                    <option value="">Select Location</option>
+                    <option value="">All</option>
+                    @foreach (var item in stats)
+                    {
+                        <option value="@item.Name">@item.Name</option>
+                    }
+                </select>*@
+                @Html.Partial("_FilterControl", Filter)
+                <input type="submit" value="Filter" class="righty btn btn-success input-append" />
+                @*<div class="clear"></div>*@
+            }
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+
+    <div class="" id="Chart">
+        <div class="" style="width: 100%;">
+            @ViewBag.ApplicationChart
+        </div>
+    </div>
+
+    <div class="" id="Combined">
+        <div class="" style="width: 100%;">
+            @ViewBag.CombinedChart
+        </div>
+    </div>
+
+    <div class="marg25">
+        <br />
+        <hr class="thin bg-grayLight" />
+        <br />
+    </div>
+
+    @*<div class="marg25">
+            <h4 class="thin-1">Application Rate Summary</h4>
+        </div>*@
+    <div class="rowx" id="Summary">
+        <div class="col-6">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>License Name</th>
+                        <th>Category</th>
+                        <th>Applications</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var app in (List<ListOfReportModel>)ViewBag.Report)
+                    {
+                        counter++;
+                        <tr>
+                            <td>@counter</td>
+                            <td>@app.LicenseName</td>
+                            <td>@app.ReportModels.ElementAt(0).Category</td>
+                            <td>@app.ReportModels.ElementAt(0).Count</td>
+                        </tr>
+                        if (app.ReportModels.Count() > 1)
+                        {
+                            for (var i = 1; i < app.ReportModels.Count(); i++)
+                            {
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                    <td>@app.ReportModels.ElementAt(i).Category</td>
+                                    <td>@app.ReportModels.ElementAt(i).Count</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="col-off-3 col-3">
+            <div class="og-dashb-tile">
+                <div class="img">
+                    <i class="icon-refresh"></i>
+                </div>
+                <div class="details">
+                    @{
+                        int tot = appList.Sum(a => a.Count);
+                    }
+                    <h2>@tot</h2><br />
+                    <h4>Total Applications</h4>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+
+    </div>
+    @*@for (int i = 0; i < 6; i++)
+                {
+                    <div class="col-3">
+                <div class="og-dashb-tile">
+                    <div class="img">
+                        <i class="icon-refresh"></i>
+                    </div>
+                    <div class="details">
+                                <h2>₦ 0</h2><br>
+                                <h4>General Category</h4>
+                </div>
+
+            </div>
+        </div>
+                }*@
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            //$("#lnkApplicationReport").addClass("active");
+            $("#lnkReports").addClass("active open").find("a[href='/Reports/ApplicationReport']").parent("li").addClass("selected");
+
+
+            $("#Combined").hide();
+            $(".viewToggle").click(function () {
+                var view = $(this).data("view");
+
+                switch (view) {
+                    case "Chart":
+                        $("#Chart").show();
+                        $("#Combined").hide();
+                        break;
+                    case "Combined":
+                        $("#Chart").hide();
+                        $("#Combined").show();
+                        break;
+                    default:
+                        $("#Chart").hide();
+                        $("#Combined").hide();
+                        break;
+
+                }
+            });
+
+
+        });
+
+    </script>
+
+}

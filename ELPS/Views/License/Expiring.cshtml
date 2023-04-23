@@ -1,0 +1,298 @@
+﻿@using ELPS.Models
+
+@*@model IEnumerable<ELPS.Domain.Entities.vExpiringLicense>*@
+
+@{
+    ViewBag.Title = "Expiring";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+    string msg = string.Empty, typ = string.Empty, title = string.Empty;
+
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType == "pass" ? "success" : alertMsg.AlertType == "fail" ? "alert" : "info";
+    }
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+}
+
+<link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+<div class="">
+    <input type="hidden" name="url" id="url" value="@Url.Action("AjaxifyExpiring", "License", new { license = ViewBag.license })" />
+    <div class="clear-float">
+        <h1 class="text-light place-left" style="margin: 0;">
+            <span class="mif-file-archive icon "></span>
+            Expiring Licenses @*(@Model.Count())*@
+        </h1>
+        <div class="place-right">
+            <a class="button info epBtn" href="@Url.Action("Notify", "License", new { permit = "all" })">Notify All</a>
+        </div>
+        <div class="clear-float"></div>
+        <div class="place-left">
+            Showing result Licenses Expiring from  @DateTime.Now.AddDays(1).ToShortDateString() to @DateTime.Now.AddDays(30).ToShortDateString()
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter">
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("Expiring", "License", FormMethod.Get))
+            {
+                @*<div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                        <button class="button"><span class="mif-calendr"> From </span></button>
+                        <input name="startDate" id="startDate" type="text">
+                    </div>
+
+                    <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                        <button class="button"><span class="mif-calendr">To </span></button>
+                        <input name="endDate" id="endDate" type="text">
+                    </div>*@
+                @Html.DropDownList("license", (SelectList)ViewBag.licenses, "Select License", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+
+                @Html.DropDownList("category", (SelectList)ViewBag.categories, "Select Category", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+
+                @*@Html.DropDownList("location", (SelectList)ViewBag.states, "Select Location", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })*@
+
+                @Html.Partial("_FilterControl", Filter)
+
+                <input type="submit" value="Filter" class="righty button success input-append" />
+
+            }
+
+        </div>
+    </div>
+    <hr class="thin bg-grayLighter">
+
+    <table class="table striped hovered border bordered dataTable" id="dtTable">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    License/Permit No.
+                </th>
+                <th>
+                    Reference No
+                </th>
+                <th>
+                    Company
+                </th>
+                <th>
+                    Contact
+                </th>
+                <th>
+                    Date Issued
+                </th>
+                <th>
+                    Expiry Date
+                </th>
+                <th>
+                    License
+                </th>
+                <th>Notify</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @*@foreach (var item in Model)
+                {
+                    counter++;
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Permit_No)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderId)
+                        </td>
+                        <td>
+                            <strong>@Html.DisplayFor(modelItem => item.CompanyName)</strong><br />
+                            @Html.DisplayFor(modelItem => item.CompanyEmail)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.contact_firstname)<br />
+                            @Html.DisplayFor(modelItem => item.contact_phone)
+                        </td>
+                        <td>
+                            @item.Date_Issued.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.Date_Expire.ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LicenseShortName)
+                        </td>
+                        <td>@item.NotificationCounter.GetValueOrDefault(0)</td>
+                        <td>
+                            @if (item.NotificationCounter.GetValueOrDefault(0) < 2)
+                            {
+                                @Html.ActionLink("Notify", "Notify", "License", new { permit = item.Permit_No }, new { @class = "button mini-button info epBtn" })
+                            }
+                        </td>
+                    </tr>
+                }*@
+        </tbody>
+
+    </table>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/js/DT/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.flash.min.js"></script>
+    <script src="~/Scripts/js/DT/jszip.min.js"></script>
+    <script src="~/Scripts/js/DT/pdfmake.min.js"></script>
+    <script src="~/Scripts/js/DT/vfs_fonts.js"></script>
+    <script src="~/Scripts/js/DT/buttons.html5.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkPermit").addClass("active");
+
+            var t = $('#dtTable');
+            var h = $('#navigationHeader');//navigationHeader
+            var pos = t.position();
+            $(window).scroll(function () {
+                var windowpos = $(window).scrollTop();
+                if (windowpos >= pos.top) {
+
+                    h.css('opacity', 0)
+                } else {
+                    h.css('opacity', 1)
+                }
+            });
+
+            $(".dataTable").dataTable({
+                fixedHeader: true,
+                responsive: false,
+                dom: '<"grid"<"row cells3"<"cell"l><"cell"f><"cell text-right"B>>><t><"row"<"col-md-6"i><"col-md-6"p>>', //'Bfrtip',
+                buttons: [
+                    { extend: 'copy', attr: { id: 'allan' } }, 'excel', 'print'
+                ],
+                "bServerSide": true,
+                "sAjaxSource": $('#url').val(),
+                "bProcessing": true,
+                lengthMenu: [250, 500, 1000],
+                "pageLength": 1000,
+                "aoColumns": [
+                    {
+                        "sName": "Count",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[0] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Permit_No",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[1] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Reference No.",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[2] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Company Name",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[3] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Contact",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[4] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Date_Issued",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[5] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Date_Expire",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[6] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "License",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[7] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Notify",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[8] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "id",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (data, type, oObj) {
+                            return '<a class="button small-button info" target="_blank" href="/Permit/ViewPermit/' + oObj[9] + '">' + 'View' + '<i class="icon-login"></i></a> ';
+                        }
+                    }
+                ],
+            });
+
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+
+             $("#filterby").on('change', function () {
+                var targ = $(this).val();
+                $(this).siblings('.selFilter').css('display', 'none');
+                $('#' + targ).css('display', 'inline-block');
+            });
+
+            $(".selFilter").on('change', function () {
+                $('#filterparam').val($(this).val());
+            });
+        });
+
+        function NotifyUser(msg, title, typ) {
+            setTimeout(function () {
+                $.Notify({ keepOpen: true, type: typ.length > 0 ? typ : 'default', caption: title.length > 0 ? title : 'Alert!', content: msg.length > 0 ? msg : "Alert! Alert!! Alert!!!" });
+            }, 700);
+        }
+    </script>
+}
+
+@*[
+    {"Name":"License To Operate","Description":null,"Group":"CategoryB"},
+    {
+        "Name":"Facility Name",
+        "Description":"Jim Jam Jam (ALONG PLOT 103, KATSINA ROAD, OPPOSITE NITEL TRAINING SCHOOL)",
+        "Group":"Facility Information"
+    },
+    {
+        "Name":"paybreak",
+        "Description":"DOCUMENT VERIFICATION (@ 20,000.00 X 5) = 100,000.00;INSPECTION FEE (@ 20,000.00 X 5) = 100,000.00;SERVICE CHARGE (@ 1,500.00 X 5) = 7,500.00;(Your payment covers Current year + 4 years unpaid arrears)",
+        "Group":"Payment"
+    }
+]*@

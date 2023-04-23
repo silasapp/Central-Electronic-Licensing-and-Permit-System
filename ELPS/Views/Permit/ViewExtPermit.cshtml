@@ -1,0 +1,29 @@
+﻿@model ELPS.Domain.Entities.vPermit
+
+@{
+    ViewBag.Title = "ViewExtPermit";
+    Layout = "~/Views/Shared/_NoNavLayout.cshtml";
+    var valid = Model != null && Model.Date_Expire >= DateTime.Now ? true : false;
+}
+
+
+
+<div class="permit-preview">
+    
+    @if (Model != null)
+    {
+        <div class="header-info">
+            <h2 class="thin">Previewing Permit: @Model.Permit_No</h2>
+        </div>
+        <div class="content">
+            <iframe src="@ViewBag.Link" style="width: 100%;"></iframe>
+        </div>
+    }
+    else
+    {
+        <div class="header-info">
+            <h4 class="thin">The Permit you are looking for (@ViewBag.PermitNo) could not be found or 
+            does not exist. Please confirm the Permit Number and try again</h4>
+        </div>
+    }
+</div>

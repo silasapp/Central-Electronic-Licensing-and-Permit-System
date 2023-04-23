@@ -1,0 +1,208 @@
+﻿@using ELPS.Models
+@using ELPS.Domain.Entities
+@model Affiliate
+
+@{
+    ViewBag.Title = "Confirm Affiliate";
+    Layout = null;
+
+    Company _model = (Company)ViewBag.Company;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+
+    <link href="/Content/Metro/metro.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-icons.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-responsive.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/xtrastyle.less")
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="/Scripts/jquery.dataTables.min.js"></script>
+    <script src="/Scripts/Metro/metro.js"></script>
+
+</head>
+
+<body>
+    <div class="">
+        <header class="app-bar fixed-top header" data-role="appbar">
+            <div class="container">
+                <a href="/" class="app-bar-element branding no-padding">
+                    <img src="~/Content/Images/logo.jpg" style="height: 80%;" />
+                </a>
+
+
+                <span class="app-bar-pull"></span>
+
+            </div>
+        </header>
+    </div>
+
+    <div class="">
+        <div class="container body-content">
+            @if (Model == null)
+            {
+                if (ViewBag.Result != null && ViewBag.Result == "done")
+                {
+                    <div class="row">
+                        <div class="pageTitle bg1">
+                            <h2 class="lefty">&nbsp; Affiliate/Daughter Company Confirmed!</h2>
+                            <div class="righty">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div style="background-color: #ece8d4; padding:30px; margin-top:10px; min-height: 400px;">
+                                <p>
+                                    You have successfully confirmed that <b></b> is an Affiliate/Daughter company of your company.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (ViewBag.Result != null && ViewBag.Result == "not done")
+                {
+                    <div class="row">
+                        <div class="pageTitle bg1">
+                            <h2 class="lefty">&nbsp; Affiliate/Daughter Company Declined!</h2>
+                            <div class="righty">
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div style="background-color: #ece8d4; padding:30px; margin-top:10px; min-height: 400px;">
+                                <p>
+                                    You have Declined that <b></b> is an Affiliate/Daughter company of your company.
+                                </p>
+                                <p>
+                                    Their Access to use the portal has been revoked until this is confirmed by both your company and NUPRC.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+            <div class="row">
+                <div class="pageTitle bg1">
+                    <h2 class="lefty">&nbsp; Confirm Affiliate/Daughter Company</h2>
+                    <div class="righty">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div style="background-color: #ece8d4; padding:30px; margin-top:10px;">
+                        <p>
+                            <strong>Company Details</strong>
+                        </p>
+                        <table style="width: 80%;" border="0" cellspacing="0" cellpadding="6">
+                            <tr>
+                                <td style="width: 35%;">Company Name:</td>
+                                <td style="width: 65%;">@_model.Name</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%;">Phone Number:</td>
+                                <td style="width: 65%;">@_model.Contact_Phone</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%;">Email:</td>
+                                <td style="width: 65%;">@_model.User_Id</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 35%;">Contact Person:</td>
+                                <td style="width: 65%;">@_model.Contact_FirstName</td>
+                            </tr>
+                        </table>
+                        @using (Html.BeginForm(FormMethod.Post))
+                        {
+                            <input type="hidden" name="code" value="@Model.UniqueId" />
+                            <p>
+                                Please click on either of the buttons below to confirm or decline if this company is your Affiliate/Daughter company.
+                                <br /><br />
+                                <div class="" style="width: 375px;">
+                                    <label>Security Code:</label>
+                                    <div class="input-control text full-size">
+                                        <input type="text" name="scode" id="scode" class="" placeholder="Enter your security code here: e.g. 5CBB9AB7" />
+                                    </div>
+                                </div>
+                            </p>
+
+                            <p>
+                                <button type="submit" name="action" value="decline" class="button danger">Decline! <span class="mif-thumbs-down"></span></button>
+                                <button type="submit" name="action" value="confirm" class="button success">YES! Confirm <span class="icon mif-thumbs-up"></span></button>
+
+                                <br />
+                                <span id="errMsg"></span>
+                            </p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            }
+            <hr />
+            <footer class="clear-float">
+                <div class="place-left">&copy; @DateTime.Now.Year - NUPRC Electronic Licensing And Permit System</div>
+                <div class="place-right align-right">
+                    <ul>
+                        <li><a href="#">About ELPS</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </footer>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnAffiliate").on("click", function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                btn.html('Please Wait... <span class="mif-spinner2 mif-ani-spin"></span>').attr("disabled", "disabled");
+                $.post('/Account/RegisterNonCompanyUser',
+                    {
+                        AppId: $('#AppId').val(),
+                        Email: $('#Email').val(),
+                        ParentCoyId: $('#ParentCoyId').val(),
+                        Password: $('#Password').val(),
+                        PhoneNumber: $('#PhoneNumber').val(),
+                        ChildCoyName: $('#ChildCoyName').val(),
+                        BizType: $('#BizType').val()
+                    }, function (data) {
+                        if (data.status === "1") {
+                            window.location = "/Account/Login?AppId=" + $('#AppId').val();
+                        }
+                        else {
+                            btn.removeAttr("disabled").html("I'm an Affiliate <span class=\"icon mif- thumbs - up mif- ani - horizontal\"></span>");
+                            $("#errMsg").text(data.message);
+                        }
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+

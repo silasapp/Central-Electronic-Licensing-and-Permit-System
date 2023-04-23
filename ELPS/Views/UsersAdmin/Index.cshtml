@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ELPS.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "List of Staff";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+}
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">
+            User Management
+        </h1>
+
+        <div class="place-right">
+            @Html.ActionLink("+", "Create", null, new { @class = "button cycle-button primary block-shadow-success mif-ani-shuttle mif-ani-slow", @data_role = "hint", @data_hint_mode = "2", @data_hint_position = "left", @data_hint = "|Add new Staff" })
+        </div>
+    </div>
+    <hr class="bg-grayLight" />
+
+    <table class="table border bordered dataTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    Email
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            counter++;
+            <tr>
+                <td>@counter</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td class="align-right">
+                    @Html.ActionLink("Edit/Add to Role", "Edit", new { id = item.Id }, new { @class = "epBtn2 button small-button primary" })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "epBtn2 button small-button success" })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "epBtn2 button small-button danger" })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkStaff").addClass("active open").find("a[href='/UsersAdmin']").parent("li").addClass("selected");
+
+            $(".dataTable").dataTable({
+                //columnDefs: [{ orderable: false, "targets": [-1] }]
+            });
+        });
+    </script>
+}

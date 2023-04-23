@@ -1,0 +1,432 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Alphabetical">
+  <Class Name="ELPS.Domain.Entities.AspNetRoles">
+    <Position X="4" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\AspNetRoles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Address" Collapsed="true">
+    <Position X="14" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAAAAAAAQAAAAAAIAAAAAAAQAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Entities\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.AppIdentity" Collapsed="true">
+    <Position X="16.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAggACAgQAAAEAAAgAQAAAAAAIAgAQAAABSAAAQ=</HashCode>
+      <FileName>Entities\AppIds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Application" Collapsed="true">
+    <Position X="29.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAEAAIAAAAAAAAAAAEAACAAAAABAAAAAACAAAA=</HashCode>
+      <FileName>Entities\Application.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.ApplicationRequirement" Collapsed="true">
+    <Position X="45.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAACAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ApplicationRequirement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.AspNetUser" Collapsed="true">
+    <Position X="99.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACCAAAAACAAIEAAAAAAQAABAAAAAAAIAQQAABAAAQA=</HashCode>
+      <FileName>Entities\AspNetUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.AuditLog" Collapsed="true">
+    <Position X="101" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAcAgEIAAAAAAAAAAgAQIAAAA=</HashCode>
+      <FileName>Entities\AuditLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Branch" Collapsed="true">
+    <Position X="74.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAAAAAAAAIAAAQAAAQEAAACAAAAAAAAAAI=</HashCode>
+      <FileName>Entities\Branch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Category" Collapsed="true">
+    <Position X="88.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAACAAAAAASAAAAAAQAQAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGJBAgAAAEAAAAIAAAAAoAQAQA0iQBoBAAYAAEAACAA=</HashCode>
+      <FileName>Entities\Company.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Director" Collapsed="true">
+    <Position X="18.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAEAAAAAAAAAAAAAAAAAAAAAAAAACAIAAAAAACAk=</HashCode>
+      <FileName>Entities\Company_Director.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Document" Collapsed="true">
+    <Position X="32" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAQAEAgAAAAAAAACAAAQIAAAAAAAAAQAAAQIIQAA=</HashCode>
+      <FileName>Entities\company_document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Expatriate_Quota" Collapsed="true">
+    <Position X="47.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAQAAAgAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entities\Company_Expatriate_Quota.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Key_Staff" Collapsed="true">
+    <Position X="56.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIBAAEAAAAAAAAAAAAAAAAAAAAABAgAAAAAAAGAACAg=</HashCode>
+      <FileName>Entities\Company_Key_Staff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Medical" Collapsed="true">
+    <Position X="65.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAACCAAAQAAAAAAAAAAAgAAAACAAAAIAIAAAA=</HashCode>
+      <FileName>Entities\Company_Medical.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Nsitf" Collapsed="true">
+    <Position X="77" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAQAABAAAAAAAAhAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entities\Company_Nsitf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Proffessional" Collapsed="true">
+    <Position X="90.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAEAEAAAQAAAAAAAAAAAgAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entities\Company_Proffessional.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Company_Technical_Agreement">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAQAAAgAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Entities\Company_Technical_Agreement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.CompanyNameHistory" Collapsed="true">
+    <Position X="20.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAIAAAACAAAAAAAAAAAAAAAJAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\CompanyNameHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Country" Collapsed="true">
+    <Position X="34.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAEMAAAAAAAAAAACAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Country.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Document_Type" Collapsed="true">
+    <Position X="50" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAgAACAAAAAAAAAQAAAAAAAAAAAAAAAAIQAI=</HashCode>
+      <FileName>Entities\document_type.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.ELPSContext" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="102.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>tBkQBMAwRRJwCgAEwQAAACAREWEhgIQBBYQQJBCRIoE=</HashCode>
+      <FileName>Entities\ELPSContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ELPS.Domain.Entities.EntityBase" Collapsed="true">
+    <Position X="47.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\EntityBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.File" Collapsed="true">
+    <Position X="79.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAgAAgAAAAAAAAAQAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Entities\File.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Invoice" Collapsed="true">
+    <Position X="97.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAAAAACAAAAAACAAYAAAAAAIAAAACIAAAA=</HashCode>
+      <FileName>Entities\Invoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Key_Staff_Certificate" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAABAEAAAAAAAAAAAQAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Key_Staff_Certificate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.License" Collapsed="true">
+    <Position X="23" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAgiAAAgAAAAAAAAAAAAAAAAAAAACQAAAACAAAQ=</HashCode>
+      <FileName>Entities\License.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.LockedOutUser" Collapsed="true">
+    <Position X="36.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAIAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\LockedOutUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Medical_Organisation" Collapsed="true">
+    <Position X="52.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Medical_Organisation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Message" Collapsed="true">
+    <Position X="59" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIIAAAAAAgAAAAAAAIAAAAAgAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Notification" Collapsed="true">
+    <Position X="68" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAQAAAEAAAAAAAAACAAQAAIAAAAAA=</HashCode>
+      <FileName>Entities\Notification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Nsitf" Collapsed="true">
+    <Position X="81.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Nsitf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Payment_Transaction" Collapsed="true">
+    <Position X="92.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAEBJwIAYQODAAIIAAAAQBAACAAAARAAABGAAAA=</HashCode>
+      <FileName>Entities\payment_transaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Permit" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIBAAAAgAAAAAAQAAAAAAAEAACAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Entities\Permit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.PermitCategory" Collapsed="true">
+    <Position X="25.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\PermitCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Proffessional_Organisation" Collapsed="true">
+    <Position X="38.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Proffessional_Organisation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Receipt" Collapsed="true">
+    <Position X="99.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACYAAEgAAAAAAAAQAAAACARIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Receipts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.RemitaPaymentStatus" Collapsed="true">
+    <Position X="101" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAgEAAAAAQgACAAAAAAABCAEAhBAAAAigAAAAIpA=</HashCode>
+      <FileName>Entities\RemitaPaymentStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.Staff" Collapsed="true">
+    <Position X="70.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAEAAAAAAgAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Entities\Staff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.State" Collapsed="true">
+    <Position X="83.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\State.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.UserBranch" Collapsed="true">
+    <Position X="95" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAgAAAAAABAAkAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\UserBranch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vAddress" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAAAAAAAQAAAAAAIABAAAAAAAAAAAAAAIQAAAAEAAAA=</HashCode>
+      <FileName>Entities\vAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vApplication" Collapsed="true">
+    <Position X="27.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAQAAGAQIAAACKAAEAAAEAQCEAAAABAAAAAAGAAAA=</HashCode>
+      <FileName>Entities\vApplication.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompany" Collapsed="true">
+    <Position X="41" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGJBAgAAQEAAAAIAABAAqAQQQAUiQBoBAAYAAEEACAA=</HashCode>
+      <FileName>Entities\vCompany.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyDirector" Collapsed="true">
+    <Position X="54.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YIAAAEAAQAAAAAAIIBAAAAAAAAAAAAAAAIAAAAEACAk=</HashCode>
+      <FileName>Entities\vCompanyDirector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCategoryDocument" Collapsed="true">
+    <Position X="61.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\vCompanyDocument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyExpatriateQuota" Collapsed="true">
+    <Position X="102.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAgAAAAAAAAAAAAAQAAAgAAAAAAAAAAAJAAAA=</HashCode>
+      <FileName>Entities\vCompanyExpatriateQuota.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyFile" Collapsed="true">
+    <Position X="97.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAIAAIIAAAAAAAAIAAAAAQAAAgAAAABIRAA=</HashCode>
+      <FileName>Entities\vCompanyFiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyMedical" Collapsed="true">
+    <Position X="99.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAgCCAAAQAAAAAAAAAAAgAAAACAAAAIAJAAAA=</HashCode>
+      <FileName>Entities\vCompanyMedical.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyNsitf" Collapsed="true">
+    <Position X="101" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAgAAAAAQAABAAAAAAAAhAAAAAAAAAAAJAAAA=</HashCode>
+      <FileName>Entities\vCompanyNsitf.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyProffessional" Collapsed="true">
+    <Position X="102.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAkAEAAAQAAAAAAAAAAAgAAAAAAAAAAAJAAAA=</HashCode>
+      <FileName>Entities\vCompanyProffessionals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vCompanyTechnicalAgreement" Collapsed="true">
+    <Position X="97.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAgAAAAAAAAAAAAAQAAAgAAAAAAAAAAAJAAAA=</HashCode>
+      <FileName>Entities\vCompanyTechnicalAgreement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vInvoice" Collapsed="true">
+    <Position X="99.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQAAGgAAAAAAKAAAAAAGAAaAAAAAAIAAAACMAAAA=</HashCode>
+      <FileName>Entities\vinvoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vLockedOutUser" Collapsed="true">
+    <Position X="63.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAACIgAAIAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\vLockedOutUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vPaymentTransaction" Collapsed="true">
+    <Position X="72.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAADIwIAIAOLAAAIAAEAQCAACAAAARAgAAEAAAA=</HashCode>
+      <FileName>Entities\vPaymentTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vPermit" Collapsed="true">
+    <Position X="86" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIBBQAACAAAAAAQIAAACAAEAQCAAAAAAAAAAAAGAEAA=</HashCode>
+      <FileName>Entities\vpermit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vReceipt" Collapsed="true">
+    <Position X="101" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACYAAGgAAAAAAIAQAAAAGARaQAAAAAIAAAACEAAAA=</HashCode>
+      <FileName>Entities\vReceipts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vUserBranch" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAEIAACAAgAAAEAABAAkCAAAAAAggAQAAAAAAAAg=</HashCode>
+      <FileName>Entities\vUserBranch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.vUserRole" Collapsed="true">
+    <Position X="102.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAIAACAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Entities\vUserRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.Entities.WorkRole" Collapsed="true">
+    <Position X="43.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\WorkRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ELPS.Domain.ApplicationItem" Collapsed="true">
+    <Position X="97.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ApplicationItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,356 @@
+﻿@model ELPS.Models.RegisterViewModel
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "Create Company Profile";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+@{
+    if (Session["ELPS-rtnUrl"] != null && !string.IsNullOrEmpty(Session["ELPS-rtnUrl"].ToString()))
+    {
+        ViewBag.ReturnUrl = Session["ELPS-rtnUrl"].ToString();
+        Session["ELPS-rtnUrl"] = "";
+    }
+}
+
+<section class="infoSide" style="display: none;">
+    <div>
+        <div class="center-login-logo1 align-center">
+            <img alt="DPR Logo" src="@Url.Content("/Content/Images/logo_white.png")" class="margin50 login-logo-bottom" style="width: 170px; margin-bottom: 20px; margin-top: 5px;" />
+        </div>
+        <h2 class="align-center thin4">DPR ELPS</h2>
+        <h5 class="align-center thin4">Central Electronic Licensing and Permit System</h5>
+    </div>
+    <div class="align-center margin30 no-margin-left no-margin-right no-margin-bottom">
+        <h1 class="thin1">Create your DPR ELPS Account</h1>
+
+        <h4 class="thin1">One DPR ELPS account for every portal on DPR ELPS</h4>
+        <div class="clear"></div>
+        <ul class="portal-list padding10">
+            <li>
+                <img src="~/Content/Images/LicenseAssets/_logo.png" alt="OGISP" style="max-height: 55px;" />
+            </li>
+            @*<li>
+                    <img src="~/Content/Images/LicenseAssets/_logo.jpg" alt="OGISP" style="max-height: 55px;" />
+                </li>
+                <li>
+                    <img src="~/Content/Images/LicenseAssets/_logo.jpg" alt="OGISP" style="max-height: 55px;" />
+                </li>*@
+        </ul>
+        <hr class="clear bg-grayLight thin" />
+        <p>
+            Already have an Account? @Html.ActionLink("Login here", "Login", new { appid = ViewBag.appId, returnUrl = ViewBag.ReturnUrl }, new { @class = "button info epBtn" })
+        </p>
+    </div>
+</section>
+
+<section class="loginForm" style="width: 100%;">
+    <div class="" style="color: #FFF; text-align: center; position: relative;">
+        <h1 class="thin1">Create your DPR ELPS Account</h1>
+        <h4 class="thin1">One DPR ELPS account for every portal on DPR ELPS</h4>
+    </div>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <input type="hidden" name="returnUrl" id="returnUrl" value="@ViewBag.ReturnUrl" />
+        <input type="hidden" name="appId" value="@ViewBag.appId" />
+        <div class="" style="width: 100%; max-width: 350px; margin: 0 auto;">
+            <div class="login-form block-shadow">
+                <div class="center-login-header">
+                    <h1 class="thin1">DPR Portal Login</h1>
+                </div>
+                @if (TempData["message"] != null)
+                {
+                    <div class="text-danger validation-summary-errors" data-valmsg-summary="true" style="position: relative;">
+                        <ul>
+                            <li>@TempData["message"].ToString()</li>
+                        </ul>
+                    </div>
+                }
+                <div class="align-center">
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.Email, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Email</span>
+                        <span class="informer">Please enter your email</span>
+                        <span class="placeholder">Email Address</span>
+                        <span class="icon mif-user"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.PasswordFor(m => m.Password, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Password</span>
+                        <span class="informer">Enter your password (Min of 6 characters)</span>
+                        <span class="placeholder">Password</span>
+                        <span class="icon mif-lock"></span>
+                        <a class="button helper-button reveal"><span class="mif-looks"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Confirm Password</span>
+                        <span class="informer">Enter your password again</span>
+                        <span class="placeholder">ConfirmPassword</span>
+                        <span class="icon mif-lock"></span>
+                        <a class="button helper-button reveal"><span class="mif-looks"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.CompanyName, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Company Name</span>
+                        <span class="informer">Enter your Company Name</span>
+                        <span class="placeholder">Company Name</span>
+                        <span class="icon mif-library"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.RegistrationNumber, new { @style = "border-bottom: 2px solid #9a9a9a;", @class = "valRC" })
+                        <span class="label">Registration Number</span>
+                        <span class="informer">Reg. No. on CAC certificate</span>
+                        <span class="placeholder">Company Reg. Number</span>
+                        <span class="icon mif-barcode"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Phone Number</span>
+                        <span class="informer">Contact GSM Phone Number</span>
+                        <span class="placeholder">e.g. 08012345678</span>
+                        <span class="icon mif-phone"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br /><br />
+                    <div class="input-control modern select">
+                        @Html.LabelFor(m => m.BusinessType)
+                        @Html.DropDownListFor(m => m.BusinessType, (SelectList)ViewBag.bizType, "Select Business type")
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" class="button primary" value="Create Account" />
+                    </div>
+                    <br />
+                    <div class="margin30 no-margin-top no-margin-bottom">
+                        <div class="form-actions">
+                            Already have an Account? @Html.ActionLink("Login here", "Login", new { appid = ViewBag.appId, returnUrl = ViewBag.ReturnUrl }, new { @class = "button info epBtn" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</section>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            //$('.valRC').keypress(function (e) {
+            $('.valRC').keypress(function (e) {
+                //var regexA0 = new RegExp("^[a-zA-Z0-9\-]+$");
+
+                //var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                //if (e.keyCode == 8 || e.keyCode == 46 || regexA0.test(str)) {
+                //    return true;
+                //}
+
+                //e.preventDefault();
+                //return false;
+                if ((e.key >= 0 && e.key <= 9) || e.key == 'Backspace' || e.key == 'Delete' || e.key == 'ArrowLeft' || e.key == 'ArrowRight') {
+                    //console.log("Ok: " + e.key);
+                    return true;
+                }
+                else {
+                    //console.log("Not Ok: " + e.key);
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
+
+
+@*@model ELPS.Models.RegisterViewModel
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "Create Company Profile";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+@{
+    if (Session["ELPS-rtnUrl"] != null && !string.IsNullOrEmpty(Session["ELPS-rtnUrl"].ToString()))
+    {
+        ViewBag.ReturnUrl = Session["ELPS-rtnUrl"].ToString();
+        Session["ELPS-rtnUrl"] = "";
+    }
+}
+
+<section class="infoSide" style="display: none;">
+    <div>
+        <div class="center-login-logo1 align-center">
+            <img alt="DPR Logo" src="@Url.Content("/Content/Images/logo_white.png")" class="margin50 login-logo-bottom" style="width: 170px; margin-bottom: 20px; margin-top: 5px;" />
+        </div>
+        <h2 class="align-center thin4">DPR ELPS</h2>
+        <h5 class="align-center thin4">Central Electronic Licensing and Permit System</h5>
+    </div>
+    <div class="align-center margin30 no-margin-left no-margin-right no-margin-bottom">
+        <h1 class="thin1">Create your DPR ELPS Account</h1>
+
+        <h4 class="thin1">One DPR ELPS account for every portal on DPR ELPS</h4>
+        <div class="clear"></div>
+        <ul class="portal-list padding10">
+            <li>
+                <img src="~/Content/Images/LicenseAssets/_logo.png" alt="OGISP" style="max-height: 55px;" />
+            </li>
+            @*<li>
+                    <img src="~/Content/Images/LicenseAssets/_logo.jpg" alt="OGISP" style="max-height: 55px;" />
+                </li>
+                <li>
+                    <img src="~/Content/Images/LicenseAssets/_logo.jpg" alt="OGISP" style="max-height: 55px;" />
+                </li>* @
+        </ul>
+        <hr class="clear bg-grayLight thin" />
+        <p>
+            Already have an Account? @Html.ActionLink("Login here", "Login", new { appid = ViewBag.appId, returnUrl = ViewBag.ReturnUrl }, new { @class = "button info epBtn" })
+        </p>
+    </div>
+</section>
+
+<section class="loginForm" style="width: 100%;">
+    <div class="" style="color: #FFF; text-align: center; position: relative;">
+        <h1 class="thin1">Create your DPR ELPS Account</h1>
+        <h4 class="thin1">One DPR ELPS account for every portal on DPR ELPS</h4>
+    </div>
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+
+        <input type="hidden" name="returnUrl" id="returnUrl" value="@ViewBag.ReturnUrl" />
+        <input type="hidden" name="appId" value="@ViewBag.appId" />
+        <div class="" style="width: 100%; max-width: 350px; margin: 0 auto;">
+            <div class="login-form block-shadow">
+                @if (TempData["message"] != null)
+                {
+                    <div class="text-danger validation-summary-errors" data-valmsg-summary="true" style="position: relative;">
+                        <ul>
+                            <li>@TempData["message"].ToString()</li>
+                        </ul>
+                    </div>
+                }
+                <div class="align-center">
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.Email, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Email</span>
+                        <span class="informer">Please enter your email</span>
+                        <span class="placeholder">Email Address</span>
+                        <span class="icon mif-user"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.PasswordFor(m => m.Password, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Password</span>
+                        <span class="informer">Enter your password (Min of 6 characters)</span>
+                        <span class="placeholder">Password</span>
+                        <span class="icon mif-lock"></span>
+                        <a class="button helper-button reveal"><span class="mif-looks"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Confirm Password</span>
+                        <span class="informer">Enter your password again</span>
+                        <span class="placeholder">ConfirmPassword</span>
+                        <span class="icon mif-lock"></span>
+                        <a class="button helper-button reveal"><span class="mif-looks"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.CompanyName, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Company Name</span>
+                        <span class="informer">Enter your Company Name</span>
+                        <span class="placeholder">Company Name</span>
+                        <span class="icon mif-library"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.RegistrationNumber, new { @style = "border-bottom: 2px solid #9a9a9a;", @class = "valRC" })
+                        <span class="label">Registration Number</span>
+                        <span class="informer">Reg. No. on CAC certificate</span>
+                        <span class="placeholder">Company Reg. Number</span>
+                        <span class="icon mif-barcode"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <div class="input-control modern text iconic" data-role="input">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @style = "border-bottom: 2px solid #9a9a9a;" })
+                        <span class="label">Phone Number</span>
+                        <span class="informer">Contact GSM Phone Number</span>
+                        <span class="placeholder">e.g. 08012345678</span>
+                        <span class="icon mif-phone"></span>
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br /><br />
+                    <div class="input-control modern select">
+                        @Html.LabelFor(m => m.BusinessType)
+                        @Html.DropDownListFor(m => m.BusinessType, (SelectList)ViewBag.bizType, "Select Business type")
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" class="button primary" value="Create Account" />
+                    </div>
+                    <br />
+                    <div class="margin30 no-margin-top no-margin-bottom">
+                        <div class="form-actions">
+                            Already have an Account? @Html.ActionLink("Login here", "Login", new { appid = ViewBag.appId, returnUrl = ViewBag.ReturnUrl }, new { @class = "button info epBtn" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</section>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            //$('.valRC').keypress(function (e) {
+            $('.valRC').keypress(function (e) {
+                //var regexA0 = new RegExp("^[a-zA-Z0-9\-]+$");
+
+                //var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+                //if (e.keyCode == 8 || e.keyCode == 46 || regexA0.test(str)) {
+                //    return true;
+                //}
+
+                //e.preventDefault();
+                //return false;
+                if ((e.key >= 0 && e.key <= 9) || e.key == 'Backspace' || e.key == 'Delete' || e.key == 'ArrowLeft' || e.key == 'ArrowRight') {
+                    //console.log("Ok: " + e.key);
+                    return true;
+                }
+                else {
+                    //console.log("Not Ok: " + e.key);
+                    return false;
+                }
+                //if (e.keyCode == 8 || e.keyCode == 46 || (e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+                //    console.log("Ok: " + e.keyCode + ">>>" + e.key + ">>>" + e.keypress);
+                //    return true;
+                //}
+                //else {
+                //    console.log("Ok: " + e.keyCode + ">>>" + e.key + ">>>" + e.keypress);
+                //    return false;
+                //}
+            });
+        });
+    </script>
+}*@

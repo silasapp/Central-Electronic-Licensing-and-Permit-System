@@ -1,0 +1,99 @@
+﻿@using ELPS.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+}
+
+
+    <section class="loginForm" style="width: 100%;">
+        <div style="color: #FFF; position: relative;">
+            <h4 class="align-center thin4">Central Electronic Licensing and Permit System</h4>
+            <h1 class="align-center thin1">One account. All of NUPRC ELPS Portals</h1>
+        </div>
+
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="" style="width: 100%; max-width: 350px; margin: 0 auto;">
+
+                <div class="login-form block-shadow">
+                    <div class="center-login-header">
+                        <h1 class="thin1">NUPRC Portal Login</h1>
+                    </div>
+
+                    <div class="row">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+                    <div class="align-center">
+                        <input type="hidden" name="appId" value="@ViewBag.appId" />
+                        <div class="input-control modern text" data-role="input">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "www", @style = "border-bottom: 2px solid #9a9a9a;" })
+                            <span class="label">You login email</span>
+                            <span class="informer">Please enter your user email</span>
+                            <span class="placeholder">Enter Login Email</span>
+                            <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                        </div>
+                        <br />
+
+                        <div class="input-control modern password" data-role="input">
+                            @Html.PasswordFor(m => m.Password, new { @class = "www", @style = "border-bottom: 2px solid #9a9a9a;" })
+                            <span class="label">You password</span>
+                            <span class="informer">Please enter you login password</span>
+                            <span class="placeholder">Enter Password</span>
+                            <a class="button helper-button reveal"><span class="mif-looks"></span></a>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-actions">
+                            <button type="submit" class="button primary">Login</button>
+                        </div>
+
+                        <div class="margin30 no-margin-top no-margin-bottom">
+                            <div class="form-actions">
+                                @Html.ActionLink("Register as a new user", "Register", new { returnUrl = ViewBag.ReturnUrl, appId = ViewBag.appId }, new { @class = "fg-emerald" })
+                            </div>
+                            <div class="form-actions">
+                                @Html.ActionLink("Forgot your Password", "Forgotpassword", new { returnUrl = ViewBag.ReturnUrl, appId = ViewBag.appId }, new { @class = "fg-emerald" })
+                            </div>
+                            <div class="form-actions">
+                                @Html.ActionLink("Resend Activation Email", "ResendEmailActivation", new { appId = ViewBag.appId }, new { @class = "fg-emerald" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </section>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+        });
+
+        function NotifyUser(msg, title, typ) {
+            setTimeout(function () {
+                $.Notify({ keepOpen: true, type: typ.length > 0 ? typ : 'default', caption: title.length > 0 ? title : 'Alert!', content: msg.length > 0 ? msg : "Alert! Alert!! Alert!!!" });
+            }, 700);
+        }
+    </script>
+}

@@ -1,0 +1,206 @@
+﻿@model ELPS.Domain.Entities.Company_Key_Staff
+
+@{
+    Layout = null;
+    var sCert = Model.Certificates;
+}
+
+<div class="grid">
+    <div class="row cells2">
+        <div class="cell size6">
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Company_Id)
+                <label>First Name</label>&nbsp;<span class="req">*</span>
+                <div class="input-control text full-size">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @tabindex = 1, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Nationality</label>&nbsp;<span class="req">*</span>
+                <div class="input-control select full-size">
+                    <select id="Nationality" name="Nationality" class="form-control" tabindex="3" required>
+                        <option value="@Model.Nationality">@Model.Nationality</option>
+                        @foreach (var item in (List<ELPS.Domain.Entities.Country>)ViewBag.country)
+                        {
+                            
+                                <option value="@item.Name">@item.Name</option>
+                           
+                        }
+                    </select>
+
+                    
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Years_Of_Exp, htmlAttributes: new { @class = "control-label" })&nbsp;<span class="req">*</span>
+                <br />
+                <div class="input-control text">
+                    @Html.TextBoxFor(model => model.Years_Of_Exp, new { @tabindex = 5, @required = "required", @maxlength = "2" })
+                    @Html.ValidationMessageFor(model => model.Years_Of_Exp, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Skills)
+                <div class="input-control textarea full-size">
+                    @Html.TextAreaFor(model => model.Skills, new { htmlAttributes = new { @tabindex = 7 } })
+                    @Html.ValidationMessageFor(model => model.Skills, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+        <div class="cell size6">
+            <div class="form-group">
+                <label>Last Name</label>&nbsp;<span class="req">*</span>
+                <div class="input-control text full-size">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @tabindex = 2, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Designation)&nbsp;<span class="req">*</span>
+                <div class="input-control text full-size">
+                    @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @tabindex = 4, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Qualification)&nbsp;<span class="req">*</span>
+                <div class="input-control text full-size">
+                    @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @tabindex = 6, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<h4 class="">Professional Certification </h4> 
+<div id="sCertDiv" class="grid">
+    @if (sCert != null && sCert.Count> 0 )
+    {
+        for (int i = 0; i < sCert.Count; i++)
+        {
+            var divId = "sCert" + i;
+            var id = "sCert[" + i + "].Id";
+            var nm = "sCert[" + i + "].Name";
+            var cn = "sCert[" + i + "].Cert_No";
+            var cks = "sCert[" + i + "].Company_Key_Staff";
+            var yr = "sCert[" + i + "].Year";
+            var iss = "sCert[" + i + "].Issuer";
+
+            <div class="row cells5" id="@divId">
+                <div class="cell size3">
+                    <div class="form-group">
+                        <label>Certificate Name</label>
+                        <div class="input-control text full-size">
+                            <input type="hidden" name="@id" value="@sCert[i].Id" />
+                            <input type="hidden" name="@cks" value="@sCert[i].Company_Key_Staff" />
+                            <input type="text" name="@nm" value="@sCert[i].Name" />
+                        </div>
+                    </div>
+                </div>
+                <div class="cell size3">
+                    <div class="form-group">
+                        <label>Certificate Issuer</label>
+                        <div class="input-control text full-size">
+                            <input type="text" name="@iss" value="@sCert[i].Issuer" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="cell size3">
+                    <div class="form-group">
+                        <label>Certificate No.</label>
+                        <div class="input-control text full-size">
+                            <input type="text" name="@cn" value="@sCert[i].Cert_No" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="cell size2">
+                    <div class="form-group">
+                        <label>Year</label>
+                        <div class="input-control text full-size">
+                            <input type="text" name="@yr" value="@sCert[i].Year" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="cell size1">
+                    <div class="">
+                        <div class="">
+                            <span class="button cycle-button large-button sCertDelete" data-divid="@divId">x</span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+    }
+    else
+    {
+        sCert = new List<ELPS.Domain.Entities.Key_Staff_Certificate>();
+        sCert.Add(new ELPS.Domain.Entities.Key_Staff_Certificate());
+        int i = 0;
+        var divId = "sCert" + i;
+        var id = "sCert[" + i + "].Id";
+        var nm = "sCert[" + i + "].Name";
+        var cn = "sCert[" + i + "].Cert_No";
+        var cks = "sCert[" + i + "].Company_Key_Staff";
+        var yr = "sCert[" + i + "].Year";
+        var iss = "sCert[" + i + "].Issuer";
+
+        <div id="@divId" class="row cells5">
+            <div class="cell size3">
+                <div class="form-group">
+                    <label>Certificate Name</label>
+                    <div class="input-control text full-size">
+                        <input type="hidden" name="@id" value="@sCert[i].Id" />
+                        <input type="hidden" name="@cks" value="@sCert[i].Company_Key_Staff" />
+                        <input type="text" name="@nm" value="@sCert[i].Name" />
+                    </div>
+                </div>
+            </div>
+            <div class="cell size3">
+                <div class="form-group">
+                    <label>Certificate Issuer</label>
+                    <div class="input-control text full-size">
+                        <input type="text" name="@iss" value="@sCert[i].Issuer" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="cell size3">
+                <div class="form-group">
+                    <label>Certificate No.</label>
+                    <div class="input-control text full-size">
+                        <input type="text" name="@cn" value="@sCert[i].Cert_No" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            <div class="cell size2">
+                <div class="form-group">
+                    <label>Year</label>
+                    <div class="input-control text full-size">
+                        <input type="text" name="@yr" value="@sCert[i].Year" class="form-control" />
+                    </div>
+                </div>
+            </div>
+            @*<div class="cell size1">
+                <div class="">
+                    <div class="">
+                        <span class="button cycle-button large-button sCertDelete" data-divid="@divId">x</span>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    }
+</div>
+
+
+

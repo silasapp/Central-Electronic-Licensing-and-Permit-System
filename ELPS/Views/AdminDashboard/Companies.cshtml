@@ -1,0 +1,190 @@
+﻿@using ELPS.Domain.Entities
+@using ELPS.Models
+@model IEnumerable<vCompany>
+
+@{
+    ViewBag.Title = "List of Companies";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+    //var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+    string location = ViewBag.location;
+}
+
+
+<link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+@*<script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>*@
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left" style="margin: 0;">
+            <span class="mif-library icon" style="font-size: 30px; vertical-align: top; padding-top: 10px;"></span> Companies
+        </h1>
+        <div class="place-right">
+            @using (Html.BeginForm("Companies", "AdminDashBoard", FormMethod.Get))
+            {
+                @Html.Partial("_FilterControl", Filter)
+                <input type="submit" value="Filter" class="righty btn btn-success input-append" />
+            }
+        </div>
+        <div class="clear-float"></div>
+        <div class="place-left">
+            @ViewBag.ResultTitle
+        </div>
+    </div>
+    <hr class="thin bg-grayLighter">
+    <div>
+        <table id="dtTable" class="customDT border bordered" data-role="datatble" data-auto-width="false">
+            <thead>
+                <tr>
+
+                    <th class="sortable-column">
+                        Company
+                    </th>
+                    <th class="sortable-column">
+                        Business Type
+                    </th>
+                    <th class="sortable-column">
+                        Email
+                    </th>
+                    <th class="sortable-column">
+                        Contact Name
+                    </th>
+                    <th class="sortable-column">
+                        Contact Phone
+                    </th>
+                    <th>State</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @*@foreach (var item in Model)
+                    {
+                        counter++;
+                        <tr>
+                            <td>@counter</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Business_Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Contact_FirstName) @Html.DisplayFor(modelItem => item.Contact_LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Contact_Phone)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Details", "CompanyView", new { id = item.Id }, new { @class = "button mini-button info epBtn" })
+                            </td>
+                        </tr>
+                        }*@
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/js/DT/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.flash.min.js"></script>
+    <script src="~/Scripts/js/DT/jszip.min.js"></script>
+    <script src="~/Scripts/js/DT/pdfmake.min.js"></script>
+    <script src="~/Scripts/js/DT/vfs_fonts.js"></script>
+    <script src="~/Scripts/js/DT/buttons.html5.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.print.min.js"></script>
+
+    @*<script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>*@
+
+    @*https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js
+        https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js
+        https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js
+        https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js
+        https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js
+        https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js
+        https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js*@
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkCompany").addClass("active");
+
+
+            var t = $('#dtTable');
+            var h = $('#navigationHeader');//navigationHeader
+            var pos = t.position();
+            $(window).scroll(function () {
+                var windowpos = $(window).scrollTop();
+                if (windowpos >= pos.top) {
+
+                    h.css('opacity', 0)
+                } else {
+                    h.css('opacity', 1)
+                }
+            });
+
+            $("#filterby").on('change', function () {
+                var targ = $(this).val();
+                $(this).siblings('select').css('display', 'none');
+                $('#' + targ).css('display', 'inline-block');
+            });
+
+            $(".selFilter").on('change', function () {
+                $('#filterparam').val($(this).val());
+            });
+
+            $('.customDT').dataTable({
+                //fixedHeader: true,
+                //responsive: true,
+                dom: '<"grid"<"row cells3"<"cell"l><"cell"f><"cell text-right"B>>><t><"row"<"col-md-6"i><"col-md-6"p>>', //'Bfrtip',
+                buttons: [
+                    { extend: 'copy', attr: { id: 'allan' } }, 'excel', 'print'
+                ],
+                lengthMenu: [[250, 500, 1000, -1], [250, 500, 1000, "All"]],
+                "bServerSide": true,
+                "sAjaxSource": "LazyLoadCompaniesQuery?filterparam=" + $('#_filterparam').val() + "&filterby=" + $("#_filterby").val(),
+                "bProcessing": true,
+                "pageLength": 1000,
+                "aoColumns": [
+                    {
+                        "sName": "Name",
+                        "mRender": function (data, type, oObj) {
+                            return '<a href="/Admindashboard/CompanyView/' + oObj[6] + '" target="_blank">' + oObj[0] + '</a>';
+                        }
+                    },
+                    { "sName": "Business_Type" },
+                    { "sName": "User_Id" },
+                    { "sName": "Contact_FirstName" },
+                    { "sName": "Contact_Phone" },
+                    { "sName": "StateName" },
+                    {
+                        "sName": "Id",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (data, type, oObj) {
+                            return ' <a class="button mini-button info epBtn" href="/Admindashboard/CompanyView/' + oObj[6] + '" target="_blank">' + 'View Detail' + '<i class="icon-doc"></i></a>  ';
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

@@ -1,0 +1,116 @@
+﻿@model ELPS.Models.EditUserViewModel
+
+@{
+    ViewBag.Title = "Edit Staff User Account";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <div class="clear-float">
+        <h2 class="text-light place-left">Edit Staff User Account</h2>
+    </div>
+</div>
+<hr class="thin bg-grayLighter">
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="flex-grid">
+            <div class="row">
+                <div class="cell colspan4">
+                    <div class="form-group padding10">
+                        @Html.LabelFor(model => model.Email, "Change Staff Login Email")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @placeholder = "Enter Staff Email" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row cells3">
+                <div class="cell colspan4">
+                    <div class="form-group padding10">
+                        @Html.LabelFor(model => model.FirstName, "First Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @placeholder = "Enter Staff First Name" } })
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="cell colspan4">
+                    <div class="form-group padding10">
+                        @Html.LabelFor(model => model.LastName, "Last Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @placeholder = "Enter Staff Last Name" } })
+                            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="cell colspan4">
+                    <div class="form-group padding10">
+                        @Html.LabelFor(model => model.PhoneNo, "Phone Number")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @placeholder = "Enter Staff Phone number" } })
+                            @Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="bg-grayLight thin" />
+        <div class="flex-grid">
+            <div class="row">
+                <div class="cell colspan12">
+                    <div class="form-group padding10">
+                        <h4 class="thin1">
+                            Select User Role
+                        </h4>
+                        <input type="hidden" name="SelectedRole" value="Staff" />
+                        @*@foreach (var item in Model.RolesList)
+                            {
+                                        <div style="width:auto;padding:5px;margin:6px; background-color:#dbd5d5;float:left">
+                                            <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline input-control" />
+                                            @Html.Label(item.Value, new { @class = "control-label" })
+                                        </div>
+                                    }*@
+                        @foreach (var item in Model.RolesList)
+                        {
+                            <div class="role-wrapper">
+                                <label class="input-control checkbox">
+                                    <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected">
+                                    <span class="check"></span>
+                                    <span class="caption">@item.Value</span>
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="thin bg-grayLight" />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @Html.ActionLink("Back to List", "Index", new { @class = "button default" }) &nbsp; <input type="submit" value="Save Changes" class="button success" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkStaff").addClass("active open").find("a[href='/UsersAdmin']").parent("li").addClass("selected");
+
+        });
+    </script>
+}

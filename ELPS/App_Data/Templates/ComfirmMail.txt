@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body style="color: gray; font-size:14px; box-sizing: border-box;">
+    <font face="Helvetica, arial, sans-serif">
+        <div style=" width:700px;background-color: #ece8d4; padding: 5px 0 5px 0;">
+            <img src="https://elps.nuprc.gov.ng/Content/Images/mainlogo.png" alt="Logo" style="width: 98%; display: block; margin: 0 auto;" />
+        </div>
+
+        <div style="background-color: #ece8d4; width:700px; min-height:200px;">
+            <div style="padding: 10px 30px 30px 30px;">
+                <h3 style="text-align: center;font-weight: 300;padding-bottom: 10px; border-bottom: 1px solid #ddd;">{2}</h3>
+                <p>Dear {0},</p><p>
+                </p>
+                <p>
+                    Thank you for taking the first step in registering your company on The  Nigerian Upstream Petroleum Regulatory Commission Portal.
+                </p>
+                <p>
+                    To activate your account, please confirm your email address by clicking the link below.
+                </p>
+                <p>
+                    <a href="{1}">Confirm Email</a>
+                    <br /><br />
+                    If the link is not active, copy and paste the below url code into your browser address bar
+                    <br />
+                    <div class="" style="line-height: 1.5em; width: 100%; display: inline-block; background-color: #fff; word-wrap: break-word; padding: 5px; margin: 2px 0; box-sizing: border-box;">
+                        {1}
+                    </div>
+                    <br /><br />
+                </p>
+                <p>
+                     Nigerian Upstream Petroleum Regulatory Commission<br />
+                    (NUPRC ELPS)
+                </p>
+            </div>
+        </div>
+        <div style="padding: 10px 0; text-align: center; background-color: #888; color: #f9f9f9; width:700px">
+            &copy; 2020  Nigerian Upstream Petroleum Regulatory Commission &minus; NUPRC Nigeria
+        </div>
+    </font>
+</body>
+</html>
+
+
+
+

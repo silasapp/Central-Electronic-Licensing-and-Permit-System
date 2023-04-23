@@ -1,0 +1,74 @@
+﻿@model ELPS.Domain.Entities.Company
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="padding10">
+    <h3>Company Information</h3>
+    <hr />
+    <div class="tabcontrol2" data-role="tabcontrol">
+        <ul class="tabs">
+            <li class=""><a href="#frame_coy">Company Profile</a></li>
+            <li class=""><a href="#frame_coy_address">Company Address</a></li>
+            <li class=""><a href="#frame_coy_director">Company Directors</a></li>
+            <li class=""><a href="#frame_coy_staff">COmpany Staff</a></li>
+        </ul>
+        <div class="frames">
+            <div class="frame" id="frame_coy">
+                @Html.Action("CompanyDetail", "Company", new { id = Model.Id })
+            </div>
+            <div class="frame" id="frame_coy_address">
+                @Html.Action("CompanyAddresses", "Company", new { id = Model.Id })
+            </div>
+            <div class="frame" id="frame_coy_director">
+                @Html.Action("CompanyDirector", "Company", new { id = Model.Id })
+            </div>
+            <div class="frame" id="frame_coy_staff">
+                @Html.Action("CompanyStaff", "Company", new { id = Model.Id })
+            </div>
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            //WorkTab();
+        });
+
+        function WorkTab() {
+            var stage = '@ViewBag.Stage';
+            alert(stage);
+
+            switch (parseInt(stage)) {
+                case 1:
+                    $('a[href="#frame_coy"]').parent("li").removeClass("disabled").addClass("active");
+                    var body = $('a[href="#frame_coy"]').attr("href");
+                    $(body).show();
+                    break;
+                case 2:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_address"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_address"]').attr("href");
+                    $(body).show();
+                    break;
+                case 3:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"], a[href="#frame_coy_director"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_director"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_director"]').attr("href");
+                    $(body).show();
+                    break;
+                case 4:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"], a[href="#frame_coy_director"], a[href="#frame_coy_staff"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_staff"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_staff"]').attr("href");
+                    $(body).show();
+                    break;
+                default:
+                    alert("No Company Profile is in Progress!");
+                    break;
+            }
+        }
+    </script>
+}

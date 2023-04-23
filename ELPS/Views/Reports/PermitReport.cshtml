@@ -1,0 +1,169 @@
+﻿@using ELPS.Models
+
+@{
+    ViewBag.Title = "Permit Report";
+    Layout = "~/Views/shared/_AdminLayout.cshtml";
+    var lnc = (List<ELPS.Domain.Entities.AppIdentity>)ViewBag.licenses;
+    List<BasicReportModel> permits = (List<BasicReportModel>)ViewBag.Counter;
+    var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+}
+
+
+<div class="">
+    <div class="clear-float">
+        <h2 class="text-light place-left">Permit Report  <small>from @ViewBag.SD.ToString("dd/MM/yyyy") to @ViewBag.ED.ToString("dd/MM/yyyy")</small>  </h2>
+
+        <div class="place-right margin10 no-margin-left no-margin-right no-margin-bottom">
+            <button class="button warning viewToggle" data-view="Chart"><span class="mif-chart-line"></span> Chart</button>
+            <button class="button success viewToggle" data-view="Combined"><span class="mif-list"></span> Combined</button>
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("PermitReport", "Reports", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text">
+                </div>
+                <select class="righty input-control" name="license" id="license" style="width:190px;">
+
+                    <option value="0">Select License</option>
+                    <option value="0">All</option>
+                    @*@foreach (var item in lnc)
+                        {
+                            <option value="@item.Id">@item.ShortName</option>
+                        }*@
+                </select>
+
+                <select class="righty input-control" name="location" id="location" style="width:190px;">
+
+                    <option value="">Select Location</option>
+                    <option value="">All</option>
+                    @foreach (var item in stats)
+                    {
+                        <option value="@item.Name">@item.Name</option>
+                    }
+                </select>
+
+                <input type="submit" value="Filter" class="righty btn btn-success input-append" />
+            }
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+
+    <div class="" id="Chart">
+        <div class="" style="width: 100%;">
+            @ViewBag.ApplicationChart
+        </div>
+
+    </div>
+
+    <div class="" id="Combined">
+        <div class="" style="width: 100%; min-height: 300px;">
+            @ViewBag.CombinedChart
+        </div>
+
+    </div>
+
+    <div class="marg25">
+        <br />
+        <hr class="thin bg-grayLight" />
+        <br />
+    </div>
+
+    <div class="rowx" id="Summary">
+        <div class="col-12">
+            <h3 class="txtcenter">Permits Rate Summary</h3>
+        </div>
+
+        <div class="col-6">
+            <ul class="list-group">
+                @foreach (var item in permits)
+            {
+                    <li class="list-group-item">
+                        <span class="badge">@item.Count</span>
+                        @item.LicenseShortName
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-3 col-off-3">
+            <div class="og-dashb-tile">
+                <div class="img">
+                    <i class="icon-refresh"></i>
+                </div>
+                <div class="details">
+                    @{
+                        int tot = permits.Sum(a => a.Count);
+                    }
+                    <h2>@tot</h2><br />
+                    <h4>Total Permits</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            //$("#lnkPermitReport").addClass("active");
+            $("#lnkReports").addClass("active open").find("a[href='/Reports/PermitReport']").parent("li").addClass("selected");
+
+            $("#Combined").hide();
+            $(".viewToggle").click(function () {
+                var view = $(this).data("view");
+
+                switch (view) {
+                    case "Chart":
+                        $("#Chart").show();
+                        $("#Combined").hide();
+                        break;
+                    case "Combined":
+                        $("#Chart").hide();
+                        $("#Combined").show();
+                        break;
+                    default:
+                        $("#Chart").hide();
+                        $("#Combined").hide();
+                        break;
+                }
+            });
+
+            // Programmatically-defined buttons
+            $(".chart-export").each(function () {
+                var jThis = $(this),
+                    chartSelector = jThis.data("chartSelector"),
+                    chart = $(chartSelector).highcharts();
+
+                $("*[data-type]", this).each(function () {
+                    var jThis = $(this),
+                        type = jThis.data("type");
+                    if (Highcharts.exporting.supports(type)) {
+                        jThis.click(function () {
+                            chart.exportChartLocal({ type: type });
+                        });
+                    }
+                    else {
+                        jThis.attr("disabled", "disabled");
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+

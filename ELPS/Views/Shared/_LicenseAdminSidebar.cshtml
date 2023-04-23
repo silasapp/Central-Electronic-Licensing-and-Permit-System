@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<ul class="">
+    <li>
+        <a href="#">
+            <span>
+                Control Panel
+                <br />
+                <small>License Admin</small>
+            </span>
+        </a>
+    </li>
+    <li id="lnkDashboard" class="">
+        <a href="@Url.Action("Index", "AdminDashboard")" class="no-count">
+            <span class="mif-apps icon"></span>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
+    <li id="lnkLicense">
+        <a href="@Url.Action("Index", "License")">
+            <span class="mif-thumbs-up icon"></span>
+            <span class="title">My Details</span>
+            <span class="counter"></span>
+        </a>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    $(function () {
+        //Doc Count
+       
+        //DO License count
+        @*$.get('@Url.Action("DocCount", "License")', function (data) {
+            $("#lnkLicense .counter").text(data);
+        });*@
+
+        $(".more > a").click(function () {
+            var parent = $(this).parent("li");
+            if (parent.hasClass("open")) {
+                parent.removeClass("open");
+            }
+            else {
+                parent.addClass("open");
+            }
+            
+        });
+       
+    });
+</script>

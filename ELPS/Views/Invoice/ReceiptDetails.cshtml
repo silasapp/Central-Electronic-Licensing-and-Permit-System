@@ -1,0 +1,97 @@
+﻿@model ELPS.Domain.Entities.vReceipt
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Receipt Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="content">
+    
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CompanyName)
+        </dd>
+        <dt>
+            Category Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LicenseShortName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LicenseShortName)
+        </dd>
+
+
+        <dt>
+            Receipt Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceiptNo)
+        </dd>
+
+
+        <dt>
+           Invoice Id
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Amount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RRR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RRR)
+        </dd>
+
+        <dt>
+            Invoice Open Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Invoice_open_date)
+        </dd>
+        <dt>
+           Date Paid
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date_Paid)
+        </dd>
+
+
+
+    </dl>
+</div>

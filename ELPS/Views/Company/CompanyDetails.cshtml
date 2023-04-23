@@ -1,0 +1,465 @@
+﻿
+@model ELPS.Models.CompanyViewModel
+@using ELPS.Domain.Entities
+@using ELPS.Models
+
+
+@{
+    Layout = null;
+    ViewBag.bizTyp = BussinessType.GetBizType();
+    var ntifs = (List<vCompanyNsitf>)Model.CoyNsitfView;
+    var compMed = (List<vCompanyMedical>)Model.CoyMedView;
+    var compProf = (List<vCompanyProffessional>)Model.CoyProfView;
+    var compExpert = (List<vCompanyExpatriateQuota>)Model.CoyExpQView;
+    var compTech = (List<vCompanyTechnicalAgreement>)Model.CoyTechAgreeView;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div>
+        <form action="@Url.Action("UpdateCompanyDetail", "Company")" method="post" enctype="multipart/form-data">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.CompanyView.Id)
+            @Html.HiddenFor(model => model.CompanyView.User_Id)
+            @Html.HiddenFor(model => model.CompanyView.Registered_Address_Id)
+            @Html.HiddenFor(model => model.CompanyView.Operational_Address_Id)
+
+
+            <h4>Company Information</h4>
+            <hr />
+            <div class="" style="padding: 0 10px;">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4  col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Name)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Name, new { htmlAttributes = new { @tabindex = "1", @readonly = "readonly", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Contact_FirstName)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Contact_FirstName, new { htmlAttributes = new { @tabindex = "4", @readonly = "readonly", @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Contact_FirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Year_Incorporated)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Year_Incorporated, new { htmlAttributes = new { @tabindex = "7", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Year_Incorporated, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Tin_Number)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Tin_Number, new { htmlAttributes = new { @tabindex = "10", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Tin_Number, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Total_Asset)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Total_Asset, new { htmlAttributes = new { @tabindex = "13", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Total_Asset, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4  col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Business_Type)
+                            <div class="">
+                                <select required id="Business_Type" name="Business_Type" class="form-control" tabindex="2" disabled>
+                                    <option value="@Model.CompanyView.Business_Type">@Model.CompanyView.Business_Type</option>
+                                    @foreach (var item in (List<string>)ViewBag.bizTyp)
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => model.CompanyView.Business_Type, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Contact_LastName)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Contact_LastName, new { htmlAttributes = new { @tabindex = "5", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Contact_LastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.RC_Number)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.RC_Number, new { htmlAttributes = new { @tabindex = "8", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.RC_Number, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.No_Staff)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.No_Staff, new { htmlAttributes = new { @tabindex = "11", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.No_Staff, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Yearly_Revenue)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Yearly_Revenue, new { htmlAttributes = new { @tabindex = "14", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Yearly_Revenue, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-4  col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Company Email</label>
+                            <div class="">
+                                <input type="email" name="EditEmail" value="@Model.CompanyView.User_Id" class="form-control" readonly tabindex="" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Affiliate)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Affiliate, new { htmlAttributes = new { @tabindex = "3", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Affiliate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Contact_Phone)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.Contact_Phone, new { htmlAttributes = new { @tabindex = "6", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Contact_Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Nationality)
+                            <div class="">
+                                @{var nty = (List<Country>)ViewBag.country;}
+                                <input type="hidden" name="Nationality" value="@Model.CompanyView.Nationality" />
+                                <select name="Nationality" id="Nationality" readonly class="form-control" tabindex="9" disabled>
+                                    <option value="">Select Nationality</option>
+                                    <option value="@Model.CompanyView.Nationality" selected>@Model.CompanyView.Nationality</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.CompanyView.Nationality, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.No_Expatriate)
+                            <div class="">
+                                @Html.EditorFor(model => model.CompanyView.No_Expatriate, new { htmlAttributes = new { @tabindex = "12", @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.CompanyView.No_Expatriate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr class="clear" />
+                <h4 class="">COMPANY NSITF</h4>
+                <div id="ntifsDiv">
+
+                    <div class="row">
+                        @if (ntifs.Any())
+                        {
+                            for (int i = 0; i < ntifs.Count; i++)
+                            {
+                                <div class="col-xs-12 col-sm-4  col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Number of People coverd")
+                                        <div class="">
+                                            <input type="text" readonly value="@ntifs[i].No_People_Covered" class="form-control lefty" placeholder="No of People covered" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4  col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Policy Number")
+                                        <div class="">
+                                            <input type="text" readonly value="@ntifs[i].Policy_No" class="form-control lefty" placeholder="Policy No" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4  col-md-4">
+                                    <div class="form-group">
+                                        @Html.Label("Date Issued")
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </span>
+                                            <input type="text" value="@String.Format("{0:MM/dd/yyyy}", ntifs[i].Date_Issued)" class="datePicker form-control" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-xs-12 col-sm-12  col-md-12">
+                                <p class="fg-red">NO NSITF ON COMPANY RECORD</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <hr class="clear" />
+                <h4 class="">MEDICAL RETAINERSHIP</h4>
+                <div id="compMedDiv" class="">
+                    <div class="row">
+                        @if (compMed.Any())
+                        {
+                            for (int i = 0; i < compMed.Count; i++)
+                            {
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <div class="form-group">
+                                        <label>Hospital Name</label>
+                                        <div class="">
+                                            <input type="text" readonly value="@compMed[i].Medical_Organisation" class="form-control lefty" placeholder="Medical Organization" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <div class="">
+                                            <input type="email" readonly value="@compMed[i].Email" class="form-control lefty" placeholder="Email address" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4  col-md-4">
+                                    <div class="form-group">
+                                        <label>Telephone</label>
+                                        <div class="">
+                                            <input type="text" readonly value="@compMed[i].Phone" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Date Issued</label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </span>
+                                            <input type="text" value="@String.Format("{0:MM/dd/yyyy}", compMed[i].Date_Issued)" class="datePicker form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4  col-md-4">
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <div class="form-controltextarea full-size">
+                                            <textarea readonly class="form-control">@compMed[i].Address</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-xs-12 col-sm-12  col-md-12">
+                                <p class="fg-red">NO MEDICAL RETAINERSHIP ON RECORD</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <hr class="clear" />
+                <h4 class="">PROFFESSIONAL ORGANISATION</h4>
+                <div id="compProfDiv">
+                    <div class="row">
+                        @if (compProf.Any())
+                        {
+                            for (int i = 0; i < compProf.Count; i++)
+                            {
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <div class="form-group">
+                                        <div class="">
+                                            <input type="text" readonly value="@compProf[i].Proffessional_Organisation" class="form-control lefty" placeholder="Professional Organization" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <div class="form-group">
+                                        <div class="">
+                                            <input type="text" readonly value="@compProf[i].Cert_No" class="form-control" placeholder="Policy Number" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </span>
+                                        <input type="text" value="@String.Format("{0:MM/dd/yyyy}", compProf[i].Date_Issued)" class="datePicker form-control" />
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-xs-12 col-sm-12  col-md-12">
+                                <p class="fg-red">NO PROFESSIONAL ORGANISATION ON RECORD</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <hr class="clear" />
+                <h4 class="">EXPATRIATE QUOTA</h4>
+                <div id="compExpertDiv" class="row">
+
+                    @if (compExpert.Any())
+                    {
+                        for (int i = 0; i < compExpert.Count; i++)
+                        {
+                            var src = string.IsNullOrEmpty(compExpert[i].FileSource) ? "/Content/Images/Captcha.png" : compExpert[i].FileSource;
+
+                            <div class="col-xs-12 col-sm-6 col-md-6 ">
+                                <div class="form-group">
+                                    <div class="">
+                                        <input type="text" readonly value="@compExpert[i].Name" class="form-control" placeholder="Expatraite Name" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <p class="fg-red">NO EXPATRIATE QUOTA ON RECORD</p>
+                        </div>
+                    }
+                </div>
+
+                <hr class="clear" />
+                <h4 class="">TECHNICAL AGREEMENT OR MOU</h4>
+                <div id="compTechDiv" class="row">
+                    @if (compTech.Any())
+                    {
+                        for (int i = 0; i < compTech.Count; i++)
+                        {
+                            vCompanyTechnicalAgreement cta = new vCompanyTechnicalAgreement();
+                            cta = compTech[i];
+                            cta.FileId = (cta.FileId == null ? 0 : cta.FileId);
+                            var src = string.IsNullOrEmpty(cta.FileSource) ? "" : cta.FileSource;
+                            var divId = "compTech" + i;
+
+                            <div class="col-xs-12 col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <div class="">
+                                        <input type="text" readonly value="@cta.Name" class="form-control" placeholder="" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <p class="fg-red">NO TECHNICAL AGREEMENT ON RECORD</p>
+                        </div>
+                    }
+                </div>
+
+                <hr class="clear" />
+                <h4>ACCIDENT REPORT</h4>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 col-md-4">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Accident, "Occurence")
+                            <div class="">
+                                @Html.TextBoxFor(m => m.CompanyView.Accident, new { @readonly = "readonly", @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Accident, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-8">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CompanyView.Accident_Report)
+                            <div class="form-controltextarea full-size">
+                                @Html.TextAreaFor(model => model.CompanyView.Accident_Report, new { @tabindex = "13", @class = "form-control", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Accident_Report, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="clear" />
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <h4>@Html.LabelFor(model => model.CompanyView.Training_Program)</h4>
+                        <div class="form-group">
+                            <div class="form-controltextarea full-size">
+                                @Html.TextAreaFor(model => model.CompanyView.Training_Program, new { @tabindex = "13", @class = "form-control", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Training_Program, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                        <h4>@Html.LabelFor(model => model.CompanyView.Mission_Vision)</h4>
+                        <div class="form-group">
+                            <div class="form-controltextarea full-size">
+                                @Html.TextAreaFor(model => model.CompanyView.Mission_Vision, new { @tabindex = "13", @class = "form-control", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.CompanyView.Mission_Vision, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>HSE Document Available</h4>
+                <div class="row">
+                    <div class="col-sm-3 ">
+                        <div class="form-group">
+                            <div class="form-controlselect">
+                                <select class="form-control" id="HSEDoc" name="HSEDoc" style="width: 150px;" disabled>
+                                    <option>Choose option</option>
+                                    @if (Model.CompanyView.HSEDoc == null)
+                                    {
+                                        <option value="false">No</option>
+                                        <option value="true">Yes</option>
+                                    }
+                                    else if (Model.CompanyView.HSEDoc.Value)
+                                    {
+                                        <option value="false">No</option>
+                                        <option value="true" selected>Yes</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="false" selected>No</option>
+                                        <option value="true">Yes</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="row">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <div class="">
+                                <button type="submit" class="btn btn-success btn-block">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>

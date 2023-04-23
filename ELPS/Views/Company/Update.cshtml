@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "Update";
+    ViewBag.Stage = 3;
+    string hide = TempData["Hide-Bar"] != null? TempData["Hide-Bar"].ToString() : "";
+}
+
+
+<h2 style="padding-left: 20px;">Update</h2>
+
+<div class="tabcontrol2" data-role="tabcontrol">
+    @*<ul class="tabs">
+        <li class="disabled"><a href="#frame_coy">Company Profile</a></li>
+        <li class="disabled"><a href="#frame_coy_address">Company Address</a></li>
+        <li class="disabled"><a href="#frame_coy_director">Company Directors</a></li>
+        <li class="disabled"><a href="#frame_coy_staff">Company Staff</a></li>
+    </ul>*@
+
+    <ul class="tabs">
+        <li class=""><a href="#frame_coy">Company Profile</a></li>
+        <li class=""><a href="#frame_coy_address">Company Address</a></li>
+        <li class=""><a href="#frame_coy_director">Company Directors</a></li>
+        <li class=""><a href="#frame_coy_staff">Company Staff</a></li>
+    </ul>
+    <div class="frames">
+        <div class="frame" id="frame_coy">
+            @Html.Action("CompanyDetail", "Company", new { id = ViewBag.compId, view = "update" })
+        </div>
+        <div class="frame" id="frame_coy_address">
+            @Html.Action("CompanyAddresses", "Company", new { id = ViewBag.compId, view = "update" })
+        </div>
+        <div class="frame" id="frame_coy_director">
+            @Html.Action("CompanyDirector", "Company", new { id = ViewBag.compId, view = "update" })
+        </div>
+        <div class="frame" id="frame_coy_staff">
+            @Html.Action("CompanyStaff", "Company", new { id = ViewBag.compId, view = "update" })
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+
+            if ("@hide" == "true")
+            {
+                $('footer').css("display", "none");
+                $('#elpsHeader').css("display", "none");
+            }
+
+
+
+            WorkTab();
+
+            $("#DiffOpAdd").on("click", function () {
+                if ($(this).is(":checked")) {
+                    //ON
+                    $('#DiffOPAddDiv [type="text"], #DiffOPAddDiv select').each(function () {
+                        $(this).removeAttr("disabled");
+                        $(this).attr("required", "required");
+                        $(".excl").removeAttr("required");
+                    });
+                }
+                else {
+                    //OFF
+                    $('#DiffOPAddDiv [type="text"], #DiffOPAddDiv select').each(function () {
+                        $(this).attr({ "disabled": "disabled", "required": "required" });
+                        $(this).removeAttr("required");
+                    });
+                }
+            });
+
+           // $("body").on("click","#cast"
+            
+            $("body").on("click",'.EditDirector',function (e) {
+                e.preventDefault();
+               // alert('lllll');
+                var id = $(this).attr('data-dirid');
+                $.get('/company/getDirector/' + id, function (data) {
+                        $('#directorContainer').html(data);
+                   
+                })
+
+            })
+
+            $("body").on("click", '.EditStaff', function (e) {
+                e.preventDefault();
+                // alert('lllll');
+                var id = $(this).attr('data-sid');
+                $.get('/company/getStaff/' + id, function (data) {
+                    $('#staffContainer').html(data);
+
+                })
+
+            })
+
+        });
+
+        function GetStage() {
+            if (parseInt($("#DetailComplete").val()) == 0) {
+                return 1;
+            }
+            else if (parseInt($("#AddressComplete").val()) == 0) {
+                return 2;
+            }
+            else if ($("#DirComplete").val() == 0) {
+                return 3;
+            }
+            else if ($("#StaffComplete").val() == 0) {
+                return 4;
+            }
+            else {
+                return 5;
+            }
+        }
+
+        function WorkTab() {
+            var stage = GetStage();
+
+            //Initialize proper
+            $(".tabs li").removeClass("active");
+            $(".frame").hide();
+
+            switch (parseInt(stage)) {
+                case 1:
+                    $('a[href="#frame_coy"]').parent("li").removeClass("disabled").addClass("active");
+                    var body = $('a[href="#frame_coy"]').attr("href");
+                    $(body).show();
+                    break;
+                case 2:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_address"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_address"]').attr("href");
+                    $(body).show();
+                    break;
+                case 3:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"], a[href="#frame_coy_director"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_director"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_director"]').attr("href");
+                    $(body).show();
+                    break;
+                case 4:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"], a[href="#frame_coy_director"], a[href="#frame_coy_staff"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_staff"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_staff"]').attr("href");
+                    $(body).show();
+                    break;
+                default:
+                    //alert("No Company Profile is in Progress!");
+                    $('a[href="#frame_coy"]').parent("li").removeClass("disabled").addClass("active");
+                    var body = $('a[href="#frame_coy"]').attr("href");
+                    $(body).show();
+                    break;
+                    break;
+            }
+        }
+    </script>
+}

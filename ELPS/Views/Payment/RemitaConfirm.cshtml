@@ -1,0 +1,84 @@
+﻿@using ELPS.Models
+@using ELPS.Helpers
+@model IEnumerable<PaymentHelper>
+@{
+    ViewBag.Title = "RemitaConfirm";
+    Layout = null;
+    int counter = 0;
+}
+
+<div>
+    <h4 class="text-light">Found Application(s)</h4>
+    <hr class="thin bg-grayLighter" />
+    @if (Model == null || Model.Count() <= 0 || Model.ElementAt(0).Company == null)
+    {
+        <h4 class="text-light">No Company/Application found with the provided parameter. Please try again</h4>
+    }
+    else
+    {
+        using (Html.BeginForm("ManualBank", "Payment", FormMethod.Post, new { @id = "frmConfirm" }))
+        {
+            <input type="hidden" name="reference" id="reference" value="" />
+            <input type="hidden" name="stay" id="stay" value="" />
+        }
+
+        foreach (var ph in Model)
+        {
+            <h4 class="text-light">Company Name: @ph.Company.Name</h4>
+            <div class="flex-grid">
+                <div class="row cells2">
+                    <div class="cell colspan10">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>Reference No.</td>
+                                    <td>Category</td>
+                                    <td>Status</td>
+                                    <td>Date Applied</td>
+                                    <th>New RRR (Optional)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in ph.Applications.Where(a => a.Status == ApplicationStatus.PaymentPending))
+                            {
+                                <tr>
+                                    <td>@item.OrderId</td>
+                                    <td>@item.CategoryName</td>
+                                    <td>@item.Status</td>
+                                    <td>@item.Date</td>
+                                    @*<td>
+                                        <div class="form-group">
+                                            <div class="input-control text full-size">
+                                                <input type="text" name="_newRef" id="_newRef_@counter" class="" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="button" value="Give Value" class="button button-small success givVal" data-ref="@item.OrderId" data-i="@counter" />
+                                    </td>*@
+                                    @if (item.Status.ToLower() == "paymentpending" || item.Status.ToLower() == "payment pending")
+                                    {
+                                        <td>
+                                            @*<input type="checkbox" id="chk_@counter" name="chk_@counter" />*@
+                                            <div class="form-group">
+                                                <div class="input-control text full-size">
+                                                    <input type="text" name="_newRRR" id="_newRRR_@counter" class="" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="button" value="Give Value" class="button button-small success givVal" data-ref="@item.OrderId" data-i="@counter" />
+                                        </td>
+                                    }
+                                </tr>
+
+                                counter++;
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+</div>

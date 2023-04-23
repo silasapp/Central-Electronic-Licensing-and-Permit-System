@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.vPermit>
+
+@{
+    Layout = null;
+    int counter = 0;
+}
+
+<div class="">
+    <table class="dataTable border bordered" data-role="datatable" data-auto-width="false">
+        <thead>
+            <tr>
+                <th style="width: 20px;">#</th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.Permit_No)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.LicenseShortName)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.Date_Issued)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.Date_Expire)
+                </th>
+                <th style="width: 153px;"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                counter++;
+                <tr>
+                    <td>@counter</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Permit_No)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LicenseShortName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    <td>
+                        @item.Date_Issued.ToShortDateString()
+                    </td>
+                    <td>
+                        @item.Date_Expire.ToShortDateString()
+                    </td>
+                    <td>
+                        @Html.ActionLink("View", "ViewExtPermit", "Permit", new { id = item.Id }, new { @class = "button info mini-button epBtn", @target = "_blank" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>

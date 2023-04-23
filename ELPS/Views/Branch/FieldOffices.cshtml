@@ -1,0 +1,141 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.Branch>
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "Field Offices";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int count = 0;
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+}
+
+<div class="clear-float">
+    <h1 class="text-light place-left">Field Offices</h1>
+
+    <div class="place-right">
+        @Html.ActionLink("Add New Field Office", "Create", new { isField = true }, new { @class = "button success" })
+        @*<a href="#" data-url="1" data-toggle="modal" data-target="#modalPopup" class="button success">Add New Field Office</a>*@
+    </div>
+    <hr class="clear thin bg-grayLight" />
+    <table class="table table-condensed table-striped table-hover dataTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BranchCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Create_At)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastEdit_At)
+                </th>
+                <th style="width: 90px;"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BranchCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Create_At)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastEdit_At)
+                    </td>
+                    <td class="txtright">
+                        <div class="btn-group" role="group" aria-label="control">
+                            <a href="#" data-url="2" data-id="@item.Id" data-toggle="modal" data-target="#modalPopup" class="button mini-button info btnEdit epBtn2">Edit</a>
+                            <a href="#" data-url="3" data-id="@item.Id" data-toggle="modal" data-target="#modalPopup" class="button mini-button danger btnDel epBtn2">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnk-Zone > a").addClass("selected").find(".act").addClass("selected");
+            $(".sidebar > ul > li > ul li a[href='/Branch']").addClass("selected");
+
+            $(".dataTable").dataTable({
+                columnDefs: [{ orderable: false, "targets": [-1] }]
+            });
+
+            $(".btnEdit, .btnAdd, .btnDel").on("click", function (e) {
+                e.preventDefault();
+                var uid = $(this).attr("data-url");
+                //alert(uid);
+                var url, headTitle;
+                if (uid == "1") {
+                    url = "/Branch/Create";
+                    headTitle = "Create New Field Office";
+                } else if (uid == "2") {
+                    var id = $(this).attr("data-id");
+                    url = "/Branch/Edit/" + id;
+                    headTitle = "Edit Field Office";
+                }
+                else if (uid == "3") {
+                    //alert(uid)
+                    var id = $(this).attr("data-id");
+                    url = "/Branch/Delete/" + id;
+                    headTitle = "Delete Field Office";
+                }
+
+                //alert(url);
+                var modal = $(this);
+                $("#modalPopup").on('show.bs.modal', function (e) {
+                    var modal = $(this);
+                    modal.find(".modal-title").text(headTitle);        // find title for changr
+                    modal.find("#modal-body").html();
+                    modal.find("#modal-body").html(Loading());
+                    //Load the view
+                    $.get(url, function (data) {
+                        modal.find("#modal-body").html();
+                        modal.find("#modal-body").html(data);
+                    });
+                });
+            });
+
+            if ('@alert' === 'True') {
+                console.log("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+            else {
+                console.log("No Shaking");
+            }
+        });
+
+
+    </script>
+}
+

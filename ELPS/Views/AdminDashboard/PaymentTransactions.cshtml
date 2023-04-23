@@ -1,0 +1,86 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.Payment_Transaction>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+}
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Payment Transactions</h1>
+
+        <div class="place-right">
+            @*@Html.ActionLink("+", "Create", null, new { @class = "button cycle-button primary block-shadow-success mif-ani-shuttle mif-ani-slow", @data_role = "hint", @data_hint_mode = "2", @data_hint_position = "left", @data_hint = "|Add " })*@
+        </div>
+    </div>
+    
+    <hr class="thin bg-grayLighter">
+
+    <table class="dataTable border bordered" data-role="datatable" data-auto-width="false">
+        <thead>
+            <tr>
+                <th style="width: 20px;"></th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.CompanyName)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.PaymentSource)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.Reference_Number)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.RRR)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.Transaction_Amount)
+                </th>
+                <th class="sortable-column">
+                    @Html.DisplayNameFor(model => model.Transaction_Date)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                counter++;
+                <tr>
+                    <td>@counter</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompanyName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PaymentSource)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reference_Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RRR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Transaction_Amount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Transaction_Date)
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkTransaction").addClass("active");
+            
+        });
+    </script>
+}

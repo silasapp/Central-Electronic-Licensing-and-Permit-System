@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.Division>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@section Style{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+    <script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+}
+
+<div class="row justify-content-between">
+    <h2>Index</h2>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+</div>
+
+<table class="table" id="DivisionTable" style="width:100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Order Id</th>
+            <th>Actions</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var division in Model)
+        {
+        <tr>
+            <td>@division.Name</td>
+            <td>@division.SortOrder</td>
+            <td>
+                <button>@Html.ActionLink("Edit", "Edit", new { id = division.Id })</button>
+                <button>@Html.ActionLink("Delete", "Delete", new { id = division.Id })</button>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#DivisionTable").DataTable();
+        })
+    </script>
+
+}

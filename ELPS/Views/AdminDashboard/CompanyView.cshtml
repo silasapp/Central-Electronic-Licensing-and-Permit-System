@@ -1,0 +1,168 @@
+﻿
+@{
+    ViewBag.Title = "Company Profile View";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="">
+    <div class="clear-float">
+        <h1 class="text-light place-left">Company Information</h1>
+
+        <div class="place-right">
+            <a href="#" class="button" onclick="javascript: history.back();"><i class="mif-chevron-left"></i> Back</a>
+            @if (User.IsInRole("Admin") || User.IsInRole("ITAdmin"))
+            {
+                <a class="button  primary block-shadow-success" href="/AdminDashboard/ChangeCompanyName/@ViewBag.CompanyId">Change Name</a>
+                <a href="/Account/ChangePassword" class="button primary block-shadow-success">Change Password</a>
+            }
+            @*@Html.ActionLink("", "Create", null, new { @class = "button cycle-button primary block-shadow-success mif-ani-shuttle mif-ani-slow", @data_role = "hint", @data_hint_mode = "2", @data_hint_position = "left", @data_hint = "|Add " })*@
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    <div class="tabcontrol2" data-role="tabcontrol">
+        <ul class="tabs">
+            <li class=""><a href="#frame_coy">Profile</a></li>
+            <li class=""><a href="#frame_coy_address">Address</a></li>
+            <li class=""><a href="#frame_coy_director">Directors</a></li>
+            <li class=""><a href="#frame_coy_staff">Staff</a></li>
+            <li class=""><a href="#frame_coy_doc">Documents</a></li>
+            <li class=""><a href="#frame_coy_apps">Applications</a></li>
+            <li class=""><a href="#frame_coy_permit">Permits</a></li>
+            <li class=""><a href="#frame_coy_facs">Facilities</a></li>
+            <li class=""><a href="#frame_NameChangeHistory">Name History</a></li>
+        </ul>
+        <div class="frames">
+            <div class="frame" id="frame_coy">
+                @Html.Action("CompanyDetail", "Company", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_address">
+                @Html.Action("CompanyAddresses", "Company", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_director">
+                @Html.Action("CompanyDirector", "Company", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_staff">
+                @Html.Action("CompanyStaff", "Company", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_doc">
+                @Html.Action("Index", "CompanyDocument", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_apps">
+                @Html.Action("CompanyApplication", "Application", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_permit">
+                @Html.Action("CompanyPermits", "Permit", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_NameChangeHistory">
+                @Html.Action("CompanyHistory", "AdminDashboard", new { id = ViewBag.CompanyId })
+            </div>
+            <div class="frame" id="frame_coy_facs">
+                @Html.Action("Index", "Facility", new { CompanyId = ViewBag.CompanyId })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="dialog" id="dialog" class="padding20" data-close-button="true"
+     data-overlay="true" data-overlay-color="op-dark" data-overlay-click-close="true">
+    <h3 id="dialog-title">Document Name</h3>
+    <div id="dialog-content">
+
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkCompany").addClass("active");
+
+            //Load selected Director
+            $(document).on("click", "a.loadDir", function () {
+                var id = $(this).data("dirid");
+                $("#formContainer").html(Busy());
+
+                $.get('@Url.Action("SingleDirector", "Company")', { id: id }, function (view) {
+                    $("#formContainer").html(view);
+                });
+            });
+
+            //Load selected Key Staff
+            $(document).on("click", "a.EditStaff", function () {
+                var id = $(this).data("sid");
+                $("#StaffFormContainer").html(Busy());
+                $.get('@Url.Action("SingleStaff", "Company")', { id: id }, function (view) {
+                    $("#StaffFormContainer").html(view);
+                });
+            });
+
+            $(document).on("click", ".imgSilent", function (e) {
+                e.preventDefault();
+                var docname = $(this).data("name");
+                var img = $(this).find("img").attr("src");
+
+                $("#dialog-title").text("Showing \"" + docname + "\"");
+                $("#dialog-content").html(Busy());
+
+                var id = $(this).attr("href");
+                console.log(id);
+                var dialog = $(id).data('dialog');
+                dialog.open();
+                $("#dialog").css("top", "50px;!important");
+                $("#dialog-content").html("<img src=\"" + img + "\" alt=\"\" style=\"max-height: 420px;\" />");
+                $("#dialog").css("margin-left", parseInt($("#dialog").width()) / 2 * -1);
+            });
+
+
+        });
+
+        function WorkTab() {
+            var stage = '@ViewBag.Stage';
+            alert(stage);
+
+            switch (parseInt(stage)) {
+                case 1:
+                    $('a[href="#frame_coy"]').parent("li").removeClass("disabled").addClass("active");
+                    var body = $('a[href="#frame_coy"]').attr("href");
+                    $(body).show();
+                    break;
+                case 2:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_address"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_address"]').attr("href");
+                    $(body).show();
+                    break;
+                case 3:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"], a[href="#frame_coy_director"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_director"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_director"]').attr("href");
+                    $(body).show();
+                    break;
+                case 4:
+                    $('a[href="#frame_coy"], a[href="#frame_coy_address"], a[href="#frame_coy_director"], a[href="#frame_coy_staff"]').parent("li").removeClass("disabled");
+                    $('a[href="#frame_coy_staff"]').parent("li").addClass("active");
+                    var body = $('a[href="#frame_coy_staff"]').attr("href");
+                    $(body).show();
+                    break;
+                default:
+                    alert("No Company Profile is in Progress!");
+                    break;
+            }
+        }
+
+        function Busy() {
+            var busy = '<div class="sk-fading-circle">'
+              + '<div class="sk-circle1 sk-circle"></div><div class="sk-circle2 sk-circle"></div>'
+              + '<div class="sk-circle3 sk-circle"></div><div class="sk-circle4 sk-circle"></div>'
+              + '<div class="sk-circle5 sk-circle"></div><div class="sk-circle6 sk-circle"></div>'
+              + '<div class="sk-circle7 sk-circle"></div><div class="sk-circle8 sk-circle"></div>'
+              + '<div class="sk-circle9 sk-circle"></div><div class="sk-circle10 sk-circle"></div>'
+              + '<div class="sk-circle11 sk-circle"></div><div class="sk-circle12 sk-circle"></div>'
+              + '</div>';
+
+            return busy;
+        }
+
+    </script>
+}

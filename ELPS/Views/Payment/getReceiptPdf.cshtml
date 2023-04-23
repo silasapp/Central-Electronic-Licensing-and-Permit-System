@@ -1,0 +1,222 @@
+﻿@model ELPS.Domain.Entities.vApplication
+@using ELPS.Domain.Entities
+@using ELPS.Models
+@using System.Linq
+@using System.Collections
+@using System.Collections.Generic
+
+@{
+
+    Layout = null;
+    var rcpt = (Receipt)ViewBag.receipt;
+    double amt = Convert.ToDouble(Model.approved_amount);
+    double sCharge = Convert.ToDouble(Model.ServiceCharge);
+    double tot = Convert.ToDouble(Model.transaction_amount);
+
+    List<string> bk = new List<string>();
+    if (ViewBag.PayBreak != null)
+    {
+        string[] breakdown = (ViewBag.PayBreak).ToString().TrimEnd(';').Split(';');
+        foreach (var item in breakdown)
+        {
+            bk.Add(item);
+        }
+    }
+
+    int year = DateTime.Now.Year;
+}
+
+<html>
+<head>
+    <title></title>
+</head>
+<body style="padding: 0; margin: 20px; font-family: 'Segoe UI';">
+    <div style="max-width:600px;padding: 0 20px 20px; border: 1px solid #ccc; position: relative;">
+        <div style="width:100%;">
+            <div style="width:50%;float:left;">
+                <img alt="NUPRC Logo" src="https://elps.nuprc.gov.ng/Content/Images/logo.jpg" style="height: 58px;" class="" />
+            </div>
+            <div style="width:50%;float:right; text-align: right;">
+                <h2 style="font-family: 'Segoe UI'; font-weight: 100; margin: 7px 0 5px;">RECEIPT</h2>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+        <div style="width:100%;background-color:#969696; color: #FFF; font-family: 'Segoe UI';font-size: 12px;">
+            <div style="float:left;padding:8px 0 8px 15px;">Invoice No.: @rcpt.InvoiceId ::: Receipt No.:@rcpt.ReceiptNo</div>
+            <div style="float:right;padding:8px 10px 8px 0;">Date: @rcpt.Date_Paid.ToLongDateString()</div>
+            <div style="clear:both"></div>
+        </div>
+        <div style="width:100%;background-color: #eaeaea;">
+            <div style="padding: 15px; font-size: 14px;">
+                <div style="width:50%;float:left;">
+                    <div style="width:27%; margin-right: 7px; height: 100px; float:left; color:#fff; background-color:#93C5E8; padding:5px;text-align:right;">
+                        <p>Mailing<br />Info</p>
+                    </div>
+
+                    <div style="width:60%; float:left; padding:5px;text-align:left;">
+                        <address>
+                            <strong>Nigerian Upstream Petroleum Regulatory Commission (NUPRC)</strong>
+                            <br />
+                            7, Sylvester Ugoh Crescent, Jabi<br />
+                            Abuja FCT<br />
+                            <p>
+                                Phone: 01 267 8976<br />
+                                Email: nuprc@nuprc.gov.ng
+                            </p>
+                        </address>
+                    </div>
+                </div>
+
+                <div style="width:50%;float:left;">
+                    <div style="width:27%;float:left; margin-right: 7px; color:#fff; background-color:#b5b5b5; padding:5px;text-align:right;height:100px;">
+                        <p>Bill<br />To</p>
+                    </div>
+
+                    <div style="width:60%; float:left; padding:5px;text-align:left;">
+                        <address>
+                            <strong>@Model.CompanyName</strong><br />
+                            @Model.City<br />
+                            @Model.StateName
+                        </address>
+                    </div>
+                </div>
+                <div style="clear:both"></div>
+            </div>
+
+            <div style="width:100%; position: relative;">
+                <h4 style="margin: 5px 0;">Payment Details</h4>
+
+                <table class="table" style="position: relative; background-color: #fff; color: #000; width: 100%; border: 0;" cellpadding="5" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th style="border-bottom: 1px solid green;">Description</th>
+                            <th style="border-bottom: 1px solid green;">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a; padding-left: 15px;">
+                                Payment for @Model.LicenseShortName @Model.CategoryName Permit/License (@Model.OrderId)
+                            </td>
+                            <td style="border-bottom: 1px dotted #8a8a8a;"></td>
+                        </tr>
+                        @if (bk.Any() && !string.IsNullOrEmpty(bk[0]))
+                        {
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">
+                                    Statutory Fee
+                                </td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;text-align: right;">@amt.ToString("₦ ###,##0.00")</td>
+                            </tr>
+                            for (int i = 0; i < bk.Count(); i++)
+                            {
+                                var _bk = bk[i]; //.EndsWith(";") ? bk[i].Substring(0, bk[i].Length - 1) : bk[i];
+                                var _split = _bk.Split('=');
+                                var itm = _split[0];
+                                var val = _split.Count() > 1 ? Convert.ToDouble((_split[1]).Trim()) : 0;
+                                if (_split.Count() <= 1)
+                                {
+                                    amt += val;
+                                    <tr>
+                                        <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">
+                                            <i style="font-size: 14px;">@itm</i>
+                                        </td>
+                                        <td style="border-bottom: 1px dotted #8a8a8a;text-align: right;"></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    if (itm.ToLower().Trim() != "service charge")
+                                    {
+                                        amt += val;
+                                        <tr>
+                                            <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">
+                                                @itm
+                                            </td>
+                                            <td style="border-bottom: 1px dotted #8a8a8a;text-align: right;">@val.ToString("₦ ###,##0.00")</td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        sCharge = val;
+                                    }
+                                }
+                            }
+
+                            for (int j = 0; j < 6 - bk.Count(); j++)
+                            {
+                                <tr>
+                                    <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                    <td style="border-bottom: 1px dotted #8a8a8a;"></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">
+                                    Statutory Permit Fee
+                                </td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;text-align: right;">@amt.ToString("₦ ###,##0.00")</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;text-align: right;"></td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;"></td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1px dotted #8a8a8a; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                <td style="border-bottom: 1px dotted #8a8a8a;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="border-bottom: 1.5px solid green; border-right: 1px dotted #8a8a8a;padding-left: 50px;">&nbsp;</td>
+                                <td style="border-bottom: 1.5px solid green;">&nbsp;</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot style="background-color:#eaeaea;">
+                        <tr>
+                            <td style="text-align:right;">Sub Total</td>
+                            <td style="text-align:right;">
+                                @amt.ToString("₦ ###,##0.00")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;">Service Charge</td>
+                            <td style="text-align:right;">
+                                @sCharge.ToString("₦ ###,##0.00")
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;"><strong>TOTAL</strong></td>
+                            <td style="text-align:right; border-top: 2px solid green;">
+                                @tot.ToString("₦ ###,##0.00")
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br />
+                <div style="position: absolute; width: 100%;top: 50px; text-align: center;">
+                    <h1 style="font: 600 110px arial; transform: rotate(-45deg); color: #000; opacity: 0.2;">PAID</h1>
+                </div>
+            </div>
+
+        </div>
+        <div style="clear:both"></div>
+        <div style="text-align: center; background-color: #888; color: #f9f9f9; width:100%; padding: 10px 0;">
+            &copy; @year  Nigerian Upstream Petroleum Regulatory Commission &minus; NUPRC Nigeria
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<ul class="">
+    <li>
+        <a href="#">
+            <span>
+                Control Panel
+                <br />
+                <small>Manager</small>
+            </span>
+        </a>
+    </li>
+    <li id="lnkDashboard" class="">
+        <a href="@Url.Action("Index", "AdminDashboard")" class="no-count">
+            <span class="mif-apps icon"></span>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
+    <li id="lnkCompany">
+        <a href="@Url.Action("Companies", "AdminDashboard")" class="no-count">
+            <span class="mif-library icon"></span>
+            <span class="title">Companies</span>
+        </a>
+    </li>
+    <li id="lnkApplications">
+        <a href="@Url.Action("Index", "Application")" class="no-count">
+            <span class="mif-stack icon"></span>
+            <span class="title">Applications</span>
+        </a>
+    </li>
+    <li id="lnkPermit" class="">
+        <a href="@Url.Action("Index", "Permit")" class="no-count">
+            <span class="mif-paypal icon"></span>
+            <span class="title">Permits</span>
+        </a>
+    </li>
+   
+</ul>
+
+<script type="text/javascript">
+    $(function () {
+        //Doc Count
+      
+        $(".more > a").click(function () {
+            var parent = $(this).parent("li");
+            if (parent.hasClass("open")) {
+                parent.removeClass("open");
+            }
+            else {
+                parent.addClass("open");
+            }
+            
+        });
+        //$(".more > ul > li > a").click(function () {
+        //    $(this).parent("li").addClass("selected").siblings("li").removeClass("selected");
+        //});
+    });
+</script>

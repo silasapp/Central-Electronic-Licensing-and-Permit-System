@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Verify Permit/License";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+
+<section class="infoSide" style="display: none;">
+    <div>
+        <h2 class="align-center thin4">NUPRC ELPS</h2>
+        <h5 class="align-center thin4">Central Electronic Licensing and Permit System</h5>
+    </div>
+    <div class="align-center">
+        <h1 class="thin1">One account. All of NUPRC ELPS Portals</h1>
+        <br /><br />
+              <p>One NUPRC ELPS account for every portal on NUPRC ELPS</p>
+        <ul class="portal-list">
+            <li>
+                <img src="~/Content/Images/LicenseAssets/_logo.png" alt="OGISP" />
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section class="loginForm" style="width: 100%;">
+
+    <div style="color: #FFF; position: relative;">
+        <h4 class="align-center thin4">Central Electronic Licensing and Permit System</h4>
+        <h1 class="align-center thin1">One account. All of NUPRC ELPS Portals</h1>
+    </div>
+    @using (Html.BeginForm("VerifyPermit", "Permit", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+        @Html.AntiForgeryToken()
+        <div class=""  style="width: 100%; max-width: 350px; margin: 0 auto;">
+
+            <div class="login-form block-shadow padding20 no-padding-left no-padding-right">
+                @*<div class="center-login-logo">
+                    <img alt="DPR Logo" src="@Url.Content("/Content/Images/naija_arms_btm.png")" class="login-logo-bottom" />
+                </div>
+
+                <div class="row">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+                <h4 class="thin align-center fg-grayDarker">Forgot Password Form</h4>*@
+                <div class="center-login-header">
+                    <h1 class="thin1">Verify Permit/License</h1>
+                </div>
+                <div class="align-center">
+                    <input type="hidden" name="appId" value="@ViewBag.appId" />
+                    <div class="input-control modern text" data-role="input">
+                        @*<input type="text" name="id" id="id" class="www" required />*@
+                        <input type="text" required class="www" name="id" id="id" style="border-bottom: 2px solid #9a9a9a;" />
+                        <span class="label">Enter Permit/License Number</span>
+                        <span class="informer">Enter the Permit/License Number to verify</span>
+                        <span class="placeholder">Permit/License Number</span>
+                        @*<span class="icon mif-user"></span>*@
+                        <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                    </div>
+                    <br />
+                    <br />
+
+                    <div class="form-actions">
+                        <button type="submit" class="button primary">Lookup Permit/License</button>
+                    </div>
+
+                    <br />
+                    <p>
+                        @Html.ActionLink("Back to Login", "Login", "Account",null, new { appId = ViewBag.appId })
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+}

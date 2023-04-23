@@ -1,0 +1,71 @@
+﻿@model ELPS.Models.DashboardViewModel
+@using ELPS.Helpers
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="">
+    <div class="clear-float">
+        <h1 class="text-light">
+            Dashboard
+            <span class="mif-apps icon place-right"></span>
+        </h1>
+    </div>
+    <hr />
+    <div>
+        <div class="grid">
+            <div class="dash-grid">
+                @foreach (var license in Model.Licenses)
+                {
+                    var prmt = license.MyPermits;
+                    var proc = license.LicensesInProcessing;
+                    <div class="div-block">
+                        <div class="dash-tile">
+                            <a href="@Url.Action("ProcessAppData", "Account", new { q = license.PublicKey })" target="_blank" data-role="hint" data-hint-mode="2" data-hint="|Click to Apply">
+                                <img src="~/Content/Images/facility.jpg" />
+                                <div class="darkscreen"></div>
+                                <div class="info">
+                                    <h1 class="thin6">@prmt.ToString("00")<sub class="app_proc">/@proc.ToString("00")</sub></h1>
+                                    <h3 class="thin4">@license.ShortName</h3>
+                                    <p>@license.LicenseName</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+        @*<div class="grid">
+            <div class="dash-grid">
+                @if (User.IsInRole("Account"))
+                {
+                    <div class="dash-tile">
+                        @ViewBag.paidApp : The Total number of Paid Application
+                    </div>
+                    <div class="dash-tile">
+                        @ViewBag.subbmited : The Total number of Submitted Application
+                    </div>
+                }
+            </div>
+        </div>*@
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkDashboard").addClass("active");
+            @*$(".app_proc").each(function () {
+                var url = '@Url.Action("/Dashboard/AppsInProcessing/" + Model.Company.Id)';
+                console.log(url);
+                var me = $(this);
+                $.get(url, function(data){
+                    me.text(data);
+                });
+            });*@
+        });
+    </script>
+}

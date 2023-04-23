@@ -1,0 +1,141 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.vCompanyFile>
+
+@{
+    ViewBag.Title = "Company Documents";
+    int rowsplitter = 1;//vCompanyFile
+
+    int counter = 0;
+}
+
+<div class="padding10">
+    <h3 class="thin1">Dashboard</h3>
+    <hr />
+
+    <div class="grid condensed">
+        <table class="table hovered striped  dataTable">
+            <thead>
+                <tr>
+                    <th class="sortable-column">#</th>
+                    <th class="sortable-column">Document Type</th>
+                    <th style="width: 150px;"></th>
+                    <th class="sortable-column" style="width: 150px;">Date Added</th>
+                    <th style="width: 150px;">Date Modified</th>
+                    <th style="width: 50px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    string tr = (!item.Status ? "danger" : "");
+                    counter++;
+
+                    <tr class="@tr">
+                        <td>@counter</td>
+
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.DocumentTypeName) && item.DocumentTypeName.ToLower() == "other document")
+                            {
+                                @Html.DisplayFor(modelItem => item.Document_Name)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.DocumentTypeName)
+                            }
+                        </td>
+                        <td class="txtcenter">
+                            @if (item.source.StartsWith("https://"))
+                            {
+                                //Full url
+                                if (item.source.ToLower().EndsWith(".pdf"))
+                                {
+                                    <a target="_blank" href="@item.source">
+                                        <img src="@Url.Content("/Content/Images/pdf-icon.png")" class="thumbnail img-thumbnail"
+                                             style="max-height:70px;max-width:70px" alt="@item.DocumentTypeName" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (!item.Status)
+                                    {
+                                        <a data-url="@item.source" href="#myModal" data-toggle="modal" role="button" class="extPop" data-name="@item.DocumentTypeName">
+                                            <img src="@Url.Content(item.source)" class="thumbnail img-thumbnail"
+                                                 data-toggle="tooltip" data-placement="bottom" data-original-title="This Document was rejected goto my applications to know more"
+                                                 style="max-height:70px;max-width:70px" alt="@item.DocumentTypeName" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="extPop" data-url="@item.source" href="#myModal" data-toggle="modal" role="button" data-name="@item.DocumentTypeName">
+                                            <img src="@Url.Content(item.source)" class="thumbnail img-thumbnail"
+                                                 style="max-height:70px;max-width:70px" alt="@item.DocumentTypeName" />
+                                        </a>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //Part Url
+                                if (item.source.ToLower().EndsWith(".pdf"))
+                                {
+                                    <a href="/CompanyDocument/DisplayPDFDocument?docId=@item.Id" class="" target="_blank">
+                                        <img src="@Url.Content("/Content/Images/pdf-icon.png")" class="thumbnail img-thumbnail"
+                                             style="max-height:70px;max-width:70px" alt="@item.DocumentTypeName" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    if (!item.Status)
+                                    {
+                                        <a data-url="/CompanyDocument/@item.Id" href="#dialog" data-name="@item.DocumentTypeName" class="imgSilent">
+                                            <img src="@Url.Content(item.source)" class="thumbnail img-thumbnail"
+                                                 data-toggle="tooltip" data-placement="bottom" data-original-title="This Document was rejected goto my applications to know more"
+                                                 style="max-height:70px;max-width:70px" alt="@item.DocumentTypeName" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a data-url="/CompanyDocument/@item.Id" href="#dialog" data-name="@item.DocumentTypeName" class="imgSilent">
+                                            <img src="@Url.Content(item.source.Replace("~", ""))" class="thumbnail img-thumbnail"
+                                                 style="max-height:70px;max-width:70px" alt="@item.DocumentTypeName" />
+                                        </a>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            @item.date_added.ToShortDateString() &nbsp;<small>@item.date_added.ToShortTimeString()</small>
+                        </td>
+                        <td>
+                            @if ((item.date_modified < DateTime.Parse("5/1/2014")) || (item.date_modified == item.date_added))
+                            {
+                                <p>Never</p>
+                            }
+                            else
+                            {
+                                <p>@item.date_modified.ToShortDateString() &nbsp;<small>@item.date_modified.ToShortTimeString()</small></p>
+                            }
+
+                        </td>
+                        <td>
+                            @if (!item.Status)
+                            {
+                                <a data-url="/CompanyDocument/Delete/@item.Id" href="#myModal" data-toggle="modal" role="button"
+                                   class="btn btn-xs btn-danger silent">Delete</a>
+                            }
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @*@foreach (var file in Model)
+        {
+            <div class="cell size6">
+                @file.Type
+            </div>
+        }*@
+    </div>
+</div>
+

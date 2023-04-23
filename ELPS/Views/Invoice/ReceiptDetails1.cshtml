@@ -1,0 +1,80 @@
+﻿@using ELPS.Domain.Entities
+
+@model ELPS.Domain.Entities.vReceipt
+@{
+    var pageType = "Receipt";
+    ViewBag.Title = "Application Receipt " + pageType;
+}
+
+<style type="text/css">
+    .list-group-item {
+        background-color: transparent;
+    }
+</style>
+<div class="row">
+    <div class="pageTitle bg1">
+        <h2 class="lefty">Application Remita Retrieval Reference: @Model.RRR</h2>
+        <div class="righty">
+
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+
+<div class="receipt">
+    <div class="watermark">
+        <h1>ELPS @pageType</h1>
+        <h3>This is not a Permit!</h3>
+    </div>
+
+    <div class="body">
+        <p>
+            
+            <br />
+            Below is the breakdown of the funds received
+        </p>
+
+        <hr />
+        <div class="">
+            <div class="mypanel-2leaf-h">
+                <div class="left-side">
+                    <div class="padd">
+                        <dl class="dl-horizontal lt">
+                            <dt>
+                                Application Reference No
+                            </dt>
+                            <dd class="">
+                                @Html.DisplayFor(model => model.Reference)
+                            </dd>
+
+                            <dt>
+                                Payment Reference No
+                            </dt>
+                            <dd class="">
+                                @Model.RRR
+                            </dd>
+
+                            
+                            <dt>
+                                Amount
+                            </dt>
+                            <dd class="">
+                                @Model.Amount.ToString("₦ #,###,##.00")
+                            </dd>
+
+                            <dt>
+                                Payment Method
+                            </dt>
+                            <dd class="">
+                                @ViewBag.PaymentMethod
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

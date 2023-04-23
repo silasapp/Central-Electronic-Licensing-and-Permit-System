@@ -1,0 +1,65 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+
+    <style>
+        body {
+            background: #333 url('../../Content/Images/bg.png') repeat left top;
+        }
+        #body-container{
+            width: 100%;
+        }
+        #error-page-container {
+            width: 700px;
+            height: 300px;
+            margin: 0 auto;
+            padding-top: 100px;
+            text-align: center;
+            font-family: sans-serif, Arial;
+        }
+        h1{
+            color: #fff;
+            text-shadow: 0px 1px 3px #000;
+            margin-bottom: 35px;
+            font-size: 145px;
+            color: #808080;
+        }
+
+        a{
+            color: #e3c800;
+        }
+
+        span{
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+    @*<h1 class="text-danger">Error.</h1>
+        <h2 class="text-danger">An error occurred while processing your request.</h2>*@
+
+    <div id="body-container">
+        <div id="error-page-container">
+            <h1>405 :(</h1>
+            <hr>
+            <span>You do not have permission to view this page!</span><br /><br />
+            <a href="@Url.Action("Index", "Home")">Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>

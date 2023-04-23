@@ -1,0 +1,167 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.Branch>
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "Branches";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+}
+
+<div class="clear-float">
+    <h1 class="text-light place-left">All Branches</h1>
+
+    <div class="place-right">
+        @Html.ActionLink("Add New Branch", "Create", null, new { @class = "button success" })
+        @*<a href="#" data-url="1" data-toggle="modal" data-target="#modalPopup" class="button success">Add New Field Office</a>*@
+    </div>
+    <hr class="clear thin bg-grayLight" />
+    <table class="table table-condensed table-striped table-hover dataTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BranchCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Create_At)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastEdit_At)
+                </th>
+                <th>
+                    Field Office
+                </th>
+                <th style="width: 90px;"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>@count</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BranchCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Create_At)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastEdit_At)
+                    </td>
+                    <td>
+                        @if (item.IsFieldOffice)
+                        {
+                            <span class="tag success ep">YES</span>
+                        }
+                        else
+                        {
+                            <span class="tag warning ep">NO</span>
+                        }
+                    </td>
+                    <td class="txtright">
+                        <div class="btn-group" role="group" aria-label="control">
+                            <a href="#" data-url="2" data-id="@item.Id" data-toggle="modal" data-target="#modalPopup" class="button info mini-button epBtn2 btnEdit">Edit</a>
+                            <a href="#" data-url="3" data-id="@item.Id" data-toggle="modal" data-target="#modalPopup" class="button mini-button danger epBtn2 btnDel">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @*}
+                else
+                {
+                <tr>
+                    <td colspan="8"><h4>No Branches added yet! Add @Html.ActionLink("New Branch", "Create") now</h4></td>
+                </tr>
+                }*@
+        </tbody>
+    </table>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnk-Zone > a").addClass("selected").find(".act").addClass("selected");
+            $(".sidebar > ul > li > ul li a[href='/Branch']").addClass("selected");
+
+            //var noPerPage = '<select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class=""><option value="25">25</option><option value="50">50</option><option value="100">100</option><option value="200">200</option></select>';
+            $(".dataTable").dataTable({
+                columnDefs: [{ orderable: false, "targets": [-1] }],
+                //"language": {
+                //    //"lengthMenu": "Display " + noPerPage + " records per page",
+                //    "zeroRecords": "Nothing found - sorry",
+                //    "info": "Showing page _PAGE_ of _PAGES_",
+                //    "infoEmpty": "No records available",
+                //    "infoFiltered": "(filtered from _MAX_ total records)"
+                //}
+            });
+
+            $(".btnEdit, .btnAdd, .btnDel").on("click", function (e) {
+                e.preventDefault();
+                var uid = $(this).attr("data-url");
+                //alert(uid);
+                var url, headTitle;
+                if (uid == "1") {
+                    url = "/Branch/Create";
+                    headTitle = "Create New Field Office";
+                } else if (uid == "2") {
+                    var id = $(this).attr("data-id");
+                    url = "/Branch/Edit/" + id;
+                    headTitle = "Edit Field Office";
+                }
+                else if (uid == "3") {
+                    //alert(uid)
+                    var id = $(this).attr("data-id");
+                    url = "/Branch/Delete/" + id;
+                    headTitle = "Delete Field Office";
+                }
+
+                //alert(url);
+                var modal = $(this);
+                $("#modalPopup").on('show.bs.modal', function (e) {
+                    var modal = $(this);
+                    modal.find(".modal-title").text(headTitle);        // find title for changr
+                    modal.find("#modal-body").html();
+                    modal.find("#modal-body").html(Loading());
+                    //Load the view
+                    $.get(url, function (data) {
+                        modal.find("#modal-body").html();
+                        modal.find("#modal-body").html(data);
+                    });
+                });
+            });
+
+            if ('@alert' === 'True') {
+                console.log("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+            else {
+                console.log("No Shaking");
+            }
+        });
+
+
+    </script>
+}

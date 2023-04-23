@@ -1,0 +1,110 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Account Created";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+
+    <link href="/Content/Metro/metro.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-icons.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-responsive.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/xtrastyle.less")
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="/Scripts/jquery.dataTables.min.js"></script>
+    <script src="/Scripts/Metro/metro.js"></script>
+
+</head>
+
+<body>
+    <div class="">
+        <header class="app-bar fixed-top header" data-role="appbar">
+            <div class="container">
+                <a href="/" class="app-bar-element branding no-padding">
+                    <img src="~/Content/Images/logo.jpg" style="height: 80%;" />
+                </a>
+
+
+                <span class="app-bar-pull"></span>
+
+            </div>
+        </header>
+    </div>
+
+    <div class="">
+        <div class="container body-content">
+            <div class="row">
+                <div class="pageTitle bg1">
+                    <h2 class="lefty">ELPS Account Created</h2>
+                    <div class="righty">
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div style="background-color: #ece8d4; padding:30px; margin-top:10px;">
+                        <p>
+                            You have created an account on NUPRC ELPS Portal. An email has been sent to your email <a href="#">@ViewBag.Email</a> for account activation. Kindly check your email inbox and/or junk mail folder to confirm that the email was received.
+                        </p>
+                        <p>
+                            <strong>Next steps</strong>
+                            <ul style="margin: 0; padding: 0; padding-left: 20px;">
+                                <li>Activate your account by following the activation link therein</li>
+                                <li>Login to the ELPS portal to see list of NUPRC licenses you can apply for</li>
+                            </ul>
+                        </p>
+                        <p>
+                            <strong>Learn more</strong>
+                            <ul style="margin: 0; padding: 0; padding-left: 20px;">
+                                <li>Read our FAQ</li>
+                                <li>Browse through our Video tutorials</li>
+                                <li>Contact us for help or enquiry</li>
+                            </ul>
+                        </p>
+
+                        <p>
+                            You did not receive the Activation link? Please <a href="/Account/ResendEmailActivation">Click here to resend the Activation Link</a>@*, if you can't find it in your Mailbox or Junkmail Folder*@
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <footer class="clear-float">
+                <div class="place-left">&copy; @DateTime.Now.Year - NUPRC Electronic Licensing And Permit System</div>
+                <div class="place-right align-right">
+                    <ul>
+                        <li><a href="#">About ELPS</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </footer>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+

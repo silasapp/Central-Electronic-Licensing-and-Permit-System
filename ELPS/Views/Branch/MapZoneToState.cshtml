@@ -1,0 +1,95 @@
+﻿@*@model ELPS.Domain.Entities.ZoneState*@
+
+@using ELPS.Domain.Entities
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "Map States to Zone";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+}
+
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Add New Field Office</h1>
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="flex-grid">
+            <div class="row cells2">
+                <div class="cell colspan7">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label for="ZoneId">Zone</label>
+                        <div class="input-control select full-size">
+                            @Html.DropDownList("Id", (SelectList)ViewBag.Zones, "Select a Zone", htmlAttributes: new { @class = "", @required = "required", style = "width: 300px!important;" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ZoneId">Select States</label><br />
+                        @foreach (var state in (List<State>)ViewBag.State)
+                        {
+                            <label class="input-control checkbox" style="float: left; width: 32%; margin-right: 1%;">
+                                <input type="checkbox" name="stateIds" value="@state.Id" />
+                                <span class="check"></span>
+                                <span class="caption">@state.Name</span>
+                            </label>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell colspan12">
+                    <div class="form-group">
+                        <div class="">
+                            <a class="button default cancel" href="@Url.Action("Zones", "Branch")">Cancel</a>
+                            <input type="submit" value="Save Mapping" class="button success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+
+            $(".cancel").on("click", function (e) {
+                if (confirm("Are you sure you want to cancel New Field Office creation? All current changes will not be saved.")) {
+
+                }
+                else {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}

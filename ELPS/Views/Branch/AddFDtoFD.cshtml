@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewBag.Title = "AddFDtoFD";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Map FD to FD</h1>
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @*<input type="hidden" name="BranchCode" id="BranchCode" value="." />*@
+        <div class="flex-grid">
+            <div class="row cells2">
+                <div class="cell colspan5">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <label for="stateId">Field Office Name</label>
+                        <div class="input-control select full-size">
+                            @Html.DropDownList("fdId", (SelectList)ViewBag.FDs, "Select Field Office", htmlAttributes: new { @class = "", @required = "required" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="stateId">State</label>
+                        <div class="input-control select full-size">
+                            @Html.DropDownList("stateId", (SelectList)ViewBag.State, "Select State", htmlAttributes: new { @class = "", @required = "required" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell colspan12">
+                    <div class="form-group">
+                        <div class="">
+                            <a class="button default cancel" href="@Url.Action("FDtoFD", "Branch")">Cancel</a>
+                            <input type="submit" value="Create Mapping" class="button success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,185 @@
+﻿
+
+<link href="http://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="http://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+
+
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+
+@{
+    ViewBag.Title = "All Applications";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    //var lnc = (List<ELPS.Domain.Entities.AppIdentity>)ViewBag.licenses;
+    //var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+
+    var dateRange = "";
+    if (string.IsNullOrEmpty(ViewBag.SD) && string.IsNullOrEmpty(ViewBag.ED))
+    {
+        dateRange = ""; // "from " + ViewBag.SD.ToString("dd/MM/yyyy") + " to " + ViewBag.ED.ToString("dd/MM/yyyy");
+    }
+    else
+    {
+        if (!string.IsNullOrEmpty(ViewBag.SD)) // && (DateTime.Parse(ViewBag.SD).Date) > (DateTime.Parse("01/01/2017").Date))
+        {
+            dateRange = "from " + ViewBag.SD + " to "; // + ViewBag.ED;
+        }
+        else
+        {
+            dateRange = "from inception till "; //+ ViewBag.ED;
+        }
+
+        if (!string.IsNullOrEmpty(ViewBag.ED))
+        {
+            dateRange += ViewBag.ED;
+        }
+        else
+        {
+            dateRange += DateTime.Now.Date.ToString("MM/dd/yyyy");
+        }
+    }
+}
+<div>
+    <input type="hidden" name="url" id="url" value="@Url.Action("LazyIndex", "Application", new { startDate = ViewBag.SD, endDate = ViewBag.ED, license = ViewBag.license, category = ViewBag.category, location = ViewBag.location })" />
+
+    <div class="clear-float">
+        <h1 class="text-light">
+            All Applications <small>@dateRange</small>
+            <span class="mif-stack icon place-right"></span>
+        </h1>
+    </div>
+
+
+    <hr class="thin bg-grayLighter">
+
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("Index", "Application", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text" placeholder="Start date">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text" placeholder="End date">
+                </div>
+                @Html.DropDownList("license", (SelectList)ViewBag.licenses, "Select License", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+                @*<select class="righty input-control" name="license" id="license" style="width:190px;">
+
+                    <option value="0">Select License</option>
+                    <option value="0">All</option>
+                    @foreach (var item in lnc)
+                    {
+                        <option value="@item.Id">@item.ShortName</option>
+                    }
+                </select>*@
+                @Html.DropDownList("category", (SelectList)ViewBag.categories, "Select Category", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+               @*<select class="righty input-control" name="category" id="category" style="width:190px;">
+                    <option value="">Select Category</option>
+                    <option value="">All</option>
+                    @foreach (var item in cats)
+                        {
+                            <option value="@item.Name">@item.Name</option>
+                        }
+                </select>*@
+                @Html.DropDownList("location", (SelectList)ViewBag.states, "Select Location", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+                @*<select class="righty input-control" name="Location" id="Location" style="width:140px;">
+                    <option value="">Select Location</option>
+                    <option value="">All</option>
+                    @foreach (var item in stats)
+                    {
+                        <option value="@item.Name">@item.Name</option>
+                    }
+                </select>*@
+
+                <input type="submit" value="Filter" class="righty button primary input-append" />
+
+            }
+        </div>
+    </div>
+    <hr class="thin bg-grayLighter">
+
+    <table id="dtTable" class="table striped hovered border bordered dataTable">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Company Name</th>
+                <th>License</th>
+                <th>RRR</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Date Applied</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkApplications").addClass("active");
+
+            var t = $('#dtTable');
+            var h = $('#navigationHeader');//navigationHeader
+            var pos = t.position();
+            $(window).scroll(function () {
+                var windowpos = $(window).scrollTop();
+                if (windowpos >= pos.top) {
+
+                    h.css('opacity', 0)
+                } else {
+                    h.css('opacity', 1)
+                }
+            });
+
+            $(".dataTable").dataTable({
+                fixedHeader: true,
+                responsive: false,
+
+                "bServerSide": true,
+                "sAjaxSource": $('#url').val(),
+                "bProcessing": true,
+                "pageLength": 50,
+                "aoColumns": [
+                     {
+                        "sName": "OrderId"
+                         //"bSearchable": false,
+                         //"bSortable": false
+
+                     },
+                        { "sName": "CompanyName" },
+                        { "sName": "LicenseShortName" },
+                        //{ "sName": "OrderId" },
+                        { "sName": "RRR" },
+                        { "sName": "CategoryName" },
+                        { "sName": "Status" },
+                        {
+                            "sName": "Date"
+                            //"bSearchable": false,
+                            //"bSortable": false
+                        },
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "mRender": function (data, type, oObj) {
+
+                                return ' <a class="button mini-button info epBtn" href="/application/index/' + oObj[7] + '" target="_blank" >' + 'View ' + '<i class="icon-eye"></i></a>  '
+
+                                ;
+                            }
+                        }
+                ]
+            });
+        });
+    </script>
+}

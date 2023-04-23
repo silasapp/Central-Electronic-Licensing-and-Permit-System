@@ -1,0 +1,42 @@
+﻿@using ELPS.Domain.Entities
+@model IEnumerable<AppIdentity>
+
+@{
+
+}
+
+<div class="padding10">
+    <div>
+        <div class="clear-float">
+            <h1 class="text-light">
+                Available Portals
+                <span class="mif-stack icon place-right"></span>
+            </h1>
+        </div>
+    </div>
+    <div>
+        <div class="grid">
+            <div class="row cells4">
+                @foreach (var license in Model)
+                {
+                    var prmt = license.MyPermits;
+                    var proc = license.LicensesInProcessing;
+                    <div class="cell size3">
+                        <div class="dash-tile">
+                            <a href="@Url.Action("ProcessAppData", "Account", new { q = license.PublicKey })" target="_blank" data-role="hint" data-hint-mode="2" data-hint="|Click to Apply">
+                                @*<a href="@Url.Action("ViewLicense", "License", new { id = license.Id })" target="_blank" data-role="hint" data-hint-mode="2" data-hint="|View License Information">*@
+                                <img src="~/Content/Images/facility.jpg" />
+                                <div class="darkscreen"></div>
+                                <div class="info">
+                                    <h1 class="thin6">@prmt.ToString("00")<sub class="app_proc">/@proc.ToString("00")</sub></h1>
+                                    <h3 class="thin4">@license.ShortName</h3>
+                                    <p>@license.LicenseName</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

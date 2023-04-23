@@ -1,0 +1,54 @@
+﻿@model ELPS.Domain.Entities.Company_Key_Staff
+
+@using ELPS.Domain.Entities
+@{
+    ViewBag.Title = "Update Company Key Staff";
+    Layout = null;
+    var staff = (List<Company_Key_Staff>)ViewBag.ckStaff;
+    var sCert = (List<Key_Staff_Certificate>)ViewBag.staffCert;
+
+    string form = string.Empty;
+    bool appOn = ViewBag.View != null && ViewBag.View == "application" ? true : false;
+    if (appOn)
+    {
+        form = "CompanyStaffUpdate";
+    }
+    else
+    {
+        form = "UpdateStaff";
+    }
+}
+
+<div class="clear-float">
+    <div class="place-left">
+        <h4 class="">Company Key Staff</h4>
+    </div>
+    @*<div class="place-right">
+        <a class="button" href="/Company?id=KeyStaffs">Add new Staff</a>
+    </div>*@
+</div>
+
+<hr />
+
+<div class="flex-grid">
+    <div class="row cells2">
+        <div class="cell colspan3">
+            <h4>List of Key Staff</h4>
+            <small>(Relating to Specifications applied for)</small>
+            <hr />
+            <ul id="stfList" class="numeric-list square-marker">
+                @foreach (var item in staff)
+                {
+                    <li><a class="EditStaff" data-sid="@item.Id" href="#"><span>@item.FirstName @item.LastName</span></a></li>
+                }
+            </ul>
+        </div>
+
+        <div class="cell colspan9" >
+            <div id="StaffFormContainer" style="padding-right: 20px;">
+                @Html.Partial("_ViewStaff", staff.FirstOrDefault())
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+﻿@model ELPS.Domain.Entities.Document_Type
+
+@{
+    ViewBag.Title = "EditDocument";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Add New Document</h1>
+
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    <div>
+        @using (Html.BeginForm())
+        {
+            @Html.HiddenFor(model => model.Id)
+            <div class="flex-grid">
+                <div class="row cells3">
+                    <div class="cell colspan8">
+                        <div class="form-group padding10">
+                            @Html.LabelFor(model => model.Name, "Document Name")
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @placeholder = "Enter Document Name" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row cells3">
+                    <div class="cell colspan4">
+                        <div class="form-group padding10">
+                            @Html.LabelFor(model => model.Type, "Document Specific for")
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @placeholder = "e.g. Company, Facility" } })
+                                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="thin bg-grayLight" />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="button success" value="Save Document" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkStaff").addClass("active open").find("a[href='/UsersAdmin']").parent("li").addClass("selected");
+
+        });
+    </script>
+}

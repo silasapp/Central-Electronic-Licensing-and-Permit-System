@@ -1,0 +1,173 @@
+﻿@using ELPS.Domain.Entities
+@using ELPS.Models
+@using ELPS.Helpers
+@model IEnumerable<vAccountReport>
+@{
+    ViewBag.Title = $"Accounts Report from {ViewBag.SD.ToString("dd/MM/yyyy")} to {ViewBag.ED.ToString("dd/MM/yyyy")}";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+    var _licenses = (List<AppIdentity>)ViewBag.Licenses;
+    var licenses = new List<AppIdentity>();
+    foreach (var item in _licenses)
+    {
+        var sn = item.ShortName.ToLower();
+        if (sn != "gmr" && sn != "dmr" && sn != "hse" && sn != "umr" && sn != "es")
+        {
+            licenses.Add(item);
+        }
+    }
+
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+   // UtilityHelper.LogMessage("Generate Report Found >>><<< " + Model.Count());
+}
+
+<link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+<div class="">
+    <div class="clear-float">
+        <h2 class="text-light place-left">Accounts Report <small>from @ViewBag.SD.ToString("dd/MM/yyyy") to @ViewBag.ED.ToString("dd/MM/yyyy")</small>  </h2>
+
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("GenerateReport", "Reports", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text">
+                </div>
+
+                <select class="righty input-control" name="license" id="license" style="width:190px;">
+                    <option value="0">Select License</option>
+                    <option value="0">All</option>
+                    @foreach (var item in licenses)
+                    {
+                        <option value="@item.Id">@item.ShortName</option>
+                    }
+                </select>
+                @Html.Partial("_FilterControl", Filter)
+
+                <input type="submit" value="Filter" class="righty btn btn-success input-append" />
+            }
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+
+    <div class="" id="">
+        <div class="table-responsive" style="width: 100%;">
+            <table class="table hovered border bordered striped customDT">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Transaction Date</th>
+                        <th>Company CAC</th>
+                        <th>Company Name</th>
+                        <th>Company Phone</th>
+                        <th>Company Email</th>
+                        <th>
+                            Portal (e.g. ROMS)
+                        </th>
+                        <th>Reference</th>
+                        <th>RRR</th>
+                        <th>Payment Purpose</th>
+                        <th>Currency</th>
+                        <th>DPF FEE</th>
+                        <th>
+                            CONTRACTOR FEE
+                        </th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderBy(a => a.TransactionDate))
+                    {
+                        counter++;
+                        double sc = !string.IsNullOrEmpty(item.ServiceCharge) ? Convert.ToDouble(item.ServiceCharge) : 0;
+                        
+                        var contractor = UtilityHelper.GetAmount("sc", item.ApplicationItem, sc);
+
+                        item.GrossAmount = double.Parse(item.Transaction_Amount); // dpr + others;
+                        item.LicenseName = string.IsNullOrEmpty(item.LicenseName) ? "" : item.LicenseName;
+                        //switch (item.LicenseName.ToLower())
+                        //{
+                        //    case "roms":
+                        //        item.ContractorAmount = 1500;
+                        //        break;
+                        //    default:
+                        //        item.ContractorAmount = !string.IsNullOrEmpty(item.ServiceCharge) ? double.Parse(item.ServiceCharge) : 0;
+                        //        break;
+                        //}
+                        item.NetAmount = item.GrossAmount - contractor;
+
+                        <tr>
+                            <td>@counter</td>
+                            <td>@item.TransactionDate.ToShortDateString()</td>
+                            <td>@item.RC_Number</td>
+                            <td>@item.CompanyName</td>
+                            <td>@item.CompanyPhone</td>
+                            <td>@item.CompanyEmail</td>
+                            <td>@item.LicenseName</td>
+                            <td>@item.Reference_Number</td>
+                            <td>@item.RRR</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.Currency</td>
+                            <td>@item.NetAmount.ToString("N2")</td>
+                            <td>@contractor.ToString("N2")</td>
+                            <td>@item.GrossAmount.ToString("N2")</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/js/DT/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.flash.min.js"></script>
+    <script src="~/Scripts/js/DT/jszip.min.js"></script>
+    <script src="~/Scripts/js/DT/pdfmake.min.js"></script>
+    <script src="~/Scripts/js/DT/vfs_fonts.js"></script>
+    <script src="~/Scripts/js/DT/buttons.html5.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkReport").addClass("active"); //.find("a[href='/Reports/PaymentSummary']").parent("li").addClass("selected");
+
+            $("#filterby").on('change', function () {
+                var targ = $(this).val();
+                $(this).siblings('select.selFilter').css('display', 'none');
+                $('#' + targ).css('display', 'inline-block');
+            });
+
+            $(".selFilter").on('change', function () {
+                $('#filterparam').val($(this).val());
+            });
+
+            $('.customDT').dataTable({
+                responsive: true,
+                "pageLength": 500,
+                dom: '<"grid"<"row cells3"<"cell"l><"cell"f><"cell text-right"B>>><t><"row"<"col-md-6"i><"col-md-6"p>>', //'Bfrtip',
+                buttons: [
+                    { extend: 'copy', attr: { id: 'allan' } }, 'excel', 'print'
+                ],
+                lengthMenu: [[250, 500, 1000], [250, 500, 1000]],
+            });
+        })
+    </script>
+}

@@ -1,0 +1,143 @@
+﻿@model ELPS.Domain.Entities.vCompanyDirector
+@using ELPS.Domain.Entities
+
+@{ 
+    Layout = null;
+}
+
+
+<div class="panel">
+    <div class="heading">
+        <span class="icon mif-home"></span>
+        <span class="title">Director Details</span>
+    </div>
+    <div class="padding10">
+        <div class="grid">
+            <div class="row cells2">
+                <div class="cell colspan6">
+                    <div class="" style="margin-right: 15px;">
+                        <div class="form-group">
+                            <label class="control-label">First Name</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", @tabindex = 1, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Phone Number</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", @tabindex = 3, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Address Line 1</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.address_1, new { htmlAttributes = new { @class = "form-control", @tabindex = 5, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">City</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", @tabindex = 7, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Country</label>
+                            <div class="input-control select full-size">
+                                <select id="Country_Id" name="Country_Id" class="form-control contrySelect" data-state="StateId" tabindex="9" disabled>
+                                    <option>Select Country</option>
+                                    @foreach (var item in (List<Country>)ViewBag.country)
+                                    {
+                                        if (Model.Id > 0 && item.Id == Model.Country_Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cell colspan6">
+                    <div class="" style="margin-right: 15px;">
+                        <div class="form-group">
+                            <label class="control-label">Last Name</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", @tabindex = 2, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Nationality</label>
+                            <div class="input-control select full-size">
+                                <select id="Nationality" name="Nationality" class="form-control" tabindex="4" disabled required>
+                                    <option value="">Select Nationality</option>
+                                    @foreach (var item in (List<Country>)ViewBag.country)
+                                    {
+                                        if (item.Id == Model.Nationality)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Address Line 2</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.address_2, new { htmlAttributes = new { @class = "form-control", @tabindex = 6, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Postal Code</label>
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control", @tabindex = 8, @readonly = "readonly" } })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">State</label>
+                            <div class="input-control select full-size">
+
+                                <select id="StateId" name="StateId" class="form-control" tabindex="10" disabled required>
+                                    <option value="">Select State</option>
+
+                                    @if (ViewBag.state != null)
+                                    {
+                                        foreach (var item in (List<State>)ViewBag.state)
+                                        {
+                                            if (item.Id == Model.StateId)
+                                            {
+                                                <option value="@item.Id" selected>@item.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

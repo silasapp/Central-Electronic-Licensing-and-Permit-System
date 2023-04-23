@@ -1,0 +1,294 @@
+﻿@model ELPS.Domain.Entities.AppIdentity
+
+@{
+    ViewBag.Title = "Edit License Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using ELPS.Domain.Entities
+
+<style type="text/css">
+    .form-group {
+        margin: 10px;
+    }
+</style>
+
+<div>
+    <div class="clear-float">
+      @*  <h1 class="text-light place-left">Add New Licenses</h1>
+
+    <div class="place-right">
+             @Html.ActionLink("+", "AddLicense", null, new { @class = "button cycle-button primary block-shadow-success mif-ani-shuttle mif-ani-slow", @data_role = "hint", @data_hint_mode = "2", @data_hint_position = "left", @data_hint = "|Add new License" })
+         </div>*@
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AppId)
+        @Html.HiddenFor(model => model.DateAdded)
+        <div class="flex-grid">
+            <div class="row cells2">
+                <div class="cell colspan5">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LicenseName, "License Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.LicenseName, new { htmlAttributes = new { @placeholder = "e.g. Electronic License & Permit System" } })
+                            @Html.ValidationMessageFor(model => model.LicenseName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ShortName, "License Short Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @placeholder = "e.g. ELPS" } })
+                            @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, "Application Email")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Email)
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            @*<input type="text" name="appEmail" id="appEmail" required />*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PublicKey, "Public Key")
+                        <div class="input-control text full-size">
+                            <input type="text" readonly name="PublicKey" id="PublicKey" value="@Model.PublicKey" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AppId, "Secrete Key")
+                        <div class="input-control text full-size">
+                            <input type="text" readonly name="PublicKey" id="PublicKey" value="@Model.AppId" />
+                        </div>
+                    </div>
+                    <div class="cell colspan5">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description)
+                            <div class="input-control textarea full-size" data-role="input" data-text-auto-resize="true" data-text-max-height="200">
+                                @Html.TextAreaFor(model => model.Description)
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="cell colspan5">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BaseUrl, "License Portal BaseUrl")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.BaseUrl, new { htmlAttributes = new { @placeholder = "e.g. http://www.elps.nuprc.gov.ng" } })
+                            @Html.ValidationMessageFor(model => model.BaseUrl, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BankPaymentEndPoint, "Bank Payment Endpoint")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.BankPaymentEndPoint, new { htmlAttributes = new { @placeholder = "e.g. http://www.elps.nuprc.gov.ng/Payment/pay" } })
+                            @Html.ValidationMessageFor(model => model.BankPaymentEndPoint, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LoginRedirect, "License Portal Login Url")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.LoginRedirect, new { htmlAttributes = new { @placeholder = "e.g. http://www.elps.nuprc.gov.ng/account/login" } })
+                            @Html.ValidationMessageFor(model => model.LoginRedirect, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PermitLink)
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.PermitLink, new { htmlAttributes = new { @placeholder = "e.g. http://www.ogisp.nuprc.gov.ng/permit/View" } })
+                            @Html.ValidationMessageFor(model => model.PermitLink, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ReceiptCode, "Receipt Code")
+                        <div class="input-control text full-size">
+                            <input type="text" name="ReceiptCode" id="PublicKey" value="@Model.ReceiptCode" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CategoryId, "Divisions")
+                        <div class="">
+                            <select name="CategoryId" id="CategoryId" class="selectTwo" style="width:100%" multiple>
+                                @foreach (var option in (IEnumerable<Division>)ViewBag.Categories)
+                                {
+                                    if (Model.CategoryId.Contains(option.Id))
+                                    {
+                                        <option selected value=@option.Id>@option.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value=@option.Id>@option.Name</option>
+                                    }
+
+                                }
+                            </select>
+                            
+                            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row cells2">
+                        <div class="cell colspan5">
+                            <div class="form-group">
+                                <label class="input-control checkbox">
+                                    @if (Model.LoginByPass)
+                                    {
+                                        @Html.EditorFor(m => m.LoginByPass, new { @checked = "true" })
+
+                                    }
+                                    else
+                                    {
+                                        @Html.EditorFor(m => m.LoginByPass)
+                                    }
+
+                                    @*@Html.EditorFor(model => model.IsActive)*@
+                                    <span class="check"></span>
+                                    <span class="caption">ByPass Login?</span>
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="cell colspan5">
+                            <div class="form-group">
+                                <label class="input-control checkbox">
+                                    @if (Model.IsActive)
+                                    {
+                                        <input type="checkbox" name="active" id="active" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name="active" id="active" />
+                                    }
+
+                                    @*@Html.EditorFor(model => model.IsActive)*@
+                                    <span class="check"></span>
+                                    <span class="caption">Active Portal</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="cell colspan12">
+                    <div class="form-group">
+                        <div class="">
+                            <input type="submit" value="Save Changes" class="button success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+   
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".selectTwo").select2();
+        })
+        $(function () {
+            $("#lnkLicense").addClass("active");
+        });
+    </script>
+}
+
+
+@*<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Edit License</h1>
+
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.DateAdded)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LicenseName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LicenseName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LicenseName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LicenseShortName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LicenseShortName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LicenseShortName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Application Email", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" name="appEmail" id="appEmail" value="@Model.AppIdentity.Id" disabled readonly />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Bank Payment Endpoint", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" name="bpendpoint" id="bpendpoint" value="@Model.AppIdentity.BankPaymentEndPoint" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label class="input-control checkbox">
+                        <input type="checkbox" name="active" id="active">
+                        <span class="check"></span>
+                        <span class="caption">Activate</span>
+                    </label>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+</div>*@

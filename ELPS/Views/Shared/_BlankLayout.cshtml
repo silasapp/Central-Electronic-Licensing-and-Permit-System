@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+
+    @Styles.Render("~/Content/Metro")
+    @RenderSection("Style", required: false)
+    <link href="~/Content/Metro/metro-icons.css" rel="stylesheet" />
+    <link href="~/Content/Metro/metro.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/LoginPage.less")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/Metro")
+
+</head>
+<body class="blankBody">
+    <div class="backScreen">
+        @*<img src="~/Content/Images/bg_big.jpg" />*@
+    </div>
+    <div id="body-container">
+        <div class="wrapper">
+            <div class="header">
+                <div class="logo clear-float">
+                    <img class="img" src="~/Content/Images/nigeria_coat_of_arms.jpg" />
+                    <h3 class="logo-text">NUPRC ELPS</h3>
+                </div>
+            </div>
+            
+            <div class="content">
+                @RenderBody()
+            </div>
+            
+            <div class="clear"></div>
+            <footer>
+                <div class="lefty">&copy; @DateTime.Now.Year - NUPRC Electronic Licensing And Permit System</div>
+                <div class="righty align-right">
+                    <ul>
+                        <li><a href="#">About ELPS</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="/Home/Contact">Terms</a></li>
+                        <li><a href="/Home/Contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </footer>
+        </div>
+        
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/Metro/metro.js"></script>
+    <script src="~/Scripts/xtrascript.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    @RenderSection("scripts", false)
+</body>
+</html>

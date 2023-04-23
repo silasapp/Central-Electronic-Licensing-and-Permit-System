@@ -1,0 +1,159 @@
+﻿@using ELPS.Domain.Entities
+
+@model ELPS.Domain.Entities.vApplication
+@{
+    string alertx = string.Empty;
+    int cnt = 0;
+
+    var returl = Request.Url;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    if (Model == null)
+    {
+        ViewBag.Title = "Application details";
+    }
+    else
+    {
+        ViewBag.Title = "Application details for " + Model.CompanyName + " (" + Model.CategoryName + ") Permit";
+
+        if (Model.Status.ToLower() == "approved") { alertx = "alert-success"; }
+        else if (Model.Status.ToLower() == "processing") { alertx = "alert-info"; }
+        else if ((Model.Status.ToLower() == "pending") || (Model.Status.ToLower() == "payment pending")) { alertx = "alert-warning"; }
+        else { alertx = "alert-danger"; }
+    }
+}
+
+
+<div class="content">
+    @if (Model == null)
+    {
+        <h3 class="lefty">This application can not be found, please check the link to be sure its a valid application</h3>
+    }
+    else
+    {
+        <div class="clear-float">
+            <h3 class="text-light">
+                Application Information: Reference No: @Model.OrderId
+                <a href="/Application" class="place-right button"><span class="mif-arrow-left"></span> Back</a>
+            </h3>
+        </div>
+
+        <hr class="thin bg-grayLighter">
+
+        <div>
+            <div class="mypanel-2leaf-h">
+                <div class="left-side">
+                    <div class="padd">
+                        <dl class="dl-horizontal lt">
+                            <dt>
+                                Company Name
+                            </dt>
+                            <dd>
+                                <a href="/AdminDashboard/CompanyView/@Model.CompanyId">@Model.CompanyName</a>
+                            </dd>
+
+                            <dt>
+                                Category
+                            </dt>
+                            <dd>
+                                @Model.CategoryName
+                            </dd>
+
+                            <dt>
+                                Application Type
+                            </dt>
+                            <dd>
+                                @Model.LicenseShortName
+                            </dd>
+
+                            @*<dt>
+                                Year
+                            </dt>
+                            <dd>
+                                @Model.Year)
+                            </dd>
+
+                            <dt>
+                                Fee Payable
+                            </dt>
+                            <dd>
+                                @Model.Fee_Payable.ToString("₦ ###,##0.00")
+                            </dd>
+
+                            <dt>
+                                Service Charge
+                            </dt>
+                            <dd>
+                                @Model.Service_Charge.ToString("₦ ###,##0.00")
+                            </dd>
+
+                            <dt>
+                                Total Amount Due
+                            </dt>
+                            <dd>
+                                @{var amt = Model.Fee_Payable + Model.Service_Charge;}
+                                @amt.ToString("₦ ###,##0.00")
+                            </dd>*@
+
+                            <dt>
+                                Status
+                            </dt>
+                            <dd>
+                                <div class="alert alert-mini @alertx">
+                                    <strong>@Html.DisplayFor(model => model.Status)</strong>
+                                </div>
+                            </dd>
+
+                            <dt>
+                                Date Applied
+                            </dt>
+                            <dd>
+                                @Model.Date
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+                <div class="right-side">
+                    <div class="padd">
+                        <dl class="dl-horizontal lt">
+                            <dt>
+                               Application Items
+                            </dt>
+                            <dd>
+                                @if (Model.ApplicationItems != null && Model.ApplicationItems.Count > 0)
+                                {
+                                    foreach (var items in Model.ApplicationItems.GroupBy(a => a.Group))
+                                    {
+                                        <ul class="list-group">
+                                            <li><b> <span>@items.Key</span></b></li>
+                                            @foreach (var item in items)
+                                            {
+                                                <li class="list-group-item">@item.Name</li>
+                                                <li class="list-group-item">@item.Description</li>
+                                            }
+                                        </ul>
+                                    }
+                                }
+                            </dd>
+
+
+                        </dl>
+                    </div>
+                    
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    }
+
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkApplications").addClass("active");
+
+
+        });
+    </script>
+}

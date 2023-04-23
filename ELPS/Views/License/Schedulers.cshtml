@@ -1,0 +1,137 @@
+﻿@using ELPS.Models
+
+@{
+    ViewBag.Title = "Expiring";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+    string msg = string.Empty, typ = string.Empty, title = string.Empty;
+
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType == "pass" ? "success" : alertMsg.AlertType == "fail" ? "alert" : "info";
+    }
+}
+<style type="text/css">
+    .disabled{
+        cursor: not-allowed!important;
+    }
+
+    .button.disabled{
+        opacity: 0.5!important;
+    }
+</style>
+<div class="">
+
+    <div class="clear-float">
+        <h1 class="text-light place-left" style="margin: 0;">
+            <span class="mif-file-archive icon "></span>
+            Starting Expiring Scheduler
+        </h1>
+
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    <div class="flex-grid">
+        <div class="row cells2">
+            <div class="cell colspan6">
+                <label>Start Robot to run Monthly expired report</label>
+                @using (Html.BeginForm("StartExpiryReport", "License", FormMethod.Post))
+                {
+                    <input type="submit" class="button success" value="Start Expiry Report Scheduler" />
+                }
+            </div>
+            <div class="cell colspan6">
+                <label>Start Robot to run Expiry Notification</label>
+                @using (Html.BeginForm("StartExpiry", "License", FormMethod.Post))
+                {
+                    <input type="submit" class="button primary" value="Start Expiry Scheduler" />
+                }
+            </div>
+        </div>
+        <br /><br /><br />
+        <div class="row cells2">
+            <div class="cell colspan6">
+                <label>Test the monthly report</label>
+                @using (Html.BeginForm("HandleExpiryReport", "License", FormMethod.Post))
+                {
+                    <input type="hidden" name="e" value="@User.Identity.Name" />
+                    <input type="hidden" name="i" value="@Request.UserHostAddress" />
+                    <input type="hidden" name="doNow" value="true" />
+                    <input type="submit" class="button info" value="Run Report Now" />
+                }
+            </div>
+            <div class="cell colspan6">
+                <label>Run Expiry Notify</label>
+                @using (Html.BeginForm("HandleExpiry", "License", FormMethod.Post))
+                {
+                    <input type="hidden" name="e" id="_e" value="@User.Identity.Name" />
+                    <input type="hidden" name="i" id="_i" value="@Request.UserHostAddress" />
+                    <input type="button" id="btnExpiry" class="button warning" value="Run Expiry Notify Now" />
+                }
+                <div style="margin-top: 20px; font-style: italic; border: 1px solid #ddd; padding: 10px; border-radius: 5px; display: none;" id="expResponse"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkExpires").addClass("active");
+
+            var t = $('#dtTable');
+            var h = $('#navigationHeader');//navigationHeader
+            var pos = t.position();
+            $(window).scroll(function () {
+                var windowpos = $(window).scrollTop();
+                if (windowpos >= pos.top) {
+
+                    h.css('opacity', 0)
+                } else {
+                    h.css('opacity', 1)
+                }
+            });
+
+            $(".dataTable").dataTable({
+                fixedHeader: true,
+                responsive: false,
+                "bProcessing": true,
+                lengthMenu: [250, 500, 1000],
+                "pageLength": 1000
+            });
+
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+
+            $("#btnExpiry").on('click', function (e) {
+                e.preventDefault();
+                let btn = $(this);
+                $('#expResponse').show().text('PLEASE WAIT...');
+                btn.addClass('disabled').attr('disabled', 'disabled');
+
+                let url = $(this).parent('form').attr('action');
+                $.post(url, { e: $('#_e').val(), i: $('#_i').val() }, function (data) {
+                    $('#expResponse').text(data.msg);
+                    btn.removeClass('disabled').removeAttr('disabled');
+                });
+            });
+        });
+
+        function NotifyUser(msg, title, typ) {
+            setTimeout(function () {
+                $.Notify({ keepOpen: true, type: typ.length > 0 ? typ : 'default', caption: title.length > 0 ? title : 'Alert!', content: msg.length > 0 ? msg : "Alert! Alert!! Alert!!!" });
+            }, 700);
+        }
+    </script>
+}

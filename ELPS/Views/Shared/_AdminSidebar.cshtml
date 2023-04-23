@@ -1,0 +1,199 @@
+﻿@{
+    Layout = null;
+
+    bool admin = User.IsInRole("Admin");
+}
+
+<ul class="">
+    <li>
+        <a href="#">
+            <span>
+                Control Panel
+                <br />
+                <small>Admin</small>
+            </span>
+        </a>
+    </li>
+    <li id="lnkDashboard" class="">
+        <a href="@Url.Action("Index", "AdminDashboard")" class="no-count">
+            <i class="mif-widgets"></i>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
+    <li id="lnkLicense">
+        <a href="@Url.Action("Index", "License")">
+            <span class="mif-thumbs-up icon"></span>
+            <span class="title">Solutions</span>
+
+        </a>
+    </li>
+    <li id="lnkCompany">
+        <a href="@Url.Action("Companies", "AdminDashboard")" class="no-count">
+            <span class="mif-library icon"></span>
+            <span class="title">Companies</span>
+        </a>
+    </li>
+    @*<li id="lnkPortalCategory">
+        <a href="@Url.Action("Index", "PortalCategories")" class="no-count">
+            <span class="mif-library icon"></span>
+            <span class="title">Portal Category</span>
+        </a>
+    </li>*@
+    <li id="lnkApplications">
+        <a href="@Url.Action("Index", "Application")" class="no-count">
+            <span class="mif-stack icon"></span>
+            <span class="title">Applications</span>
+        </a>
+    </li>
+    @if (admin)
+    {
+        <li id="lnkPermit" class="more">
+            <a href="#" class="no-count">
+                <span class="mif-paypal icon"></span>
+                <span class="title">License &amp; Permits</span>
+            </a>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index", "Permit")">All Licenses &amp; Permits <span class="arr"></span></a>
+                </li>
+                <li>
+                    <a href="/License/Expiring">Expiring License/Permit <span class="arr"></span></a>
+                </li>
+                <li>
+                    <a href="/License/Expired">Expired License/Permit <span class="arr"></span></a>
+                </li>
+            </ul>
+        </li>
+
+        @*<li id="lnkExpires">
+                <a href="/License/Expiring" class="no-count">
+                    <span class="mif-dollars icon"></span>
+                    <span class="title">Expiring License/Permit</span>
+                </a>
+            </li>*@
+        <li id="lnkPayTransReport" class="more">
+            <a href="#" class="no-count">
+                <span class="mif-dollars icon icon"></span>
+                <span class="title">Transactions</span>
+            </a>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Transactions", "Payment")">Payment Transactions <span class="arr"></span></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("OrphanTransaction", "Payment")">Orphan Transactions <span class="arr"></span></a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li id="lnkInvoices">
+            <a href="@Url.Action("Index", "Invoice")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Invoices</span>
+            </a>
+        </li>
+        <li id="lnkReceipts">
+            <a href="@Url.Action("Receipt", "Invoice")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Receipts</span>
+            </a>
+        </li>
+        <li id="lnkManualValue">
+            <a href="@Url.Action("ManualBank", "Payment")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Give Value</span>
+            </a>
+        </li>
+    }
+    <li id="lnkReports" class="more">
+        <a href="#" class="no-count">
+            <span class="mif-chart-line icon"></span>
+            <span class="title">Reports</span>
+        </a>
+        <ul>
+            <li>
+                <a href="@Url.Action("ApplicationReport", "Reports")">Application Report <span class="arr"></span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("PermitReport", "Reports")">Permit Report <span class="arr"></span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("PaymentSummary", "Reports")">Payment Report <span class="arr"></span></a>
+            </li>
+        </ul>
+    </li>
+    <li id="lnkBranch" class="more">
+        <a href="#" class="no-count">
+            <span class="mif-chart-line icon"></span>
+            <span class="title">Branch Setting</span>
+        </a>
+        <ul>
+            <li>
+                <a href="@Url.Action("Index", "Branch")">All Branches <span class="arr"></span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("FieldOffices", "Branch")">Field Offices <span class="arr"></span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("Zones", "Branch")">Zones <span class="arr"></span></a>
+            </li>
+            <li>
+                <a href="@Url.Action("FDtoFD", "Branch")">FD to FD <span class="arr"></span></a>
+            </li>
+        </ul>
+    </li>
+    @if (admin)
+    {
+        <li id="lnkStaff" class="more">
+            <a href="#" class="no-count">
+                <span class="mif-users icon"></span>
+                <span class="title">User Management</span>
+            </a>
+            <ul>
+                <li>
+                    <a href="@Url.Action("AllUsers", "Account")">All Users <span class="arr"></span></a>
+                </li>
+                <li class="">
+                    <a href="@Url.Action("LockedOut", "Account")">
+                        Locked Out Users
+                        <span class="arr"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "UsersAdmin")">Manage Staff <span class="arr"></span></a>
+                </li>
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li id="lnkStaff">
+            <a href="@Url.Action("Index", "UsersAdmin")">
+                <span class="mif-files-empty icon"></span>
+                <span class="title">Manage Staff</span>
+            </a>
+        </li>
+    }
+    <li id="lnkDocuments">
+        <a href="@Url.Action("Documents", "Company")">
+            <span class="mif-files-empty icon"></span>
+            <span class="title">Documents</span>
+        </a>
+    </li>
+
+</ul>
+
+<script type="text/javascript">
+    $(function () {
+        $(".more > a").click(function () {
+            var parent = $(this).parent("li");
+            if (parent.hasClass("open")) {
+                parent.removeClass("open");
+            }
+            else {
+                parent.addClass("open");
+            }
+        });
+    });
+</script>

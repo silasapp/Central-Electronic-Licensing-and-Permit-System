@@ -1,0 +1,349 @@
+﻿@using ELPS.Domain.Entities
+@using ELPS.Helpers
+@using ELPS.Models
+@model IEnumerable<vPaymentTransaction>
+
+
+@{
+    ViewBag.Title = "Payment Transactions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var lnc = (List<ELPS.Domain.Entities.AppIdentity>)ViewBag.licenses;
+    //var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+
+    var sd = (DateTime)ViewBag.SD;// == null ? "" : ViewBag.SD.ToString("dd/MM/yyyy");
+    var ed = (DateTime)ViewBag.ED;// == null ? "" : ViewBag.ED.ToString("dd/MM/yyyy");
+}
+<link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+<div class="">
+    <input type="hidden" name="url" id="url" value="@Url.Action("LazyLoadRemitaQuery", "Payment", new { startDate = ViewBag.SD, endDate = ViewBag.ED, license = ViewBag.license, category = ViewBag.category, filterparam = ViewBag.param, filterby = ViewBag.by, status = ViewBag.Status })" />
+
+    <div class="clear-float">
+        <h1 class="text-light place-left" style="margin: 0;">
+            <span class="mif-dollars icon "></span>
+            @ViewBag.Title
+        </h1>
+        <div class="clear-float"></div>
+        <div class="place-left">
+            Showing result: From @sd.ToShortDateString() to @ed.ToShortDateString() @ViewBag.ResultTitle
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    @if (ViewBag.Alert != null)
+    {
+        AlertBox alert = (AlertBox)ViewBag.Alert;
+        string alerttype = (alert.ButtonType == 4 ? "alert-danger"
+        : (alert.ButtonType == 3 ? "alert-warning"
+        : (alert.ButtonType == 2 ? "alert-info" : "alert-success")));
+
+        <div class="col-md-12">
+            <div class="alert @alerttype" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong>@alert.Title</strong> @alert.Message
+            </div>
+        </div>
+    }
+
+
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("Transactions", "Payment", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text" value="@sd.ToString("MM/dd/yyyy")">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text" value="@ed.ToString("MM/dd/yyyy")">
+                </div>
+                <select class="righty input-control" name="license" id="license" style="width:190px;">
+                    <option value="">Select License</option>
+                    <option value="0">All</option>
+                    @foreach (var item in lnc)
+                    {
+                        if (ViewBag.license != null && ViewBag.license == item.Id)
+                        {
+                            <option value="@item.Id" selected>@item.ShortName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.ShortName</option>
+                        }
+                    }
+                </select>
+
+                <select class="righty input-control" name="category" id="category" style="width:190px;">
+                    <option value="">Select Category</option>
+                    <option value="">All</option>
+                    @*@if (ViewBag.category != null && ViewBag.category == item.Id)
+                    {
+                        <option value="@item.Id" selected>@item.ShortName</option>
+                    }*@
+                </select>
+                <select class="righty input-control" name="status" id="status" style="width:190px;">
+                    @{ 
+                        var comp = ViewBag.Status != null && ViewBag.Status.ToLower() == "completed" ? "selected" : "";
+                        var ncomp = ViewBag.Status != null && ViewBag.Status.ToLower() == "not completed" ? "selected" : "";
+                    }
+                    <option value="">Select Status</option>
+                    <option value="completed" @comp>COMPLETED</option>
+                    <option value="not completed" @ncomp>NOT COMPLETED</option>
+                </select>
+                @Html.Partial("_FilterControl", Filter)
+                <input type="submit" value="Filter" class="righty button success input-append" />
+
+            }
+        </div>
+    </div>
+    <hr class="thin bg-grayLighter">
+
+    <table id="dtTable" class="table hovered border bordered striped customDT" data-role="datatble">
+        @* class="dataTable border bordered"*@
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>License (Category)</th>
+                <th>Reference</th>
+                <th>Transaction Date</th>
+                <th>RRR</th>
+                <th>Statutory</th>
+                <th>Service Charge</th>
+                <th>Other Charges</th>
+                <th>Total Paid</th>
+                <th>Status</th>
+                <th>Payment Type</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CategoryName</td>
+                        <td>@item.LicenseShortName</td>
+                        <td>@item.Transaction_Date</td>
+                        <td>@item.Transaction_Amount</td>
+                        <td>@item.Order_Id</td>
+                        <td>@item.RRR</td>
+                        <td>@item.Type</td>
+                        <td>@item.ApplicationStatus</td>
+                        <td></td>
+                    </tr>
+                }*@
+        </tbody>
+    </table>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/js/DT/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.flash.min.js"></script>
+    <script src="~/Scripts/js/DT/jszip.min.js"></script>
+    <script src="~/Scripts/js/DT/pdfmake.min.js"></script>
+    <script src="~/Scripts/js/DT/vfs_fonts.js"></script>
+    <script src="~/Scripts/js/DT/buttons.html5.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkPayTransReport").addClass("active");
+
+
+            var t = $('#dtTable');
+            var h = $('#navigationHeader');//navigationHeader
+            var pos = t.position();
+            $(window).scroll(function () {
+                var windowpos = $(window).scrollTop();
+                if (windowpos >= pos.top) {
+
+                    h.css('opacity', 0)
+                } else {
+                    h.css('opacity', 1)
+                }
+            });
+
+            $("#filterby").on('change', function () {
+                var targ = $(this).val();
+                $(this).siblings('select.selFilter').css('display', 'none');
+                $('#' + targ).css('display', 'inline-block');
+            });
+
+            $(".selFilter").on('change', function () {
+                $('#filterparam').val($(this).val());
+            });
+
+            $('.customDT').dataTable({
+                fixedHeader: true,
+                responsive: true,
+                dom: '<"grid"<"row cells3"<"cell"l><"cell"f><"cell text-right"B>>><t><"row"<"col-md-6"i><"col-md-6"p>>', //'Bfrtip',
+                buttons: [
+                    { extend: 'copy', attr: { id: 'allan' } }, 'excel', 'print'
+                ],
+                lengthMenu: [[250, 500, 1000, -1], [250, 500, 1000, "All"]],
+                "bServerSide": true,
+                "sAjaxSource": $('#url').val(),
+                "bProcessing": true,
+                "pageLength": 250,
+                "aoColumns": [
+                    { "sName": "CompanyName" },
+                    {
+                        "sName": "LicenseShortName",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[1] + ' (' + oObj[2] + ')</span>';
+                        }
+                    },
+                    {
+                        "sName": "Order_Id",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[5] + '</span>';
+                        }
+                    },    //Reference
+                    {
+                        "sName": "Transaction_Date",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[3] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "RRR",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[6] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Approved_Amount",
+                        "className": "dt-body-right",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + formatNumber(oObj[10]) + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Service_Charge",
+                        "className": "dt-body-right",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + formatNumber(parseBreakdown(oObj[12], oObj[11], 'sc')) + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Other_Charges",
+                        "className": "dt-body-right",
+                        "mRender": function (data, type, oObj) {
+                            //parseBreakdown(oObj[12]);
+                            return '<span>' + formatNumber(parseBreakdown(oObj[12], oObj[11], 'oth')) + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Transaction_Amount",
+                        "className": "dt-body-right",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + formatNumber(oObj[4]) + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Response_code",
+                        "mRender": function (data, type, oObj) {
+                            if (oObj[8] === "01" || oObj[6] === "NUPRC-ELPS") {
+                                return '<span style="color: green;" data-p="' + oObj[8] + '">COMPLETED</span>';
+                            }
+                            else {
+                                return '<span style="color: red;" data-p="' + oObj[8] + '">NOT COMPLETED</span>';
+                            }
+                        }
+                    },
+                    //ApplicationStatus
+                    //{ "sName": "Response_Description" },
+                    {
+                        "sName": "Payment_type",
+                        "mRender": function (data, type, oObj) {
+                            return '<span>' + oObj[7] + '</span>';
+                        }
+                    },
+                    {
+                        "sName": "Id",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (data, type, oObj) {
+                            if (!oObj[9]) {
+                                return '<a class="btn btn-xs btn-success" disabled href="/Payment/TransactionDetail/' + oObj[9] + '">' + 'View ' + '<i class="icon-login"></i></a>';
+                            }
+                            else {
+                                return '<a class="button info mini-button epBtn" href="/Payment/TransactionDetail/' + oObj[9] + '">' + 'View' + '<i class="icon-login"></i></a>';
+                            }
+                        }
+                    }
+                ]
+            });
+
+
+        });
+
+        function parseBreakdown(appItem, sCharge, what) {
+            //console.log(json);
+            var json = appItem;
+            var sc = 0;
+            var oth = 0;
+            if (json != null && json.length > 0) {
+                var obj = JSON.parse(json);
+                $.each(obj, function (i, item) {
+                    if (item.Group != null && item.Group.length > 0 && item.Group.toLowerCase() === 'payment') {
+                        if (item.Description != null && item.Description.length > 0) {
+                            var _desc = item.Description.split(';');
+                            $.each(_desc, function (j, dItem) {
+                                var _line = dItem.split('=');
+                                if (_line[0].trim() != null && _line[0].trim().length > 0 && _line[0].trim().toLowerCase().indexOf('service charge') >= 0) {
+                                    // Service charge
+                                    var _sc = parseFloat(_line[1].trim());
+                                    if (_sc >= 100) {
+                                        sc += _sc;
+                                    }
+                                }
+                                else {
+                                    // Other Fee
+                                    if (_line[0] != null && _line[0].trim().length > 0 && _line[0].trim().toLowerCase().indexOf('no. of times not renewed') >= 0) {
+                                        // Do nothing
+                                    }
+                                    else {
+                                        if (_line[1] != null && _line[1].trim().length > 0) {
+                                            var _oth = parseFloat(_line[1].trim());
+                                            if (_oth >= 100) {
+                                                oth += _oth;
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                            //console.log('>>> Service Charge = ' + sc + '; Others = ' + oth);
+                        }
+                    }
+                });
+            }
+            else {
+                //console.log('no data');
+            }
+
+            if (sc == 0) {
+                sc = sCharge;
+            }
+
+            if (what.toLowerCase() == 'sc') {
+                return sc;
+            }
+            else {
+                return oth;
+            }
+        }
+
+        function formatNumber(amt) {
+            return parseFloat(amt, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+        }
+    </script>
+}

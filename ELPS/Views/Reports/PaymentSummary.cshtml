@@ -1,0 +1,206 @@
+﻿@*@model IEnumerable<TheOGIS.Models.PaymentReportModel>*@
+
+@model ELPS.Models.PaymentSummaryModel
+
+
+@{
+    ViewBag.Title = "Payment Report";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var lnc = (List<ELPS.Domain.Entities.AppIdentity>)ViewBag.licenses;
+    var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+
+    var gen = Model.ReportSummary.Where(a => a.Category.Trim().ToLower() == "general").Sum(a => a.Amount);
+    var maj = Model.ReportSummary.Where(a => a.Category.Trim().ToLower() == "major").Sum(a => a.Amount);
+    var spe = Model.ReportSummary.Where(a => a.Category.Trim().ToLower() == "specialized").Sum(a => a.Amount);
+
+    var fgTotal = 0.0;
+    var dprTotal = 0.0;
+    var bo_mfTotal = 0.0;
+    var gTotal = 0.0;
+    var total = gen + maj + spe;
+}
+<link href="@Url.Content("/Content/css/dataTables.tableTools.min.css")" rel="stylesheet" />
+
+<div class="">
+    <div class="clear-float">
+        <h2 class="text-light place-left">Payment Report <small>from @ViewBag.SD.ToString("dd/MM/yyyy") to @ViewBag.ED.ToString("dd/MM/yyyy")</small>  </h2>
+
+        <div class="place-right margin10 no-margin-left no-margin-right no-margin-bottom">
+            <button class="button warning viewToggle" data-view="Summary"><span class="mif-chart-line"></span> Summary</button>
+            <button class="button success viewToggle" data-view="Combined"><span class="mif-list"></span> Combined</button>
+        </div>
+        @*<div class="place-right margin10 no-margin-left no-margin-right no-margin-bottom">
+                <button class="button success"><span class="mif-list"></span> Combined</button>
+                <button class="button warning"><span class="mif-chart-line"></span> Chart</button>
+            </div>*@
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("PaymentSummary", "Reports", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text">
+                </div>
+
+                <select class="righty input-control alt" name="t" id="t" style="width:190px;">
+                    <option value="">Select Payment Type</option>
+                    <option value="application">Application Fee</option>
+                    <option value="servicecharge">Service Charge</option>
+                    <option value="combined">Total Paid</option>
+                </select>
+                <select class="righty input-control" name="license" id="license" style="width:190px;">
+
+                    <option value="0">Select License</option>
+                    <option value="0">All</option>
+                    @*@foreach (var item in lnc)
+                    {
+                        <option value="@item.Id">@item.ShortName</option>
+                    }*@
+                </select>
+
+
+    <select class="righty input-control" name="location" id="location" style="width:190px;">
+
+        <option value="">Select Location</option>
+        <option value="">All</option>
+        @foreach (var item in stats)
+        {
+            <option value="@item.Name">@item.Name</option>
+        }
+    </select>
+                <input type="submit" value="Filter" class="righty btn btn-success input-append" />
+            }
+        </div>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+
+    <div class="" id="Chart">
+        <div class="" style="width: 100%;">
+            @Model.SummaryChart
+        </div>
+    </div>
+    <div class="marg25">
+        <br />
+        <hr class="thin bg-grayLight" />
+        <br />
+    </div>
+
+    <div class="rowx" id="Summary">
+        <div class="col-12">
+            <h3 class="txtcenter">@Model.ReportTitle</h3>
+        </div>
+
+        <div class="col-6">
+            <ul class="list-group">
+                @foreach (var item in Model.ReportSummary.GroupBy(a => a.LicenseShortName))
+            {
+                    <li class="list-group-item clear-float" >
+                        <div class="pull-left">@item.Key</div>
+                        <div class="pull-right">@item.Sum(a => a.TotalAmount).ToString("₦ ###,###,##0")</div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-3 col-off-3">
+            <div class="og-dashb-tile">
+                <div class="img">
+                    <i class="icon-refresh"></i>
+                </div>
+                <div class="details">
+                    <h2>@Model.ReportSummary.Sum(a => a.TotalAmount).ToString("₦ ###,###,##0")</h2><br />
+                    <h4>Total Payment</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="@Url.Content("/Scripts/js/dataTables.tableTools.min.js")"></script>
+    <script src="@Url.Content("/Scripts/js/dataTables.tableTools.js")"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            //$("#lnkPaymentReport").addClass("active");
+            $("#lnkReports").addClass("active open").find("a[href='/Reports/PaymentSummary']").parent("li").addClass("selected");
+
+
+            $("#btnExport").click(function (e) {
+                window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#myDataTable').html()));
+                e.preventDefault();
+            });
+
+            $.datepicker.regional[""].dateFormat = 'dd/mm/yy';
+            $.datepicker.setDefaults($.datepicker.regional['']);
+
+            @*$(".dataTable").dataTable({
+
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("AjaxifyPaymentSummary", "Reports", new { startDate = Model.StartDate, endDate = Model.EndDate, t = Model.ReportForm })',  //"/Invoice/AjaxifyInvoiceIndex",
+                "bProcessing": true,
+                "pageLength": 25,
+                "aoColumns": [
+                        { "sName": "ReceiptNo" },
+                        { "sName": "ApplicationID" },
+                        { "sName": "Company" },
+                        { "sName": "Category" },
+                        { "sName": "Amount" },
+                        { "sName": "Date" }
+
+                ],
+                "dom": 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "/Scripts/swf/copy_csv_xls_pdf.swf"
+                },
+            });*@
+
+            //$(".dataTable").dataTable({
+            //    "aLengthMenu": [25, 50, 75, 100, 200],
+            //    'iDisplayLength': 25,
+            //    columnDefs: [{ orderable: false, "targets": [-1, -3] }],
+            //    "language": {
+            //        "lengthMenu": "Display  _MENU_ records per page",
+            //        "zeroRecords": "Nothing found - sorry",
+            //        "infoEmpty": "No records available",
+            //        "infoFiltered": "(filtered from _MAX_ total records)"
+            //    }
+            //});
+
+
+            $("#Summary").hide();
+            $(".viewToggle").click(function () {
+                var view = $(this).data("view");
+
+                switch (view) {
+                    case "Chart":
+                        $("#Chart").show();
+                        $("#Summary").hide();
+                        break;
+                    case "Summary":
+                        $("#Chart").hide();
+                        $("#Summary").show();
+                        break;
+                    default:
+                        $("#Chart").hide();
+                        $("#Summary").hide();
+                        break;
+
+                }
+            });
+        });
+
+    </script>
+    <script type="text/javascript" src="@Url.Content("/Scripts/LocalChart.js")"></script>
+}

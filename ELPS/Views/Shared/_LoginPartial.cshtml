@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNet.Identity
+@using ELPS.Helpers
+@{ 
+    var username = "";
+    if (Request.IsAuthenticated)
+    {
+        username = User.Identity.Name;
+        var atIndex = username.IndexOf('@');
+        var len = (username.Length - (username.Length - atIndex));
+        username = username.Substring(0, len);
+    }
+}
+<ul class="app-bar-menu small-dropdown place-right">
+    @if (Request.IsAuthenticated)
+    {
+        <li>
+            <a href="#">@username</a>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle">My Account</a>
+            <ul class="d-menu" data-role="dropdown" data-no-close="true">
+                <li class="disabled">
+                    <a href="#" class="fg-gray">@User.Identity.GetUserName()</a>
+                </li>
+                <li class="divider"></li>
+                @*@if (!UtilityHelper.IsDPRStaff(@User.Identity.Name))
+                {*@
+                    
+                <li>
+               b     @Html.ActionLink("Change Password", "CHangePassword", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                </li>
+                @*}*@
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()" style="">Sign Out</a>
+                    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @*<a href="javascript:document.getElementById('logoutForm').submit()" style="color: #FFF; padding-left: 5px; padding-right: 5px;">Sign Out <span class="mif-exit icon"></span></a>*@
+                    }
+                </li>
+            </ul>
+        </li>
+        
+    }
+    else
+    {
+        <li>@Html.ActionLink("Signup", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Signin", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    }
+</ul>
+

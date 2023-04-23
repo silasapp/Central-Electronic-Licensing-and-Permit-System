@@ -1,0 +1,203 @@
+﻿@using ELPS.Domain.Entities
+@using ELPS.Models
+@model IEnumerable<vPermit>
+
+@{
+    ViewBag.Title = "All Licenses/Permits";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    int counter = 0;
+    var Filter = (BranchFilterModel)ViewBag.Filter;
+
+    //var lnc = (List<ELPS.Domain.Entities.AppIdentity>)ViewBag.licenses;
+    //var stats = (List<ELPS.Domain.Entities.State>)ViewBag.states;
+}
+
+@*@Scripts.Render("~/Scripts/Highcharts-4.0.4/js/highcharts.js")
+@Scripts.Render("~/Scripts/Highcharts-4.0.4/js/modules/exporting.js")*@
+
+
+<link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/fixedheader/3.1.2/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/responsive/2.1.0/css/responsive.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/buttons.dataTables.min.css" rel="stylesheet" />
+
+<script src="https://cdn.datatables.net/fixedheader/3.1.2/js/dataTables.fixedHeader.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.1.0/js/dataTables.responsive.min.js"></script>
+
+
+<div>
+    @if (ViewBag.ByCompany != null && (bool)ViewBag.ByCompany)
+    {
+        <input type="hidden" name="url" id="url" value="@Url.Action("AjaxifyPermitByCompany", "permit", new { coyName = ViewBag.CompanyName })" />
+        <div class="clear-float">
+            <h1 class="text-light">
+                Showing @ViewBag.CompanyName's Licenses/Permits
+                <span class="mif-paypal icon place-right"></span>
+            </h1>
+        </div>
+    }
+    else
+    {
+        <input type="hidden" name="url" id="url" value="@Url.Action("AjaxifyPermit", "permit", new { startDate = ViewBag.SD, endDate = ViewBag.ED, license = ViewBag.license, location = ViewBag.location })" />
+        <div class="clear-float">
+            <h1 class="text-light">
+                Licenses/Permits
+                <small>from @ViewBag.SD.ToString("dd/MM/yyyy") to @ViewBag.ED.ToString("dd/MM/yyyy")</small>
+                <span class="mif-paypal icon place-right"></span>
+            </h1>
+        </div>
+    }
+
+
+    <hr class="thin bg-grayLighter">
+
+    <div class="clear-float">
+        <div class="place-left">
+            @using (Html.BeginForm("Index", "Permit", FormMethod.Get))
+            {
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr"> From </span></button>
+                    <input name="startDate" id="startDate" type="text">
+                </div>
+
+                <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                    <button class="button"><span class="mif-calendr">To </span></button>
+                    <input name="endDate" id="endDate" type="text">
+                </div>
+                @Html.DropDownList("license", (SelectList)ViewBag.licenses, "Select License", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+
+                @Html.DropDownList("category", (SelectList)ViewBag.categories, "Select Category", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })
+
+                @*@Html.DropDownList("location", (SelectList)ViewBag.states, "Select Location", new { @style = "width:140px;margin-right: 5px;", @class = "righty input-control" })*@
+
+                @Html.Partial("_FilterControl", Filter)
+
+                <input type="submit" value="Filter" class="righty button success input-append" />
+
+            }
+            OR &nbsp;
+            @using (Html.BeginForm("Index", "Permit", FormMethod.Post))
+            {
+                <div class="input-control alt text">
+                    <input type="text" placeholder="Enter company Name" name="coyName" id="coyName" required>
+                </div>
+                <input type="submit" value="Find By Company" class="righty button success input-append" />
+
+            }
+        </div>
+    </div>
+    <hr class="thin bg-grayLighter">
+
+    <div>
+        <table id="dtTable" class="Dtable border bordered" data-role="datatble" data-auto-width="false">
+            <thead>
+                <tr>
+                    <th class="sortable-column">
+                        @Html.DisplayNameFor(model => model.Permit_No)
+                    </th>
+                    <th class="sortable-column">
+                        RRR
+                    </th>
+                    <th class="sortable-column">
+                        @Html.DisplayNameFor(model => model.CompanyName)
+                    </th>
+                    <th class="sortable-column">
+                        @Html.DisplayNameFor(model => model.LicenseShortName)
+                    </th>
+                    <th class="sortable-column">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th class="sortable-column">
+                        @Html.DisplayNameFor(model => model.Date_Issued)
+                    </th>
+                    <th class="sortable-column">
+                        @Html.DisplayNameFor(model => model.Date_Expire)
+                    </th>
+                    <th style="width: 153px;"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/js/DT/dataTables.buttons.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.flash.min.js"></script>
+    <script src="~/Scripts/js/DT/jszip.min.js"></script>
+    <script src="~/Scripts/js/DT/pdfmake.min.js"></script>
+    <script src="~/Scripts/js/DT/vfs_fonts.js"></script>
+    <script src="~/Scripts/js/DT/buttons.html5.min.js"></script>
+    <script src="~/Scripts/js/DT/buttons.print.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#lnkPermit").addClass("active");
+
+            var t = $('#dtTable');
+            var h = $('#navigationHeader');//navigationHeader
+            var pos = t.position();
+            $(window).scroll(function () {
+                var windowpos = $(window).scrollTop();
+                if (windowpos >= pos.top) {
+
+                    h.css('opacity', 0)
+                } else {
+                    h.css('opacity', 1)
+                }
+            });
+
+            $(".Dtable").dataTable({
+                fixedHeader: true,
+                responsive: true,
+                dom: '<"grid"<"row cells3"<"cell"l><"cell"f><"cell text-right"B>>><t><"row"<"col-md-6"i><"col-md-6"p>>', //'Bfrtip',
+                buttons: [
+                    { extend: 'copy', attr: { id: 'allan' } }, 'excel', 'print'
+                ],
+                "bServerSide": true,
+                "sAjaxSource": $('#url').val(),// '/Permit/AjaxifyPermit',  //"
+                "bProcessing": true,
+                "lengthMenu": [100, 250, 500, 1000], //[10, 25, 50, "All"]]
+                "pageLength": 250,
+                "aoColumns": [
+                    { "sName": "Permit_No" },
+                    { "sName": "RRR" },
+                    { "sName": "CompanyName" },
+                    { "sName": "LicenseShortName" },
+                    { "sName": "CategoryName" },
+                    { "sName": "Date_Issued" },
+                    { "sName": "Date_Expire" },
+                    {
+                        "sName": "id",
+                        "bSearchable": false,
+                        "bSortable": false,
+                        "mRender": function (data, type, oObj) {
+                            // alert(oObj);
+                            return '<a class="button small-button info" target="_blank" href="/Permit/ViewPermit/' + oObj[7] + '">' + 'View' + '<i class="icon-login"></i></a> ';
+                        }
+                    }
+                ],
+                "createdRow": function (row, data, dataIndex) {
+                    if (data[8] === 'True') {
+                        $(row).addClass('bg-danger');
+                    }
+                }
+            });
+
+            $("#filterby").on('change', function () {
+                var targ = $(this).val();
+                $(this).siblings('.selFilter').css('display', 'none');
+                $('#' + targ).css('display', 'inline-block');
+            });
+
+            $(".selFilter").on('change', function () {
+                $('#filterparam').val($(this).val());
+            });
+        });
+    </script>
+}

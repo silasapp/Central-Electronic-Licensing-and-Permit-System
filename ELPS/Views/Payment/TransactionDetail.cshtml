@@ -1,0 +1,127 @@
+﻿@model ELPS.Domain.Entities.vPaymentTransaction
+@*@using TheOGIS.Helpers;*@
+
+@{
+    ViewBag.Title = "Transaction Detail";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    decimal amt = Convert.ToDecimal(Model.Transaction_Amount);
+}
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">@ViewBag.Title: @Model.Order_Id</h1>
+    </div>
+</div>
+<hr class="thin bg-grayLighter">
+
+<div class="">
+    @if (ViewBag.Alert != null)
+    {
+    ELPS.Helpers.AlertBox alert = (ELPS.Helpers.AlertBox)ViewBag.Alert;
+        string alerttype = (alert.ButtonType == 4 ? "alert-danger"
+        : (alert.ButtonType == 3 ? "alert-warning"
+        : (alert.ButtonType == 2 ? "alert-info" : "alert-success")));
+
+        <div class="col-md-12">
+            <div class="alert @alerttype" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong>@alert.Title</strong> @alert.Message
+            </div>
+        </div>
+    }
+
+    <div class="flex-grid">
+        <div class="row cells2">
+            <div class="cell colspan5">
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.CompanyName)
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.CompanyName, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.LicenseShortName, "License Name")
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.LicenseShortName, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.Reference_Number, "Reference Number")
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.Reference_Number, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    <label>Approved Amount</label>
+                    <div class="input-control alt text info full-size">
+                        <button class="button">₦</button>
+                        <input type="text" readonly value="@Convert.ToInt32(Model.Approved_Amount).ToString("###,##0.00")" />
+                    </div>
+                </div>
+                @*<div class="form-group padding10">
+                    @Html.LabelFor(model => model.ServiceCharge, "Service Charge")
+                    <div class="input-control alt text info full-size">
+                        <button class="button">₦</button>
+                        <input type="text" readonly value="@Convert.ToInt32(Model.ServiceCharge).ToString("###,##0.00")" />
+                    </div>
+                </div>*@
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.Transaction_Amount, "Transaction Amount")
+                    <div class="input-control alt text info full-size">
+                        <button class="button">₦</button>
+                        <input type="text" readonly value="@Convert.ToInt32(Model.Transaction_Amount).ToString("###,##0.00")" />
+                        @*@Html.TextBoxFor(model => model.Transaction_Amount, new { @class = "", @readonly = "readonly" })*@
+                    </div>
+                </div>
+
+            </div>
+            <div class="cell colspan5">
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.Type, "Payment Source")
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.Type, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.RRR)
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.RRR, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.Response_Code, "Response Code")
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.Response_Code, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.Response_Description, "Response Description")
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.Response_Description, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="form-group padding10">
+                    @Html.LabelFor(model => model.Transaction_Date, "Transaction Date")
+                    <div class="input-control text info full-size">
+                        @Html.TextBoxFor(model => model.Transaction_Date, new { @class = "", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $("#lnkPayTransReport").addClass("active");
+    });
+</script>

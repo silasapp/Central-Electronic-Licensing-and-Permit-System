@@ -1,0 +1,399 @@
+﻿@error: #ce352c;
+
+
+.validation-summary-errors {
+    &.text-danger {
+        color: @error;
+    }
+
+    ul {
+        margin: 15px 0;
+    }
+}
+
+body {
+    width: 100%;
+    background: #333 url('Images/bg.png') repeat left top;
+    font-size: 15px;
+    position: relative;
+    line-height: 1.7;
+}
+
+.notify-text {
+    padding-top: 5px !important;
+    border-top: 1px solid #f9f9f9;
+    margin-top: 5px;
+}
+
+a.epBtn {
+    display: inline-block;
+
+    &.small-button {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    &.mini-button {
+        padding-top: .2rem;
+    }
+}
+
+.backScreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /*background: #333 url('Images/bg_big.jpg') no-repeat center center;*/
+    img {
+        width: 100%;
+    }
+
+    .cover {
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+.pad {
+    padding: 10px;
+}
+
+.pad20 {
+    padding: 20px;
+}
+
+.pad20-h {
+    padding: 0 20px;
+}
+
+.pad20-v {
+    padding: 20px 0;
+}
+
+.thin1, .thin4, .thing6 {
+    font-weight: 100;
+    font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+.thin4 {
+    font-weight: 400;
+}
+
+.thin6 {
+    font-weight: 600;
+}
+
+.lefty {
+    float: left;
+}
+
+.righty {
+    float: right;
+}
+
+.portal {
+    height: 365px;
+    overflow-y: scroll;
+
+    a {
+        .portal-tile {
+            width: 200px;
+            height: 100px;
+            text-align: center;
+            float: left;
+            margin: 10px;
+            background-color: rgba(0, 0, 0, 0.10);
+            transition: all 0.2s ease-in-out;
+            position: relative;
+
+            h1 {
+                font-size: 35px;
+                line-height: 40px;
+                margin: 0;
+                color: #FFF;
+                text-shadow: 0px 0px 9px #000000;
+                transition: all 0.3s ease-in-out;
+                position: absolute;
+                top: 30px;
+                width: 100%;
+                text-align: center;
+            }
+
+            p {
+                position: absolute;
+                top: 45px;
+                width: 100%;
+                margin: 0;
+                line-height: 15px;
+                padding: 0 5px;
+                opacity: 0;
+                transition: all 0.3s ease-in-out;
+                color: #FFF;
+            }
+        }
+
+        &:hover {
+            .portal-tile {
+                background-color: rgba(0, 0, 0, 0.40);
+                box-shadow: 0px 0px 4px #000000;
+
+                h1 {
+                    top: 15px;
+                }
+
+                p {
+                    opacity: 1;
+                    top: 60px;
+                }
+            }
+        }
+    }
+}
+
+a.button, span.button, div.button, a.round-button, span.round-button, div.round-button, a.cycle-button, span.cycle-button, div.cycle-button, a.square-button, span.square-button, div.square-button {
+    &.mini-button {
+        padding-top: 0.2rem;
+    }
+}
+
+a, a:visited {
+    color: #018a01;
+}
+
+#body-container {
+    width: 100%;
+    position: relative;
+    color: #000;
+
+    .wrapper {
+        width: 80%;
+        margin: 0 auto;
+        background-color: rgba(255, 255, 255, 0.85);
+        padding: 0;
+        box-shadow: 0px 0px 5px 0px #ddd;
+
+        .content {
+            padding: 60px 0 0;
+        }
+    }
+
+    .header {
+        background-color: #128023;
+        height: 60px;
+        width: 80%;
+        position: fixed;
+        margin: 0 auto;
+        z-index: 1000;
+        box-shadow: 0 2px 3px 0px #4b4b4b;
+        padding: 3px 12px;
+
+        .logo {
+            .img {
+                width: 55px;
+                height: 55px;
+                border-radius: 50%;
+                border: 2px solid #f7f7f7;
+                .lefty;
+                margin-right: 10px;
+            }
+
+            .logo-text {
+                .lefty;
+                font-weight: 700;
+                font-size: 1.9rem;
+                color: #fff;
+                text-shadow: 2px 2px 3px #151515;
+                /*-webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;*/
+            }
+        }
+    }
+
+    .loginForm {
+        width: 40%;
+        float: left;
+        background: rgba(23, 144, 41, 0.71) url('/Content/Images/bg_big.jpg') no-repeat center center;
+        background-size: cover;
+        position: relative;
+        padding: 40px;
+
+        &:before {
+            position: absolute;
+            content: " ";
+            display: block;
+            width: 100%;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: rgba(18, 128, 35, 0.5);
+        }
+
+        a {
+            color: #029202;
+        }
+
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            margin: 50px 0;
+            padding: 20px 0;
+
+            .label, .placeholder {
+                color: #000;
+            }
+
+            .iconic {
+                color: #000;
+            }
+        }
+
+        .input-control {
+            .button {
+                background-color: rgba(255, 255, 255, 0.00) !important;
+                top: 15px;
+                color: #000;
+            }
+        }
+
+        .center-login-logo {
+            width: 130px;
+            margin: 0 auto;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .center-login-header {
+            text-align: center;
+        }
+
+        .input-control, .form-actions [type="submit"] {
+            width: 80%;
+        }
+    }
+
+    .infoSide {
+        width: 60%;
+        padding-top: 40px;
+        float: left;
+        /*border-left: 1px solid #ddd;*/
+        .portal-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 25px;
+            width: auto;
+
+            li {
+                float: left;
+                width: 48%;
+                margin-right: 1%;
+                margin-bottom: 10px;
+                padding-left: 20px;
+                height: 60px;
+                display: flex;
+                justify-content: flex-start; /* align horizontal */
+                align-items: center; /* align vertical */
+                img {
+                    max-height: 60px;
+                }
+
+                a {
+                    transition: 0.2s all ease-in-out;
+
+                    &:hover {
+                        box-shadow: 0px 2px 4px 1px #ccc;
+                    }
+                }
+            }
+        }
+    }
+
+    footer {
+        /*width: 100%;*/
+        padding: 10px;
+        /*margin-left: -10px;
+        margin-right: -10px;*/
+        border-top: 1px solid #ddd;
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+
+            li {
+                float: left;
+                padding: 3px 12px;
+                border-right: 1px solid #ddd;
+
+                &:last-child {
+                    border-right: 0;
+                }
+            }
+        }
+    }
+}
+
+input, textarea, select {
+    &:autofill, &:-webkit-autofill {
+        background-color: transparent !important;
+        background-image: none;
+        color: rgb(0, 0, 0);
+    }
+}
+
+@media (max-width: 480px) {
+    .visible-sm {
+        display: block;
+    }
+
+    .hidden-sm {
+        display: none;
+    }
+
+    #body-container {
+        .loginForm {
+            width: 100% !important;
+
+            > Form > div {
+                padding: 20px !important;
+            }
+        }
+
+        .infoSide {
+            width: 100% !important;
+        }
+    }
+
+    .backScreen {
+        /*position: absolute;
+        width: 100%;
+        height: 100%;*/
+        /*background: #333 url('Images/bg_big.jpg') no-repeat center center;*/
+        img {
+            height: 100%;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    #body-container {
+        .wrapper {
+            width: 95%;
+        }
+
+        .loginForm {
+            width: 45%;
+            margin-top: 0;
+
+            > Form > div {
+                padding: 20px !important;
+            }
+        }
+
+        .infoSide {
+            width: 54%;
+        }
+    }
+}

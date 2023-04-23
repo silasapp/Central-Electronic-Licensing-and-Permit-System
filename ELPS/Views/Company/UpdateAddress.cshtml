@@ -1,0 +1,231 @@
+﻿@model ELPS.Domain.Entities.vAddress
+
+
+@using ELPS.Domain.Entities
+
+@{
+    ViewBag.Title = "Update Address";
+    Layout = null;
+    string form = string.Empty;
+    //if (ViewBag.View != null && ViewBag.View == "application")
+    //{
+    //    form = "CompanyAddressUpdate";
+    //}
+    //else
+    //{
+    //    form = "UpdateAddress";
+    //}
+}
+
+@using (Html.BeginForm("CompanyAddressUpdate", "Company", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "Complete the missing fields", new { @class = "text-danger" })
+
+    vAddress add1 = Model == null ? new vAddress() : Model;
+    vAddress add2 = (ViewBag.opAdd == null ? new vAddress() : (vAddress)ViewBag.opAdd);
+
+    <input type="hidden" name="compId" id="compId" value="@ViewBag.CompanyId" />
+    var v = ViewBag.AddressComplete != null && (bool)ViewBag.AddressComplete == true ? 1 : 0;
+    
+    <input type="hidden" id="AddressComplete" value="@v" />
+
+    <h4>Company Address</h4>
+    <hr />
+    <div class="grid">
+        <div class="row cells2">
+            <div class="cell size6">
+                <div class="panel success">
+                    <div class="heading panel-call-button">
+                        <span class="icon mif-home"></span>
+                        <span class="title">Registered Address</span>
+                    </div>
+
+                    <div class="content padding10">
+                        <div class="form-group">
+                            <input type="hidden" name="model[0].id" value="@add1.Id" />
+                            <label>Street Address Line 1</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control text full-size">
+                                <input type="text" name="model[0].address_1" class="form-control" value="@add1.address_1" tabindex="1" required />
+                                @Html.ValidationMessageFor(model => add1.address_1, "", new { @class = "text-danger" })
+                                <input type="hidden" name="model[0].address_2" class="form-control noreq" value="@add1.address_2" tabindex="2" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>City</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control text full-size">
+                                <input type="text" name="model[0].City" class="form-control" value="@add1.City" tabindex="1" required />
+                                @Html.ValidationMessageFor(model => add1.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Postal Code</label><br />
+                            <div class="input-control text">
+                                <input type="text" name="model[0].postal_code" class="form-control noreq" value="@add1.postal_code" tabindex="4" />
+                                @Html.ValidationMessageFor(model => add1.postal_code, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Country_Id2">Select Country</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control select full-size">
+                                @{ var country = (List<Country>)ViewBag.country; }
+                                <select required name="model[0].Country_Id" id="Country_Id" class="form-control countrySelect" data-state="StateId1" tabindex="5">
+                                    <option value="">Select Country</option>
+                                    @foreach (var item in country)
+                                    {
+                                        if (item.Id == add1.Country_Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => add1.Country_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="stateToFeedLabel">
+                                <label for="StateId1">Select State</label>&nbsp;<span class="req">*</span>
+                            </div>
+                            <div class="input-control select full-size">
+                                <input type="hidden" name="partial_state" id="partial_state" value="@add1.Country_Id" />
+                                <select required name="model[0].StateId" id="StateId1" data-state="StateId1" class="form-control" tabindex="6">
+                                    <option value="">Select State</option>
+                                    @if (add1.StateId > 0)
+                                    {
+                                        <option value="@add1.StateId" selected>@add1.StateName</option>
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => add1.StateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cell size6">
+                <div class="panel" id="DiffOPAddDiv">
+                    <div class="heading">
+                        <span class="icon mif-home"></span>
+                        <span class="title">Operational Address</span>
+                    </div>
+                    <div class="content padding10">
+                        <div class="form-group">
+                            <input type="hidden" name="model[1].id" value="@add2.Id" />
+                            <label>Street Address Line 1</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control text full-size">
+                                <input type="text" name="model[1].address_1" class="form-control" value="@add2.address_1" tabindex="1" disabled />
+                                @Html.ValidationMessageFor(model => add2.address_1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>City</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control text full-size">
+                                <input type="text" name="model[1].City" class="form-control" value="@add2.City" tabindex="10" disabled />
+                                @Html.ValidationMessageFor(model => add2.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Postal Code</label><br />
+                            <div class="input-control text">
+                                <input type="text" name="model[1].postal_code" class="form-control excl" value="@add2.postal_code" tabindex="11" disabled />
+                                @*@Html.EditorFor(m => add2.postal_code, new { htmlAttributes = new { @id="model[1].postal_code", @class = "form-control", @tabindex = "11"} })*@
+                                @Html.ValidationMessageFor(model => add2.postal_code, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="Country_Id2">Select Country</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control select full-size">
+                                @{ var country2 = (List<Country>)ViewBag.country; }
+                                <select name="model[1].Country_Id" id="Country_Id2" class="form-control countrySelect" disabled data-state="StateId2" tabindex="12">
+                                    <option value="">Select Country</option>
+
+                                    @foreach (var item in country2)
+                                    {
+                                        if (item.Id == add2.Country_Id)
+                                        {
+                                            <option value="@item.Id" selected>@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => add2.Country_Id, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="StateId2">Select State</label>&nbsp;<span class="req">*</span>
+                            <div class="input-control select full-size">
+                                @*@{ var state2 = (List<State>)ViewBag.state; }*@
+                                <select name="model[1].StateId" id="StateId2" class="form-control " disabled tabindex="13">
+                                    <option value="">Select State</option>
+                                    @if (add2.StateId > 0)
+                                    {
+                                        <option value="@add2.StateId" selected>@add2.StateName</option>
+                                    }
+                                </select>
+                                @Html.ValidationMessageFor(model => add2.StateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <div class="form-group company">
+                <input type="hidden" name="name" id="sameAdd" value="@ViewBag.sameAdd" />
+                <input type="hidden" name="opAddLine1" id="opAddLine1" value="@add2.address_1" />
+
+                <label class="input-control checkbox" for="DiffOpAdd">
+                    @if (ViewBag.SameAdd != null && (bool)ViewBag.SameAdd)
+                    {
+                        <input type="checkbox" id="DiffOpAdd" name="DiffOpAdd"  />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="DiffOpAdd" name="DiffOpAdd" checked />
+                    }
+                    <span class="check"></span>
+                    <span class="caption">Registered Address is different from Operational Address?</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="txtcenter">
+                @if (ViewBag.View != null)
+                {
+                    // Application in Progress
+                    int dirCount = (ViewBag.CompDirs != null ? int.Parse(ViewBag.CompDirs) : 0);
+                    int stfCount = (ViewBag.CompStaff != null ? int.Parse(ViewBag.CompStaff) : 0);
+                    
+                    if (!string.IsNullOrEmpty(add1.address_1) && !string.IsNullOrEmpty(add1.City) && dirCount > 0 && stfCount > 0)
+                    {
+                        int id = (int)Session["ApplicationId"];
+                        //Not a first timer as Address is already filled before, Can skip to Application Document
+                        <input type="submit" value="Save Address & Continue" class="btn btn-success" style="" tabindex="14" /><p>&nbsp; OR &nbsp;</p>
+                        <a href="/Application/AppDocument/@id" class="btn btn-primary">Continue to Application Document</a>
+                    }
+                    else
+                    {
+                        <input type="submit" value="Save Address & Continue" class="button success" style="" tabindex="14" />
+                    }
+                }
+                else
+                {
+                    <input type="submit" value="Update Address" class="button success block-shadow-success" style="" tabindex="14" />
+                }
+
+            </div>
+        </div>
+    </div>
+
+}

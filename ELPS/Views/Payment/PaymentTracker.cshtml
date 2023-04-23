@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "PaymentTracker";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div>
+    <div class="clear-float">
+        @using (Html.BeginForm("Payment_Tracker", "Payment", FormMethod.Post, new { @id = "frmTrack" }))
+        {
+            <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                <button class="button"><span class="mif-calendr"> From </span></button>
+                <input name="sd" id="startDate" type="text">
+            </div>
+            <div class="input-control alt text" data-role="datepicker" data-format="mm/dd/yyyy">
+                <button class="button"><span class="mif-calendr">To </span></button>
+                <input name="ed" id="endDate" type="text">
+            </div>
+            <input type="submit" value="FIX !" class="righty btn btn-success input-append" />
+        }
+    </div>
+
+    <div class="clear-float">
+        @using (Html.BeginForm("Payment_Tracker_Single", "Payment", FormMethod.Post, new { @id = "frmTrackSingle" }))
+        {
+            <div class="input-control alt text">
+                <input name="reference" id="reference" placeholder="Enter reference number" type="text">
+            </div>
+            <input type="submit" value="FIX !" class="righty btn btn-success input-append" />
+        }
+    </div>
+</div>

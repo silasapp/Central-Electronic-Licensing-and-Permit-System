@@ -1,0 +1,74 @@
+﻿@model IEnumerable<ELPS.Domain.Entities.Application>
+
+@{
+    Layout = null;
+    int count = 0;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CompanyApplication</title>
+</head>
+<body>
+
+    <table class="table border bordered hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.CompanyId)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.LicenseName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+            </tr>
+        </thead>
+    
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <td>
+                        @count
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryName)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.CompanyId)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LicenseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    
+    </table>
+</body>
+</html>

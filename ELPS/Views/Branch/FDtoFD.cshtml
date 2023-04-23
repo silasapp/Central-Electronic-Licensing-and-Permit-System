@@ -1,0 +1,72 @@
+﻿@using ELPS.Domain.Entities
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "FDtoFD";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var fdMap = (List<IGrouping<string, vFD_FD>>)ViewBag.Model;
+    int count = 0;
+}
+
+
+
+<div class="clear-float">
+    <h1 class="text-light place-left">FD to FD Mapping</h1>
+
+    <div class="place-right">
+        @Html.ActionLink("New Mapping", "AddFDtoFD", "Branch", null, new { @class = "button primary" })
+    </div>
+    <hr class="clear thin bg-grayLight" />
+    @if (ViewBag.Alert != null)
+    {
+        AlertModel alert = (AlertModel)ViewBag.Alert;
+        string alerttype = (alert.AlertType == "fail" ? "alert-danger"
+        : (alert.AlertType == "warn" ? "alert-warning"
+        : (alert.AlertType == "info" ? "alert-info" : "alert-success")));
+
+        <div class="col-md-12">
+            <div class="alert @alerttype" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <strong>@alert.Title</strong> @alert.Message
+            </div>
+        </div>
+    }
+</div>
+<table class="table dataTable">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>
+               Field Office
+            </th>
+            <th>
+                States Covered
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in fdMap)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @foreach (var x in item)
+                    {
+                        <span class="tag primary">@x.StateName</span>
+                    }
+                </td>
+                <td class="align-right">
+                    @*@Html.ActionLink("Edit", "CreateZone", new { id = item.Id }, new { @class = "button warning mini-button epBtn2" })
+                    @Html.ActionLink("Archive", "Delete", new { id = item.Id }, new { @class = "button Danger mini-button epBtn2" })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

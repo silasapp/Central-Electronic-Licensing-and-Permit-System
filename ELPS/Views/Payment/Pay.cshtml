@@ -1,0 +1,264 @@
+﻿@model ELPS.Domain.Entities.Payment_Transaction
+@using ELPS.Domain.Entities
+@using ELPS.Models
+@using System.Linq
+@using System.Collections
+@using System.Collections.Generic
+
+@{
+    ViewBag.Title = "Permit Application Payment";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+    double amt = Convert.ToDouble(Model.Approved_Amount);
+    double sCharge = Convert.ToDouble(Model.ServiceCharge);
+    double tot = Convert.ToDouble(Model.Transaction_Amount);
+
+    var payment = Model.ApplicationItems != null && Model.ApplicationItems.Any() ? Model.ApplicationItems.Where(a => !string.IsNullOrEmpty(a.Group) && (a.Group.ToLower() == "payment" || a.Group.ToLower() == "paybreak")).FirstOrDefault() : null;
+}
+
+<div class=" clear-float">
+    <div class="place-right pad20-h align-right" style="">
+        <h2 class="thin1">Payment for @ViewBag.License</h2>
+        <small>@ViewBag.LicenseShortName</small>
+    </div>
+</div>
+<hr class="bg-green" />
+
+
+<div class="pad20-h">
+    <h3 class="thin4">Application Details</h3>
+
+    <p>
+        You have just taken your first step towards submitting your application online. Your application processing shall commence upon confirmation of payment.
+        <br />The following information is required to make payment for this application.
+    </p>
+    <div class="grid">
+        <div class="row cells2">
+            <div class="cell size7">
+                <div class="padding20">
+                    <table class="table">
+                        <tr>
+                            <td>Remita Retrieval Reference (RRR)</td>
+                            <td class="align-right"><h4><b>@Model.RRR</b></h4></td>
+                        </tr>
+                        <tr>
+                            <td>Statutory Permit Fee</td>
+                            <td class="align-right">@amt.ToString("₦ ###,##0.00")</td>
+                        </tr>
+                        @if (payment == null || string.IsNullOrEmpty(payment.Description))
+                        {
+                            <tr>
+                                <td>Service Charge</td>
+                                <td class="align-right">@sCharge.ToString("₦ ###,##0.00")</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            var _breaks = payment.Description.Split(';');
+                            foreach (var b in _breaks)
+                            {
+                                if (!string.IsNullOrEmpty(b))
+                                {
+                                    var key = b.Trim().Split('=')[0];
+                                    if (!b.Contains("="))
+                                    {
+                                        <tr>
+                                            <td>@key</td>
+                                            <td class="align-right" style="vertical-align: top;">
+                                                &nbsp;
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        var _val = b.Trim().Split('=')[1];
+                                        Double value = 0;
+                                        var ok = Double.TryParse(_val, out value);
+                                        <tr>
+                                            <td>@key</td>
+                                            <td class="align-right" style="vertical-align: top;">
+                                                @if (ok && value >= 100)
+                                                {
+                                                    <span>&#8358; @value.ToString("N2")</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>@_val</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        }
+                        <tr style="border-top: 1px dashed #888;">
+                            <td><strong>Total</strong></td>
+                            <td class="align-right"><strong>@tot.ToString("₦ ###,##0.00")</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="cell size5">
+                <div class="padding20">
+                    @if (Model.ApplicationItems != null && Model.ApplicationItems.Count > 0)
+                    {
+                        <input type="hidden" value="@Model.ApplicationItems.Count" />
+                        <table class="table">
+                            @foreach (var items in Model.ApplicationItems.GroupBy(a => a.Group))
+                            {
+                                if (string.IsNullOrEmpty(items.Key) || (items.Key.ToLower() != "payment" && items.Key.ToLower() != "paybreak"))
+                                {
+                                    <tr>
+                                        <td colspan="2"><h4 class="thin1">@items.Key</h4></td>
+                                    </tr>
+                                    foreach (var item in items)
+                                    {
+                                        <tr>
+                                            <td style="vertical-align: top;">@item.Name</td>
+
+                                            <td>@item.Description</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            @if (Model.Document_Types != null && Model.Document_Types.Any())
+                            {
+                                <tr>
+                                    <td colspan="2">
+                                        <h4 class="thin1">Required Documents</h4>
+                                        <ul class="list-group">
+                                            @foreach (var item in Model.Document_Types)
+                                            {
+                                                <li class="list-group-item">@item.Name</li>
+                                            }
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr class="bg-green" />
+
+<div class="row xrow">
+    <form action="@System.Configuration.ConfigurationManager.AppSettings["RemitaUrl"]" id="PaymentForm" name="SubmitRemitaForm" method="post" class="form-horizontal">
+
+        <input type="hidden" name="orderId" value="@Model.Order_Id" />
+        <div class="remitaBand">
+            <div class=" pad20-h">
+                <div class="logo lefty">Pay with <img src="@Url.Content("/Content/Images/remita.png")" alt="" /></div>
+                <div class="clear"></div>
+                @*<div class="small"><small>(Select you preferred payment option and click the Continue button)</small></div>*@
+            </div>
+            <hr class="clear bg-green" />
+            <div class=" pad20-h">
+                @if (ViewBag.webPayData != null)
+                {
+                    var wp = (ELPS.Models.RemitaSplit)ViewBag.webPayData;
+                    <input name="merchantId" value="@wp.merchantId" type="hidden">
+                    <input name="hash" value="@wp.hash" type="hidden">
+                    <input name="rrr" value="@Model.RRR.Trim()" type="hidden">
+                    <input name="responseurl" value="@wp.responseurl" type="hidden">
+                    <input name="orderId" value="@wp.orderId" type="hidden">
+                    <input type="hidden" name="paymenttype" value="MASTERCARD">
+
+                    <div class="grid">
+                        <div class="row cells3">
+                            <div class="cell size4">
+                                <div class="panel">
+                                    <div class="heading">
+                                        <span class="icon mif-mastercard"></span>
+                                        <span class="title">Verve &amp; MASTERCARD</span>
+                                    </div>
+                                    <div class="content" style="padding: 10px;">
+                                        @*<label class="input-control checkbox">
+                                                <input type="radio" required name="paymenttype" id="MASTERCARD" value="MASTERCARD">
+                                                <span class="check"></span>
+                                                <span class="caption">Pay with Verve or MasterCard</span>
+                                            </label>
+                                            <br />*@
+                                        <small>Pay online now your Verve or MasterCard cards through Remita.</small>
+                                        <br /><br />
+                                        <img src="~/Content/Images/Verve_Mastercard.gif" style="height: 38px;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cell size4">
+                                <div class="panel">
+                                    <div class="heading">
+                                        <span class="icon mif-visa"></span>
+                                        <span class="title">VISA CARD</span>
+                                    </div>
+                                    <div class="content" style="padding: 10px;">
+                                        @*<label class="input-control checkbox">
+                                                <input type="radio" required name="paymenttype" id="VISA" value="VISA">
+                                                <span class="check"></span>
+                                                <span class="caption">Pay with VISA CARD</span>
+                                            </label>
+                                            <br />*@
+                                        <small>Pay online now your Visa cards through Remita.<br /></small>
+                                        <br /><br />
+                                        <img src="~/Content/Images/visa300.jpg" style="height: 38px;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cell size4">
+                                <div class="panel">
+                                    <div class="heading">
+                                        <span class="icon mif-library"></span>
+                                        <span class="title">BANK</span>
+                                    </div>
+                                    <div class="content" style="padding: 10px;">
+                                        @*<label class="input-control checkbox">
+                                                <input type="radio" required name="paymenttype" id="RRRGEN" value="RRRGEN">
+                                                <span class="check"></span>
+                                                <span class="caption">Pay at the Bank, ATM Or POS</span>
+                                            </label>
+                                            <br />*@
+                                        <small>Walk into any of the banks below to pay with your Remita Retrieval Reference Code (<b>@Model.RRR</b>).</small>
+                                        <br /><br />
+                                        <img src="~/Content/Images/other_remitas.gif" style="height: 37px;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="cell align-center">
+                                <input type="submit" name="submit_btn" class="button success" value="Confirm & Continue to Remita" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+
+            $('#paymentTypeOnline').prop('checked', 'checked');
+
+            //$('#paymentTypeBank').click(function () {
+            $('#RRRGEN').click(function () {
+
+                var pf = $('#PaymentForm');
+                pf.prop('action', '/Payment/RemitaPayment')
+            });
+
+            $('#paymentTypeOnline, #MASTERCARD, #VISA').click(function () {
+
+                var pf = $('#PaymentForm');
+                pf.prop('action', '@System.Configuration.ConfigurationManager.AppSettings["RemitaUrl"]')
+            });
+        })
+
+    </script>
+}

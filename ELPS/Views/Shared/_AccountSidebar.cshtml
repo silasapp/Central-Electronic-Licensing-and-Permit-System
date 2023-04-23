@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+}
+
+    <ul class="">
+        <li>
+            <a href="#">
+                <span>
+                    Control Panel
+                    <br />
+                    <small>Account</small>
+                </span>
+            </a>
+        </li>
+        <li id="lnkDashboard" class="">
+            <a href="@Url.Action("Index", "AdminDashboard")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Dashboard</span>
+            </a>
+        </li>
+        <li id="lnkCompany">
+            <a href="@Url.Action("Companies", "AdminDashboard")" class="no-count">
+                <span class="mif-library icon"></span>
+                <span class="title">Companies</span>
+            </a>
+        </li>
+        <li id="lnkApplications">
+            <a href="@Url.Action("Index", "Application")" class="no-count">
+                <span class="mif-stack icon"></span>
+                <span class="title">Applications</span>
+            </a>
+        </li>
+        <li id="lnkPayTransReport" class="more">
+            <a href="#" class="no-count">
+                <span class="mif-dollars icon icon"></span>
+                <span class="title">Transactions</span>
+            </a>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Transactions", "Payment")">Payment Transactions <span class="arr"></span></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("OrphanTransaction", "Payment")">Orphan Transactions <span class="arr"></span></a>
+                </li>
+            </ul>
+        </li>
+
+        <li id="lnkReport">
+            <a href="@Url.Action("GenerateReport", "Reports")" class="no-count">
+                <span class="mif-dollars icon"></span>
+                <span class="title">Generate Report</span>
+            </a>
+        </li>
+        <li id="lnkInvoices">
+            <a href="@Url.Action("Index", "Invoice")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Invoices</span>
+            </a>
+        </li>
+        <li id="lnkReceipts">
+            <a href="@Url.Action("Receipt", "Invoice")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Receipts</span>
+            </a>
+        </li>
+        <li id="lnkPayReport">
+            <a href="@Url.Action("PaymentSummary", "Reports")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Payment Report</span>
+            </a>
+        </li>
+        <li id="lnkAppReport">
+            <a href="@Url.Action("ApplicationReport", "Reports")" class="no-count">
+                <span class="mif-apps icon"></span>
+                <span class="title">Application Report</span>
+            </a>
+        </li>
+        <li id="lnkPermit" class="more">
+            <a href="#" class="no-count">
+                <span class="mif-paypal icon"></span>
+                <span class="title">License &amp; Permits</span>
+            </a>
+            <ul>
+                <li>
+                    <a href="@Url.Action("Index", "Permit")">All Licenses &amp; Permits <span class="arr"></span></a>
+                </li>
+                <li>
+                    <a href="/License/Expiring">Expiring License/Permit <span class="arr"></span></a>
+                </li>
+                <li>
+                    <a href="/License/Expired">Expired License/Permit <span class="arr"></span></a>
+                </li>
+            </ul>
+        </li>
+        @*<li id="lnkPermit" class="">
+            <a href="@Url.Action("Index", "Permit")" class="no-count">
+                <span class="mif-paypal icon"></span>
+                <span class="title">Licenses/Permits</span>
+            </a>
+        </li>
+        <li id="lnkExpires">
+            <a href="/License/Expiring" class="no-count">
+                <span class="mif-dollars icon"></span>
+                <span class="title">Expiring License/Permit</span>
+            </a>
+        </li>*@
+    </ul>
+
+<script type="text/javascript">
+    $(function () {
+        $(".more > a").click(function () {
+            var parent = $(this).parent("li");
+            if (parent.hasClass("open")) {
+                parent.removeClass("open");
+            }
+            else {
+                parent.addClass("open");
+            }
+
+        });
+    });
+</script>

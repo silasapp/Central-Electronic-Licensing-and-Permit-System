@@ -1,0 +1,117 @@
+﻿@model ELPS.Domain.Entities.Branch
+@using ELPS.Models
+
+@{
+    ViewBag.Title = "Create New Field Office";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+}
+
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Add New Field Office</h1>
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @*<input type="hidden" name="BranchCode" id="BranchCode" value="." />*@
+        <div class="flex-grid">
+            <div class="row cells2">
+                <div class="cell colspan5">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, "Field Office Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @placeholder = "e.g. Warri Field Office" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, "Location Address")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @placeholder = "e.g. Sapele road" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StateId, "State Located")
+                        <div class="input-control select full-size">
+                            @Html.DropDownListFor(model => model.StateId, (SelectList)ViewBag.States, htmlAttributes: new { @class = "", @required = "required" })
+                            @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                            @*<input type="text" name="appEmail" id="appEmail" required />*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="input-control checkbox">
+                            @if (ViewBag.IsField != null && (bool)ViewBag.IsField == true)
+                            {
+                                <input type="checkbox" checked disabled />
+                                @Html.HiddenFor(model => model.IsFieldOffice) @*, new { htmlAttributes = new { @class = "", @readonly = "readonly" } })*@
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.IsFieldOffice, new { htmlAttributes = new { @class = "" } })
+                            }
+                            <span class="check"></span>
+                            <span class="caption">It's a Field Office</span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell colspan12">
+                    <div class="form-group">
+                        <div class="">
+                            <a class="button default cancel" href="@Url.Action("Zones", "Branch")">Cancel</a>
+                            <input type="submit" value="Create Branch" class="button success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+
+            $(".cancel").on("click", function (e) {
+                if (confirm("Are you sure you want to cancel New Field Office creation? All current changes will not be saved.")) {
+
+                }
+                else {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}

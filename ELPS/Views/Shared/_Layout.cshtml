@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />
+
+    <title>@ViewBag.Title - ELPS :: NUPRC</title>
+    
+    <link href="/Content/Metro/metro.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-icons.css" rel="stylesheet" />
+    <link href="/Content/Metro/metro-responsive.css" rel="stylesheet" />
+
+    @Styles.Render("~/Content/xtrastyle.less")
+    <script src="/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="/Scripts/jquery.dataTables.min.js"></script>
+    <script src="/Scripts/Metro/metro.js"></script>
+    @RenderSection("Style",required:false)
+
+</head>
+<body>
+    <div class="">
+        <header class="app-bar fixed-top header" data-role="appbar"  id="elpsHeader">
+            <div class="container">
+                <a href="/" class="app-bar-element branding no-padding">
+                    <img src="~/Content/Images/logo.jpg" style="height: 80%;" />
+                    @*<img src="images/wn8.png" style="height: 28px; display: inline-block; margin-right: 10px;"> Metro UI CSS*@
+                </a>
+
+                @if (Request.IsAuthenticated)
+                {
+                <ul class="app-bar-menu small-dropdown">
+                    <li>
+                        <a href="@Url.Action("Index", "Dashboard")" class="">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle">License</a>
+                        <ul class="d-menu" id="lstLicenses" data-role="dropdown" data-no-close="true">
+                            <li class="">
+                                <a href="">OGISP</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle">My Company</a>
+                        <ul class="d-menu" data-role="dropdown" data-no-close="true">
+                            <li class="">
+                                <a href="@Url.Action("Index", "Company")">Company Profile</a>
+                            </li>
+                            <li class=""><a href="@Url.Action("Index", "CompanyDocument")">Company Documents</a></li>
+                            <li class=""><a href="#">Messages</a></li>
+                        </ul>
+                    </li>
+                    @*<li>
+                        <a href="/Home/Contact">Contact Us</a>
+                    </li>*@
+                </ul>
+                }
+                @Html.Partial("_LoginPartial")
+                
+                <span class="app-bar-pull"></span>
+
+            </div>
+        </header>
+    </div>
+
+    <div class="">
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer class="clear-float">
+                <div class="place-left">&copy; @DateTime.Now.Year - NUPRC Electronic Licensing And Permit System</div>
+                <div class="place-right align-right">
+                    <ul>
+                        <li><a href="#">About ELPS</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="/Home/Contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </footer>
+        </div>
+    </div>
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        <script src="~/Scripts/Metro/metro.js"></script>*@
+    <script src="~/Scripts/xtrascript.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

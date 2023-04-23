@@ -1,0 +1,159 @@
+﻿@model ELPS.Domain.Entities.AppIdentity
+
+@{
+    ViewBag.Title = "AddLicense";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@using ELPS.Domain.Entities
+@*@section BootStrap{
+        <link type="text/css" rel="stylesheet" href="~/Content/bootstrap.css" />
+    }*@
+
+<style type="text/css">
+    .form-group {
+        margin: 10px;
+    }
+
+</style>
+
+<div>
+    <div class="clear-float">
+        <h1 class="text-light place-left">Add New Licenses</h1>
+    </div>
+
+    <hr class="thin bg-grayLighter">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.AppId)
+        <div class="flex-grid">
+            <div class="row cells2">
+                <div class="cell colspan5">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LicenseName, "License Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.LicenseName, new { htmlAttributes = new { @placeholder = "e.g. Electronic License & Permit System" } })
+                            @Html.ValidationMessageFor(model => model.LicenseName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ShortName, "License Short Name")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @placeholder = "e.g. ELPS" } })
+                            @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, "Application Email")
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Email)
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            @*<input type="text" name="appEmail" id="appEmail" required />*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description)
+                        <div class="input-control textarea full-size" data-role="input" data-text-auto-resize="true" data-text-max-height="200">
+                            @Html.TextAreaFor(model => model.Description)
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="row cells2">
+                        <div class="cell colspan5">
+                            <div class="form-group">
+                                <label class="input-control checkbox">
+                                    @*<input type="checkbox">*@
+                                    @Html.EditorFor(model => model.LoginByPass)
+                                    <span class="check"></span>
+                                    <span class="caption">Bypass Login?</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="cell colspan5">
+                            <div class="form-group">
+                                <label class="input-control checkbox">
+                                    @*<input type="checkbox">*@
+                                    @Html.EditorFor(model => model.IsActive)
+                                    <span class="check"></span>
+                                    <span class="caption">Activate Portal</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="cell colspan5">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BaseUrl, "License Portal BaseUrl")
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.BaseUrl, new { htmlAttributes = new { @placeholder = "e.g. http://www.elps.nuprc.gov.ng" } })
+                                @Html.ValidationMessageFor(model => model.BaseUrl, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.BankPaymentEndPoint, "Bank Payment Endpoint")
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.BankPaymentEndPoint, new { htmlAttributes = new { @placeholder = "e.g. http://www.elps.nuprc.gov.ng/Payment/pay" } })
+                                @Html.ValidationMessageFor(model => model.BankPaymentEndPoint, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LoginRedirect, "License Portal Login Url")
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.LoginRedirect, new { htmlAttributes = new { @placeholder = "e.g.  http://www.elps.nuprc.gov.ng/account/login" } })
+                                @Html.ValidationMessageFor(model => model.LoginRedirect, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PermitLink)
+                            <div class="input-control text full-size">
+                                @Html.EditorFor(model => model.PermitLink, new { htmlAttributes = new { @placeholder = "e.g. http://www.ogisp.nuprc.gov.ng/permit/View" } })
+                                @Html.ValidationMessageFor(model => model.PermitLink, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(model => model.CategoryId, "Divisions")
+                            <div class="">
+                                <select name="CategoryId" id="CategoryId" class="selectTwo" style="width:100%" multiple>
+                                    @foreach (var option in (IEnumerable<Division>)ViewBag.Categories)
+                                    {
+                                            <option value=@option.Id>@option.Name</option>
+                                    }
+                                </select>
+
+                                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            <div class="row">
+                <div class="cell colspan12">
+                    <div class="form-group">
+                        <div class="">
+                            <input type="submit" value="Create License" class="button success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval");
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.selectTwo').select2();
+        })
+        $(function () {
+            $("#lnkLicense").addClass("active");
+        });
+    </script>
+
+}

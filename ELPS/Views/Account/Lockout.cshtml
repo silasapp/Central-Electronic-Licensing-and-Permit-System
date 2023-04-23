@@ -1,0 +1,50 @@
+﻿@model ELPS.Domain.Entities.LockedOutUser
+
+@{
+    ViewBag.Title = "Lock Out User";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header"><h2>Lockout User</h2>
+</div>
+<div class="well">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+              
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label" })
+                    </div><div class="col-md-10">
+                        <textarea required name="Reason" id="Reason" class="form-control" cols="50" rows="10">@Model.Reason</textarea>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @if ((bool)ViewBag.locked)
+                    {
+
+                    }
+                    else
+                    {
+                    <input type="submit" value="Lock Out" class="btn btn-primary" />
+                    }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

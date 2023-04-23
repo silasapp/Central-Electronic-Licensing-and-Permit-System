@@ -1,0 +1,158 @@
+﻿@model ELPS.Domain.Entities.Company
+
+@{
+    ViewBag.Title = "ChangeCompanyName";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+       
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+
+        <h2>Change Company Name</h2>
+        <hr />
+        <div class="grid">
+            <div class="row cells3">
+                <div class="cell ">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact First Name</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Contact_FirstName, new { htmlAttributes = new {  } })
+                            @Html.ValidationMessageFor(model => model.Contact_FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Year Incorporated</label>
+
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Year_Incorporated, new { htmlAttributes = new {   } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Tin Number</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Tin_Number, new { htmlAttributes = new {    } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Total Asset</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Total_Asset, new { htmlAttributes = new { @disabled = "disabled" } })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="cell ">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Business_Type)
+                        @*<label> Business Type</label>*@
+                        <div class="input-control text full-size">
+                            @Html.DropDownListFor(m => m.Business_Type, (SelectList)ViewBag.bizType, "Select Business type")
+                            @*@Html.EditorFor(model => model.Business_Type, new { htmlAttributes = new { @disabled = "disabled" } })*@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Contact LastName</label>
+
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Contact_LastName, new { htmlAttributes = new {  } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> RC Number</label>
+
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model =>  model.RC_Number, new { htmlAttributes = new {   } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> No Staff</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.No_Staff, new { htmlAttributes = new { @disabled = "disabled" } })
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Yearly Revenue</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Yearly_Revenue, new { htmlAttributes = new { @disabled = "disabled" } })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="cell ">
+                    <div class="form-group">
+                        <label class="control-label">Company Email</label>
+                        <div class="input-control text full-size">
+                            <input type="email" name="User_Id" value="@Model.User_Id" class="form-control" tabindex="" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label> Affiliate</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Affiliate, new { htmlAttributes = new { @disabled = "disabled" } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Contact Phone</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Contact_Phone, new { htmlAttributes = new {  } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Nationality</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.Nationality, new { htmlAttributes = new {  @disabled = "disabled"  } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Number of Expatriate</label>
+                        <div class="input-control text full-size">
+                            @Html.EditorFor(model => model.No_Expatriate, new { htmlAttributes = new { @disabled = "disabled" } })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-warning" />
+                </div>
+            </div>
+        </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

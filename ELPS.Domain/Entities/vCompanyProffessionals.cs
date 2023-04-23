@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ELPS.Domain.Entities
+{
+  public  class vCompanyProffessional
+    {
+       
+        public int Id { get; set; }
+        public string Proffessional_Organisation { get; set; }
+        public string Cert_No { get; set; }
+
+        public int Company_Id { get; set; }
+        public DateTime Date_Issued { get; set; }
+        public int? FileId { get; set; }
+        public string FileName { get; set; }
+        public string FileSource { get; set; }
+        [NotMapped]
+        public int Elps_Id { get; set; }
+    }
+}

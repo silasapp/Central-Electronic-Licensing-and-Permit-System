@@ -1,0 +1,111 @@
+﻿@model ELPS.Domain.Entities.vCompanyDirector
+
+@using ELPS.Domain.Entities
+
+@{
+    ViewBag.Title = "Update Director";
+    Layout = null;
+
+    string form = string.Empty;
+    //bool appOn = ViewBag.View != null && ViewBag.View == "application" ? true : false;
+    //if (appOn)
+    //{
+    //    form = "CompanyDirectorUpdate";
+    //}
+    //else
+    //{
+    //    form = "UpdateDirector";
+    //}
+}
+
+<div class="clear-float">
+    <div class="place-left">
+        <h4 class="">Company Directors</h4>
+    </div>
+</div>
+<hr />
+<div class="flex-grid">
+    <div class="row cells2">
+        <div class="cell colspan3">
+            @{var directors = (List<vCompanyDirector>)ViewBag.directors;}
+            <h4>List of Directors</h4>
+            <hr />
+            <ul id="dirList" class="numeric-list square-marker">
+                @foreach (var item in directors)
+                {
+                    <li><a class="EditDirector loadDir" data-dirid="@item.Id" href="#"><span>@item.FirstName @item.LastName</span></a></li>
+                }
+            </ul>
+        </div>
+        <div class="cell colspan9">
+            <div id="formContainer" style="padding-right: 20px;">
+                @Html.Partial("_ViewDir", directors.FirstOrDefault())
+            </div>
+
+
+            @*@using (Html.BeginForm("UpdateCompanyDirector", "Company", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.Address_Id)
+
+                int apid = (Session["ApplicationID"] != null ? (int)Session["ApplicationID"] : 0);
+                <div class="window success">
+                    <div class="window-caption">
+                        <span class="window-caption-icon"><span class="icon mif-windows"></span></span>
+                        <span class="window-caption-title">Add new Company Director</span>
+                    </div>
+                    
+                </div>
+
+            }*@
+            @*<div class="panel">
+                <div class="heading">
+                    <span class="icon mif-home"></span>
+                    <span class="title">Operational Address</span>
+                </div>
+                <div class="content padding10">
+
+                    <input type="hidden" name="d_appId" id="d_appId" value="@apid" />
+
+                    
+
+                    
+                    <hr class="clear" />
+
+                    <div class="form-group">
+                        <div class="txtcenter">
+                            <input type="submit" value="Save Director" class="btn btn-primary" />
+
+           @if (appOn)
+    {
+        // Application in Progress
+        <p>
+            <input type="submit" value="Save Director & Add Another" name="d_action" class="btn btn-primary" />&nbsp;
+            <input type="submit" value="Save Director & Continue" name="d_action" class="btn btn-success" />&nbsp;
+            <a href="/Company/Application/KeyStaffs?appId=@apid" id="btnDirContinue" class="btn btn-info hide">Continue</a>
+        </p>
+    }
+    else
+    {
+        if (Model.Id > 0)
+        {
+            <input type="submit" value="Update Director" class="btn btn-primary" />
+        }
+        else
+        {
+            <input type="submit" value="Save Director" class="btn btn-primary" />
+        }
+    }
+                            <input type="submit" value="Save & Add Director" class="btn btn-primary" /> &nbsp; OR &nbsp;
+                    <a href="/Company/Index/KeyStaffs" class="btn btn-success">Continue</a>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>*@
+        </div>
+    </div>
+</div>

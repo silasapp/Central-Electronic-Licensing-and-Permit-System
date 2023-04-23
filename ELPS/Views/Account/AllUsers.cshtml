@@ -1,0 +1,111 @@
+﻿@*@model IEnumerable<ELPS.Domain.Entities.AspNetUser>*@
+
+@{
+    ViewBag.Title = "All Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="http://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+<script src="http://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+
+@*@Scripts.Render("~/Scripts/Highcharts-4.0.4/js/highcharts.js")
+@Scripts.Render("~/Scripts/Highcharts-4.0.4/js/modules/exporting.js")*@
+
+<table class="table hovered striped bordered border customDT" data-role="datatble">
+    <thead>
+        <tr>  
+              
+            @*<th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>*@
+            <th>
+                Email
+            </th>
+            <th>  
+               
+
+                Phone Number
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @*@foreach (var item in Model)
+        {
+            <tr>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <a href="/Account/Lockout?id=@item.Email">Lock Out</a>
+                    @@@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })@
+                </td>
+            </tr>
+        }*@
+    </tbody>
+</table>
+@section scripts{
+    <script type="text/javascript">
+        //$(function () {
+        //    $("#lnk-payment > a").addClass("selected").find(".act").addClass("selected");
+        //    $(".sidebar > ul > li > ul li a[href='/payment/Transactions']").addClass("selected");
+
+
+        //});
+
+        $(document).ready(function () {
+            $("#lnkStaff").addClass("active open").find("a[href='/Account/AllUsers']").parent("li").addClass("selected");
+
+            $('.customDT').dataTable({
+
+                "bServerSide": true,
+                "sAjaxSource": '@Url.Action("LazyLoadAllUserQuery", "Account")',
+                "bProcessing": true,
+                "pageLength": 50,
+                "aoColumns": [
+//
+                        
+                        { "sName": "Email" },
+                        { "sName": "PhoneNumber" },
+                        //{ "sName": "Transaction_Date" },
+                        //{ "sName": "Transaction_Amount" },
+                        //{ "sName": "Approved_Amount" },
+                        //{ "sName": "Reference" },
+                        //{ "sName": "Order_Id" },
+                        //{ "sName": "RRR" },
+                        //{ "sName": "Type" },
+                        //{ "sName": "Response_code" },
+                        
+                        {
+                            "sName": "Id",
+                            "bSearchable": false,
+                            "bSortable": false,
+                            "mRender": function (data, type, oObj) {
+
+                                return '<a class="btn btn-xs btn-success" href="/Account/Lockout?id=' + oObj[0] + '">' + 'Lock Out ' + '<i class="icon-login"></i></a>';
+
+                                //if (!oObj[3]) {
+                                //    return '<a class="btn btn-xs btn-success" disabled href="/Account/Lockout?id=' + oObj[1] + '">' + 'Lock Out ' + '<i class="icon-login"></i></a>';
+                                //}
+                                //else {
+                                //    return '<a class="btn btn-xs btn-success" href="/Payment/TransactionDetail/' + oObj[7] + '">' + 'Request Status ' + '<i class="icon-login"></i></a>';
+
+
+                                //}
+                            }
+                        }
+                ]
+            });
+        });
+    </script>
+}

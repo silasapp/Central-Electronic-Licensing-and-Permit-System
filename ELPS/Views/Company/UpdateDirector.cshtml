@@ -1,0 +1,281 @@
+﻿@model ELPS.Domain.Entities.vCompanyDirector
+
+@using ELPS.Domain.Entities
+
+@{
+    ViewBag.Title = "Update Director";
+    Layout = null;
+
+    string form = string.Empty;
+    //bool appOn = ViewBag.View != null && ViewBag.View == "application" ? true : false;
+    //if (appOn)
+    //{
+    //    form = "CompanyDirectorUpdate";
+    //}
+    //else
+    //{
+    //    form = "UpdateDirector";
+    //}
+}
+
+<div class="clear-float">
+    <div class="place-left">
+        <h4 class="">Company Directors</h4>
+    </div>
+    <div class="place-right">
+        <a class="button" href="/Company?id=Directors">Add new Director </a>
+    </div>
+</div>
+<hr />
+<div class="grid">
+    <div class="row cells4">
+        <div class="cell size3">
+            @{var directors = (List<vCompanyDirector>)ViewBag.directors;}
+            <h4>List of Directors</h4>
+            <input type="hidden" id="DirComplete" value="@ViewBag.DirComplete" />
+            <hr />
+            <ul id="dirList" class="numeric-list square-marker">
+                @foreach (var item in directors)
+                {
+                    <li ><a class="EditDirector" data-dirid="@item.Id" href="#"><span>@item.FirstName @item.LastName</span></a></li>
+                }
+            </ul>
+            @*/company/CompanyDirector/@item.Company_Id?did=@item.Id&view=update*@
+        </div>
+        <div class="cell size9 colspan3" id="formContainer">
+
+                 @using (Html.BeginForm("CompanyDirectorUpdate", "Company", FormMethod.Post)) {
+                     
+                      @Html.AntiForgeryToken() 
+                      @Html.ValidationSummary(true, "", new { @class = "text-danger" }) 
+                     int apid = (Session["ApplicationID"] != null ? (int)Session["ApplicationID"] : 0); 
+                    <div class="window-caption">
+                        <span class="window-caption-icon"><span class="icon mif-windows"></span></span>
+                        <span class="window-caption-title">Add new Company Director</span>
+                    </div>
+                    <div class="window-content padding10" style="height: auto;">
+
+                        <input type="hidden" name="d_appId" id="d_appId" value="@apid" />
+                        <hr />
+                        <div class="grid">
+                            <div id="directorContainer" class="row cells2">
+
+                                <div>
+
+                                    <div class="cell size6">
+                                        @Html.HiddenFor(model => model.Id)
+                                        @Html.HiddenFor(model => model.Address_Id)
+                                        <input type="hidden" name="did" value="@ViewBag.staffId" />
+                                        <div class="col-md-6 company">
+                                            <div class="form-group">
+                                                <label class="control-label">First Name</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "input-control", @tabindex = 1, @required = "required" } })
+                                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Phone Number</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "input-control", @tabindex = 3, @required = "required" } })
+                                                    @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label">Address Line 1</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    @Html.TextAreaFor(model => model.address_1, new { htmlAttributes = new { @class = "input-control", @tabindex = 5, @required = "required" } })
+                                                    @Html.ValidationMessageFor(model => model.address_1, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="control-label">Postal Code</label>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "input-control", @tabindex = 8 } })
+                                                    @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label">City</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "input-control", @tabindex = 7, @required = "required" } })
+                                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label">Country</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    <select id="Country_Id" name="Country_Id" class="input-control countrySelect" data-state="StateId" tabindex="9" required>
+                                                        <option>Select Country</option>
+                                                        @*<option value="@Model.Country_Id">@Model.CountryName</option>*@
+                                                        @foreach (var item in (List<Country>)ViewBag.country)
+                                                        {
+                                                            if (Model.Id > 0 && item.Id == Model.Country_Id)
+                                                            {
+                                                                <option value="@item.Id" selected>@item.Name</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item.Id">@item.Name</option>
+                                                            }
+                                                        }
+                                                    </select>
+
+                                                    @Html.ValidationMessageFor(model => model.Country_Id, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="cell size6">
+                                        <div class="col-md-6 company">
+                                            <div class="form-group">
+                                                <label class="control-label">Last Name</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "input-control", @tabindex = 2, @required = "required" } })
+                                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label">Address Line 2</label>
+                                                <div class="">
+                                                    @Html.EditorFor(model => model.address_2, new { htmlAttributes = new { @class = "input-control", @tabindex = 6 } })
+                                                    @Html.ValidationMessageFor(model => model.address_2, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label">Nationality</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+                                                    <select id="Nationality" name="Nationality" class="input-control" tabindex="4" required>
+                                                        @*@if (string.IsNullOrEmpty(Model.Nationality))
+                                    {
+                                        <option value="Nigeria">Nigeria</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Model.Nationality">@Model.Nationality</option>
+                                    }
+
+                                    @foreach (var item in (List<Country>)ViewBag.country)
+                                    {
+                                        <option value="@item.Name">@item.Name</option>
+                                    }*@
+                                                        <option value="">Select Nationality</option>
+
+                                                        @foreach (var item in (List<Country>)ViewBag.country)
+                                                        {
+                                                            if (item.Id == Model.Nationality)
+                                                            {
+                                                                <option value="@item.Id" selected>@item.Name</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@item.Id">@item.Name</option>
+                                                            }
+                                                        }
+
+                                                    </select>
+
+                                                    @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="control-label">State</label>&nbsp;<span class="req">*</span>
+                                                <div class="">
+
+                                                    <select id="StateId" name="StateId" class="input-control" tabindex="10" required>
+                                                        <option value="">Select State</option>
+
+                                                        @if (ViewBag.state != null)
+                                                        {
+                                                            foreach (var item in (List<State>)ViewBag.state)
+                                                            {
+                                                                if (item.Id == Model.StateId)
+                                                                {
+                                                                    <option value="@item.Id" selected>@item.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@item.Id">@item.Name</option>
+                                                                }
+                                                            }
+                                                        }
+                                                    </select>
+                                                    @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="clear" />
+
+                        <div class="form-group">
+                            <div class="txtcenter">
+                                <input type="submit" value="Save Director" class="btn btn-primary" />
+
+                                @*@if (appOn)
+                                    {
+                                        // Application in Progress
+                                        <p>
+                                            <input type="submit" value="Save Director & Add Another" name="d_action" class="btn btn-primary" />&nbsp;
+                                            <input type="submit" value="Save Director & Continue" name="d_action" class="btn btn-success" />&nbsp;
+                                            <a href="/Company/Application/KeyStaffs?appId=@apid" id="btnDirContinue" class="btn btn-info hide">Continue</a>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        if (Model.Id > 0)
+                                        {
+                                            <input type="submit" value="Update Director" class="btn btn-primary" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" value="Save Director" class="btn btn-primary" />
+                                        }
+                                    }*@
+                                @*<input type="submit" value="Save & Add Director" class="btn btn-primary" /> &nbsp; OR &nbsp;
+                                    <a href="/Company/Index/KeyStaffs" class="btn btn-success">Continue</a>*@
+                            </div>
+                        </div>
+
+                    </div>
+                
+
+            }
+        </div>
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(function () {
+
+            //$('.EditDirector').unbind('click').click(function (e) {
+            //    e.preventDefault();
+            //    alert('lllll');
+            //    var id = $(this).attr('data-dirid');
+            //    $.get('/company/getDirector/' + id, function (data) {
+            //        $('#directorContainer').html(data);
+            //    })
+
+            //})
+
+        })
+
+    </script>
+    
+    }

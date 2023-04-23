@@ -1,0 +1,168 @@
+﻿
+@model ELPS.Domain.ViewDTOs.AccountRegisterDTO
+@{
+    Layout = null;
+    var ErrorList = (List<string>)TempData["ErrorList"];
+    var RegisterLink = "Register";
+}
+
+<section class="form pt-4 text-white">
+    <div class="row pb-2">
+        <div class="col d-flex justify-content-between align-items-center">
+            <div class="login-title">Register</div>
+            @{
+                var LoginLink = Url.Action("Login", "Account");
+                var verifyLicense = Url.Action("Verify", "Account");
+            }
+            <div>
+                <a href="@Url.Action("LoginForm","Account",new { appId=ViewBag.appId})" class="text-warning navLink dynamicLink" data-Page="Login" data-Link='@Url.Action("Loginform", "Account")'>Login </a> |
+                <a href="@Url.Action("verifyPermit", "Permit",new { appId=ViewBag.appId})" class="text-warning staticLink dynamicLink" data-Link='@Url.Action("verifyPermit", "Permit")'>Verify License</a>
+                @*<span class="fa fa-arrow-right"></span>*@
+            </div>
+
+        </div>
+    </div>
+    <span id="formRoute" href="@Url.Action("Register", "Account",new { appId=ViewBag.appId})" class="dynamicLink" data-Link='@Url.Action("Register","Account")'></span>
+    <span id="affilateRoute" href="@Url.Action("RegisterAffiliate","Account", new { appId=ViewBag.appId})" class="dynamicLink" data-Link="@Url.Action("RegisterAffiliate","Account")"></span>
+    <div class="ErrorSummary">
+
+            @if (ErrorList != null && ErrorList.Any())
+            {
+                    foreach (var error in (List<string>)TempData["ErrorList"])
+                    {
+                        <div class="alert alert-warning alert-dismissable fade show text-danger" role="alert">
+                            <span class="fa fa-exclamation-triangle"></span>
+                            @error
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    }
+            }
+    </div>
+
+    @if(ViewBag.Affilate != null)
+    {
+        RegisterLink = "RegisterAffiliate";
+    }
+
+
+        @using (Html.BeginForm(RegisterLink, "Account", new { appId = ViewBag.appId }, FormMethod.Post))
+        {
+
+            @Html.AntiForgeryToken()
+            <div class="formStep active" id="form-step-1">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CompanyName)
+                    @Html.TextBoxFor(m => m.CompanyName, new { @class = "form-control text-white", placeholder = "Business Name" })
+                    @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-warning" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.RegistrationNumber)
+                    @Html.TextBoxFor(m => m.RegistrationNumber, new { @class = "form-control text-white", placeholder = "Business Registration No" })
+                    @Html.ValidationMessageFor(model => model.RegistrationNumber, "", new { @class = "text-warning" })
+                </div>
+                <div class="row">
+                    <div class="col form-group">
+                        @Html.LabelFor(m => m.BusinessType)
+                        <select class="input-control" name="BusinessType" id="BusinessType">
+                            <option value="" class="text-dark">Business Type</option>
+                            @foreach (var option in (List<string>)ViewBag.BusinessType)
+                            {
+                                
+                                if (Model!=null && Model.BusinessType == option)
+                                {
+                                    <option value="@option" class="text-dark py-1" selected>@option</option>
+                                }
+                                else
+                                {
+                                    <option value="@option" class="text-dark py-1">@option</option>
+                                }
+
+                            }
+                        </select>
+                        
+                        @Html.ValidationMessageFor(model => model.BusinessType, "", new { @class = "text-warning" })
+                    </div>
+                    <div class="col form-group">
+                        @Html.LabelFor(m => m.PhoneNumber)
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control text-white", placeholder = "Phone Number" })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-warning" })
+                    </div>
+                </div>
+                <button type="button" class="btn btnLink btn-warning submit" data-target="form-step-2">Next</button>
+            </div>
+
+            <div class="formStep" id="form-step-2">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control text-white", placeholder = "Email Address" })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-warning" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control text-white", placeholder = "Password" })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-warning" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control text-white", placeholder = "Confirm Password" })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-warning" })
+                </div>
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btnLink btn-back" data-target="form-step-1">Back</button>
+                    @if (ViewBag.Affilate != null)
+                    {
+                        @*<button type="button" class="btn btnLink btn-warning submit" data-target="form-step-1">Back</button>*@
+                        @*<button type="button" class="btn btn-warning submit SubmitBtn">Create Account</button>*@
+                        <button type="submit" class="btn btn-warning submit SubmitBtn">Create Affiliate</button>
+                    }
+                    else
+                    {
+
+                        @*<button type="button" class="btn btn-warning submit SubmitBtn">Create Account</button>*@
+                        <button type="submit" class="btn btn-warning submit SubmitBtn">Create Account</button>
+                    }
+
+                </div>
+            </div>
+        }
+    @*}*@
+    
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="CompanyExist" tabindex="-1" role="dialog" aria-labelledby="CompanyExist" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CompanyTitle"><span class="fa fa-exclamation-circle text-danger"></span>&nbsp; Company Exist</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                The company details already exist. if you would like to continue registration process as an Affiliate to the existing company,
+                click on the "create Affiliate" button below.
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success AffilateBtn">Create Affiliate</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <section class="content">
+        <div class="d-flex justify-content-between py-2">
+            <a href="https://www.nuprc.gov.ng/history-of-dpr/" class="navSep staticLink" target="_blank">About</a>
+            <a href="https://www.nuprc.gov.ng/acts-and-regulations/" class="navSep staticLink" target="_blank">Acts</a>
+            <a href="https://www.nuprc.gov.ng/dpr-guidelines/" class="navSep staticLink" target="_blank">Guidelines</a>
+            <a href="https://www.nuprc.gov.ng/contact/" class="navSep staticLink" target="_blank">Contact</a>
+        </div>
+    </section>
+</footer>
+
+

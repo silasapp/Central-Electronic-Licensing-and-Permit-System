@@ -1,0 +1,72 @@
+﻿@model ELPS.Models.CompanyLicenseDashboard
+
+@{
+    ViewBag.Title = Model.License.LicenseName + " License";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var tot = Model.Applications.Count();
+
+    var appr = tot > 0 ? ((Model.Approved / tot) * 100).ToString() + "%" : "0";
+    var proc = tot > 0 ?  ((Model.Processing / tot) * 100).ToString() + "%" : "0";
+}
+<link href="~/Content/progress-bar.css" rel="stylesheet" />
+<div class="padding10">
+    <div>
+        <div class="clear-float">
+            <h2 class="text-light">
+                @Model.License.LicenseName (@Model.License.ShortName)
+                <span class="mif-stack icon place-right"></span>
+            </h2>
+        </div>
+    </div>
+    <hr />
+    <div class="margin10 no-margin-left no-margin-right">
+        <div class="grid panel-xtra">
+            <div class="row cells2">
+                <div class="cell size6">
+                    <div class="panel">
+                        <div class="heading panel-call-button">
+                            @*<a href="@Url.Action("Index", "Company")" class="">
+                                <span class="mif-compass " data-role="hint" data-hint-mode="2" data-hint="|Click to view full details"></span>
+                            </a>*@
+                            <span class="icon mif-home"></span>
+                            <span class="title">Applications</span>
+                        </div>
+                        <div class="content" style="min-height: 182px;">
+                            <div class="padding10">
+                                
+                                <p style="width:@appr" data-value="@Model.Approved">Approved</p>
+                                <progress max="@tot" value="@Model.Approved" class="Approved">
+                                    <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+                                    <div class="progress-bar">
+                                        <span style="width: @appr">@Model.Approved</span>
+                                    </div>
+                                </progress>
+
+
+                                <p style="width: 50%" data-value="@Model.Processing">Processing</p>
+                                <progress max="@tot" value="10" class="Approved">
+                                    <!-- Browsers that support HTML5 progress element will ignore the html inside `progress` element. Whereas older browsers will ignore the `progress` element and instead render the html inside it. -->
+                                    <div class="progress-bar">
+                                        <span style="width: 50%">10</span>
+                                    </div>
+                                </progress>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell size6">
+                    <div class="panel success">
+                        <div class="heading panel-call-button">
+                            <span class="icon mif-envelop"></span>
+                            <span class="title">Messages</span>
+                        </div>
+                        <div class="content" style="min-height: 440px;">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

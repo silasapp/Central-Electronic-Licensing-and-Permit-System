@@ -1,0 +1,345 @@
+﻿@model ELPS.Domain.Entities.Company_Key_Staff
+
+@using ELPS.Domain.Entities
+@{
+    ViewBag.Title = "Update Company Key Staff";
+    Layout = null;
+    var staff = (List<Company_Key_Staff>)ViewBag.ckStaff;
+    var sCert = (List<Key_Staff_Certificate>)ViewBag.staffCert;
+
+    string form = string.Empty;
+    bool appOn = ViewBag.View != null && ViewBag.View == "application" ? true : false;
+    if (appOn)
+    {
+        form = "CompanyStaffUpdate";
+    }
+    else
+    {
+        form = "UpdateStaff";
+    }
+}
+
+<div class="clear-float">
+    <div class="place-left">
+        <h4 class="">Company Key Staff</h4>
+    </div>
+    <div class="place-right">
+        <a class="button" href="/Company?id=KeyStaffs">Add new Staff</a>
+    </div>
+</div>
+
+<hr />
+
+<div class="grid">
+    <div class="row cells4">
+        <div class="cell size3">
+            <h4>List of Key Staff</h4>
+            <small>(Relating to the Specifications applied for)</small>
+            <hr />
+            <ul id="stfList" class="numeric-list square-marker">
+                @foreach (var item in staff)
+                {
+                    <li><a class="EditStaff" data-sid="@item.Id" href="#"><span>@item.FirstName @item.LastName</span></a></li>
+                }
+            </ul>
+        </div>
+
+        <div class="cell size9 colspan3" id="StaffFormContainer">
+
+            @using (Html.BeginForm("UpdateCompanyStaff", "Company", FormMethod.Post))
+            {
+                int apid = (Session["ApplicationID"] != null ? (int)Session["ApplicationID"] : 0);
+
+            <input type="hidden" name="k_appId" id="k_appId" value="@apid" />
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Company_Id)
+
+            <div class="window success">
+                <div class="window-caption">
+                    <span class="window-caption-icon"><span class="icon mif-windows"></span></span>
+                    <span class="window-caption-title">Add new Key Staff</span>
+                </div>
+                <div class="window-content padding10" style="height: auto;">
+                    @if (ViewBag.Message != null && !string.IsNullOrEmpty(ViewBag.Message))
+                        {
+                            string typ = (ViewBag.MsgType == "fail" ? "alert-danger" : "");
+                        <div class="alert @typ alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Error!</strong> @ViewBag.Message
+                        </div>
+                        }
+                    <div class="grid">
+                        <div class="row cells2">
+                            <div class="cell size6">
+                                <div class="form-group">
+                                    <label>First Name</label>&nbsp;<span class="req">*</span>
+                                    <div class="input-control text full-size">
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @tabindex = 1, @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Nationality</label>&nbsp;<span class="req">*</span>
+                                    <div class="input-control select full-size">
+                                        <select id="Nationality" name="Nationality" class="form-control" tabindex="3" required>
+                                            <option value="">Select Nationality</option>
+                                            @foreach (var item in (List<Country>)ViewBag.country)
+                                                {
+                                                    if (Model.Id > 0 && item.Name.ToLower() == Model.Nationality.ToLower())
+                                                    {
+                                                <option value="@item.Name" selected>@item.Name</option>
+                                                    }
+                                                    else
+                                                    {
+                                                <option value="@item.Name">@item.Name</option>
+                                                    }
+                                                }
+                                        </select>
+
+                                        @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Years_Of_Exp, htmlAttributes: new { @class = "control-label" })&nbsp;<span class="req">*</span>
+                                    <br />
+                                    <div class="input-control text">
+                                        @Html.TextBoxFor(model => model.Years_Of_Exp, new { @tabindex = 5, @required = "required", @maxlength = "2" })
+                                        @Html.ValidationMessageFor(model => model.Years_Of_Exp, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Skills)
+                                    <div class="input-control textarea full-size">
+                                        @Html.TextAreaFor(model => model.Skills, new { htmlAttributes = new { @tabindex = 7 } })
+                                        @Html.ValidationMessageFor(model => model.Skills, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="cell size6">
+                                <div class="form-group">
+                                    <label>Last Name</label>&nbsp;<span class="req">*</span>
+                                    <div class="input-control text full-size">
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @tabindex = 2, @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Designation)&nbsp;<span class="req">*</span>
+                                    <div class="input-control text full-size">
+                                        @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @tabindex = 4, @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Qualification)&nbsp;<span class="req">*</span>
+                                    <div class="input-control text full-size">
+                                        @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @tabindex = 6, @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="">Professional Certification</h4>
+                    <div id="sCertDiv" class="grid">
+                        @if (sCert != null && sCert.Any() && sCert.FirstOrDefault().Id > 0)
+                            {
+                                for (int i = 0; i < sCert.Count; i++)
+                                {
+                                    var divId = "sCert" + i;
+                                    var id = "sCert[" + i + "].Id";
+                                    var nm = "sCert[" + i + "].Name";
+                                    var cn = "sCert[" + i + "].Cert_No";
+                                    var cks = "sCert[" + i + "].Company_Key_Staff";
+                                    var yr = "sCert[" + i + "].Year";
+                                    var iss = "sCert[" + i + "].Issuer";
+
+                            <div class="row cells5" id="@divId">
+                                <div class="cell size3">
+                                    <div class="form-group">
+                                        <label>Certificate Name</label>
+                                        <div class="input-control text full-size">
+                                            <input type="hidden" name="@id" value="@sCert[i].Id" />
+                                            <input type="hidden" name="@cks" value="@sCert[i].Company_Key_Staff" />
+                                            <input type="text" name="@nm" value="@sCert[i].Name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size3">
+                                    <div class="form-group">
+                                        <label>Certificate Issuer</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" name="@iss" value="@sCert[i].Issuer" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size3">
+                                    <div class="form-group">
+                                        <label>Certificate No.</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" name="@nm" value="@sCert[i].Cert_No" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size2">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" readonly name="@nm" value="@sCert[i].Year" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size1">
+                                    <div class="">
+                                        <div class="">
+                                            <span class="button cycle-button large-button sCertDelete" data-divid="@divId">x</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                @*<div class="well">
+                                        <div class="col-md-3 form-group">
+                                            <label>Certificate Name</label>
+                                            <div class="">
+                                                <input type="hidden" name="@id" value="@sCert[i].Id" />
+                                                <input type="hidden" name="@cks" value="@sCert[i].Company_Key_Staff" />
+                                                <input type="text" name="@nm" value="@sCert[i].Name" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Certificate Issuer</label>
+                                            <div class="">
+                                                <input type="text" name="@iss" value="@sCert[i].Issuer" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 form-group">
+                                            <label>Certificate Number</label>
+                                            <div class="">
+                                                <input type="text" name="@nm" value="@sCert[i].Cert_No" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 form-group">
+                                            <label>Year</label>
+                                            <div class="">
+                                                <input type="text" readonly name="@nm" value="@sCert[i].Year" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <span class="btn btn-sm btn-danger sCertDelete" data-divid="@divId">
+                                                <i class="glyphicon glyphicon-remove "></i>
+                                            </span>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>*@
+                            </div>
+                                }
+                            }
+                            else
+                            {
+                                sCert = new List<Key_Staff_Certificate>();
+                                sCert.Add(new Key_Staff_Certificate());
+                                int i = 0;
+                                var divId = "sCert" + i;
+                                var id = "sCert[" + i + "].Id";
+                                var nm = "sCert[" + i + "].Name";
+                                var cn = "sCert[" + i + "].Cert_No";
+                                var cks = "sCert[" + i + "].Company_Key_Staff";
+                                var yr = "sCert[" + i + "].Year";
+                                var iss = "sCert[" + i + "].Issuer";
+
+                            <div id="@divId" class="row cells5">
+                                <div class="cell size3">
+                                    <div class="form-group">
+                                        <label>Certificate Name</label>
+                                        <div class="input-control text full-size">
+                                            <input type="hidden" name="@id" value="@sCert[i].Id" />
+                                            <input type="hidden" name="@cks" value="@sCert[i].Company_Key_Staff" />
+                                            <input type="text" name="@nm" value="@sCert[i].Name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size3">
+                                    <div class="form-group">
+                                        <label>Certificate Issuer</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" name="@iss" value="@sCert[i].Issuer" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size3">
+                                    <div class="form-group">
+                                        <label>Certificate No.</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" name="@nm" value="@sCert[i].Cert_No" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size2">
+                                    <div class="form-group">
+                                        <label>Year</label>
+                                        <div class="input-control text full-size">
+                                            <input type="text" readonly name="@nm" value="@sCert[i].Year" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cell size1">
+                                    <div class="">
+                                        <div class="">
+                                            <span class="button cycle-button large-button sCertDelete" data-divid="@divId">x</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                    </div>
+
+
+                    <hr class="clear" />
+
+                    <div class="form-group">
+                        <div class="txtcenter">
+                            @if (appOn)
+                                {
+                                    int id = (int)Session["ApplicationId"];
+                                    // Application in Progress
+                                <p>
+                                    <input type="submit" value="Save Staff & Add Another" name="k_action" class="btn btn-primary" />&nbsp;
+                                    <input type="submit" value="Save Staff & Continue" name="k_action" class="btn btn-success" />&nbsp;
+                                    <a href="/Application/AppDocument?id=@id" id="btnStfContinue" class="btn btn-info hide">Continue</a>
+                                </p>
+                                }
+                                else
+                                {
+                                    if (Model.Id > 0)
+                                    {
+                                <input type="submit" value="Update Staff" class="btn btn-success" />
+                                    }
+                                    else
+                                    {
+                                <input type="submit" value="Add Staff" class="btn btn-success" />
+                                    }
+                                }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            }
+        </div>
+    </div>
+</div>

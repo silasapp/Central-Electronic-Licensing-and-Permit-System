@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+}
+
+<ul class="sidebar">
+    <li id="lnkDashboard" class="">
+        <a href="@Url.Action("Index", "AdminDashboard")" class="no-count">
+            <span class="mif-apps icon"></span>
+            <span class="title">Dashboard</span>
+        </a>
+    </li>
+    <li id="lnkCompany">
+        <a href="@Url.Action("Companies", "AdminDashboard")" class="no-count">
+            <span class="mif-library icon"></span>
+            <span class="title">Companies</span>
+        </a>
+    </li>
+    
+    
+   
+</ul>
+
+<script type="text/javascript">
+    $(function () {
+        @*//Doc Count
+        $.get('@Url.Action("DocCount", "Company")', function (data) {
+            $("#lnkDocuments .counter").text(data);
+        });
+
+        //DO License count
+        $.get('@Url.Action("DocCount", "License")', function (data) {
+            $("#lnkLicense .counter").text(data);
+        });*@
+
+        $(".more > a").click(function () {
+            var parent = $(this).parent("li");
+            if (parent.hasClass("open")) {
+                parent.removeClass("open");
+            }
+            else {
+                parent.addClass("open");
+            }
+            
+        });
+        //$(".more > ul > li > a").click(function () {
+        //    $(this).parent("li").addClass("selected").siblings("li").removeClass("selected");
+        //});
+    });
+</script>

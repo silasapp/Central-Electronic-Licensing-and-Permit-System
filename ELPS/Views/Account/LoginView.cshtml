@@ -1,0 +1,234 @@
+﻿@model ELPS.Domain.ViewDTOs.AccountLoginDTO
+@{
+    ViewBag.Title = "LoginView";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    var i = 0;
+    var j = 0;
+    ViewBag.Title = "Login";
+    ViewBag.PageType = "Login";
+
+}
+@using ELPS.Domain.Helper;
+
+<div class="col-12 col-cm-5" id="leftSide">
+    <section class="bodyContent">
+        <section id="left-header" class="d-flex  align-items-center pb-3 my-2">
+            <div id="left-logo">
+                <img src="~/Content/assets/img/nuprc.png" style="height:100px" alt="NUPRC LOGO" class="img-fluid">
+            </div>
+            <div class="left-title">
+                <span class="text-white">The  Nigerian Upstream Petroleum Regulatory Commission</span>
+            </div>
+        </section>
+
+        <div class="title-divider"></div>
+
+        <section class="selectedInfo py-4">
+            @if (Model.SelectedPortal == null)
+            {
+                <div class="lower-section d-flex align-items-center">
+                    <b class="left-sub-acronym text-white">CELPS</b>
+                    <span class="badge selected badge-pill badge-warning text-white">Selected   
+                        <span class="fa fa-pencil-square"></span>
+                    </span>
+                   
+                </div>
+                <div class="left-sub-title">Central Electronic Licensing and Permit System</div>
+            }
+            else
+            {
+            <div class="lower-section d-flex align-items-center">
+                <b class="left-sub-acronym text-white">@Model.SelectedPortal.ShortName</b>
+                <span class="badge selected badge-pill badge-warning text-white">Selected<span class="fa fa-pencil-square"></span></span>
+            </div>
+                <div class="left-sub-title">@Model.SelectedPortal.LicenseName</div>
+            }
+
+        </section>
+
+        <div class="left-sub-title-divider"></div>
+
+        <div id="changeContents">
+            @Html.Partial("LoginForm", Model, new ViewDataDictionary(ViewData))
+        </div>
+
+
+    </section>
+</div>
+
+<div class="col-12 col-cm-7 bg-white" id="rightSide">
+    <section class="bodyContent">
+        <section id="right-header">
+            <div class="row py-3">
+                <div class="col d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <span class="Portal">Portals</span>
+                        <h5><span class="badge badge-success">@Model.ActivePortals.Count()</span></h5>
+                    </div>
+                    <div class="right-titleInfo">
+                        One Account to Rule them all
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="title-divider"></div>
+
+        <section id="right-search">
+            <div class="form-group has-search pt-2">
+                <input class="form-control" type="search" list="search-options-list" placeholder="Search-Portal..">
+                <span class="fa fa-search form-control-feedback"></span>
+                <div class="search-options-list">
+                    @if (Model.ActivePortals.Any())
+                    {
+                        <div class="option" data-Id="default">
+                            <span class="option-title" aria-describedby="default">CELPS</span>
+                            <div class="option-details d-flex justify-content-between" id="default">Central Electronic Licensing and Permit System</div>
+                        </div>
+                        foreach (var portal in Model.ActivePortals)
+                        {
+                            <div class="option" data-Id="@portal.Id">
+                                <span class="option-title" aria-describedby="option(@i)">@portal.ShortName</span>
+                                <div class="option-details d-flex justify-content-between" id="option(@i)">@portal.LicenseName</div>
+                            </div>
+                            i++;
+                        }
+                    }
+                    else
+                    {
+
+                    }
+
+                </div>
+            </div>
+        </section>
+
+        <section id="accordionCont">
+            @if (Model.Divisions.Any())
+            {
+                <!--Accordion wrapper-->
+                <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+                    @foreach (var division in Model.Divisions)
+                    {
+                        <!-- Accordion card -->
+                        <div class="card">
+
+                            <!-- Card header -->
+                            <div class="card-header Accord" role="tab" id="headingTwo_@j">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#collapseTwo_@j" aria-expanded="false" aria-controls="collapseTwo_@j">
+                                    <h5 class="mb-0 d-flex justify-content-between text-muted">
+                                        <span class="textValue">@division.Name</span>
+                                        <span class="fa fa-angle-down rotate-icon"></span>
+                                    </h5>
+                                </a>
+                            </div>
+
+                            <!-- Card body -->
+                            <div id="collapseTwo_@j" class="collapse" role="tabpanel" aria-labelledby="headingTwo_@j" data-parent="#accordionEx1">
+                                <div class="card-body Accord d-flex flex-wrap justify-content-between">
+                                    @{
+                                        var defaultActive = "";
+                                    }
+
+                                    @if (Model.SelectedPortal == null)
+                                    {
+                                        defaultActive = "Active";
+                                    }
+
+                                    <div class="smaller-card default @defaultActive" data-Id="" href="#">
+                                        <div class="d-flex flex-column">
+                                            <div class="check-icon d-flex justify-content-end">
+                                                <span class="fa fa-check text-white rounded-circle bg-success"></span>
+                                            </div>
+                                            <div class="content-card justify-content-end">
+                                                <div class="smaller-card-title">CELPS</div>
+                                                <div class="smaller-card-details">Central Electronic Licensing and Permit System</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    @if (division.Portals.Any())
+                                    {
+                                        foreach (var portal in division.Portals)
+                                        {
+                                            var href = "#";
+                                            string activePortal = null;
+
+                                            if (portal.LoginByPass)
+                                            {
+                                                href = portal.BaseUrl;
+                                            }
+
+                                            if (portal.PublicKey.ToString() == ViewBag.appId)
+                                            {
+                                                activePortal = "Active";
+
+                                            }
+
+                                            <div class="smaller-card @activePortal @portal.Id" data-Id="@portal.PublicKey" href="@href">
+                                                <div class="d-flex flex-column">
+                                                    <div class="check-icon d-flex justify-content-end">
+                                                        @if (portal.LoginByPass)
+                                                        {
+                                                            <span class="fa fa-external-link"></span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="fa fa-check text-white rounded-circle bg-success"></span>
+                                                        }
+
+                                                    </div>
+                                                    <div class="content-card justify-content-end">
+                                                        <div class="smaller-card-title">
+                                                            @portal.ShortName
+
+                                                        </div>
+                                                        <div class="smaller-card-details">@portal.LicenseName</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                        j++;
+                    }
+                </div>
+                <!-- Accordion wrapper -->
+            }
+            else
+            {
+
+            }
+
+        </section>
+
+        <footer>
+            <section class="content RegisterFooter">
+                <div class="text-center py-2">
+                    Copyright 2020 Department of petroleum resource
+                </div>
+            </section>
+            <section class="content LoginFooter">
+                <div class="d-flex justify-content-between py-2">
+                    <a href="https://www.nuprc.gov.ng/history-of-dpr/" class="navSep staticLink" target="_blank">About</a>
+                    <a href="https://www.nuprc.gov.ng/acts-and-regulations/" class="navSep staticLink" target="_blank">Acts</a>
+                    <a href="https://www.nuprc.gov.ng/dpr-guidelines/" class="navSep staticLink" target="_blank">Guidelines</a>
+                    <a href="https://www.nuprc.gov.ng/contact/" class="navSep staticLink" target="_blank">Contact</a>
+                </div>
+            </section>
+
+        </footer>
+    </section>
+</div>
+
+

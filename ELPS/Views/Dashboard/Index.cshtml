@@ -1,0 +1,213 @@
+﻿@model ELPS.Models.DashboardViewModel
+@using ELPS.Helpers;
+@using ELPS.Models;
+
+@{
+    ViewBag.Title = "Dashboard";
+    bool alert = ViewBag.Alert != null ? true : false;
+    string message = "", title = "", typ = "";
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        message = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+}
+
+<div class="padding10">
+    <div>
+        <div class="clear-float">
+            <h1 class="text-light">
+                Dashboard
+                <span class="mif-stack icon place-right"></span>
+            </h1>
+        </div>
+    </div>
+    <div>
+        <div class="grid">
+            <div class="row cells4">
+
+                @foreach (var license in Model.Licenses.Take(4))
+                {
+                    var prmt = license.MyPermits;
+                    var proc = license.LicensesInProcessing;
+                    <div class="cell size3">
+                        <div class="dash-tile">
+                            <a href="@Url.Action("ProcessAppData", "Account", new { q = license.PublicKey })" target="_blank" data-role="hint" data-hint-mode="2" data-hint="|Click to Apply">
+                            @*<a href="@Url.Action("ViewLicense", "License", new { id = license.Id })" target="_blank" data-role="hint" data-hint-mode="2" data-hint="|View License Information">*@
+                                <img src="~/Content/Images/facility.jpg" />
+                                <div class="darkscreen"></div>
+                                <div class="info">
+                                    <h1 class="thin6">@prmt.ToString("00")<sub class="app_proc">/@proc.ToString("00")</sub></h1>
+                                    <h3 class="thin4">@license.ShortName</h3>
+                                    <p>@license.LicenseName</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+            @if(Model.Licenses.Count() > 4)
+            {
+                <div class="row">
+                    <div class="cell size12">
+                        <div class="align-center">
+                            <a href="@Url.Action("LicenseList", "Dashboard")" class="button primary small-button epBtn2">See all Portals</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <hr />
+    <div class="margin10 no-margin-left no-margin-right">
+        <div class="grid panel-xtra">
+            <div class="row cells2">
+                <div class="cell size6">
+                    <div class="panel">
+                        <div class="heading panel-call-button">
+                            <a href="@Url.Action("Index", "Company")" class="">
+                                <span class="mif-compass " data-role="hint" data-hint-mode="2" data-hint="|Click to view full details"></span>
+                            </a>
+                            <span class="icon mif-home"></span>
+                            <span class="title">Profile</span>
+                        </div>
+                        <div class="content" style="min-height: 182px;">
+                            <div class="padding10">
+                                <table class="table mini-table hovered bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Company Name</td>
+                                            <td class="align-right">@Model.Company.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RC Number</td>
+                                            <td class="align-right">@Model.Company.RC_Number</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Contact Person</td>
+                                            <td class="align-right">@Model.Company.Contact_FirstName @Model.Company.Contact_LastName</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company Email</td>
+                                            <td class="align-right">@Model.Company.User_Id</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel warning margin30 no-margin-bottom no-margin-right no-margin-left">
+                        <div class="heading panel-call-button">
+                            <a href="#" class="">
+                                <span class="mif-compass " data-role="hint" data-hint-mode="2" data-hint="|Click to view full details"></span>
+                            </a>
+                            <span class="icon mif-files-empty "></span>
+                            <span class="title thin4">Documents</span>
+                        </div>
+                        <div class="content" style="min-height: 182px;">
+                            <div class="padding10">
+                                <ul class="numeric-list square-marker large-bullet">
+                                    @foreach (var item in Model.Documents)
+                                    {
+                                        <li>
+                                            @if(!string.IsNullOrEmpty(item.source) && item.source.Trim().ToLower().EndsWith(".pdf"))
+                                            {
+                                                <span class="icon mif-file-pdf"></span>
+                                            }
+                                            else if (!string.IsNullOrEmpty(item.source) && (item.source.Trim().ToLower().EndsWith(".jpg") ||
+                                                        item.source.Trim().ToLower().EndsWith(".png")))
+                                            {
+                                                <span class="icon mif-file-image"></span>
+                                            }
+                                            @item.FileName
+                                        </li>
+                                    }
+                                    <li>
+                                        <span class="icon mif-file-pdf place-right"></span> Tax Document Tax Document Tax Document Tax Document
+                                    </li>
+                                    <li>
+                                        <span class="icon mif-file-pdf place-right"></span> Tax Document
+                                    </li>
+                                    <li>
+                                        <span class="icon mif-file-pdf place-right"></span> Tax Document
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell size6" >
+                    <div class="panel success">
+                        <div class="heading panel-call-button">
+                            <span class="icon mif-envelop"></span>
+                            <span class="title">Messages</span>
+                        </div>
+                        <div class="content" style="min-height: 440px;">
+                            <div class="">
+                                @if (Model.Messages.Count < 1)
+                                {
+                                    <p>No messages</p>
+                                }
+                                else
+                                {
+                                    <table class="table mini-table hovered">
+                                        <thead>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <b>Subject</b>
+                                                </td>
+                                                <td>
+                                                    <b>Date</b>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var msg in Model.Messages)
+                                            {
+                                                var unread = msg.Read > 0 ? "" : "unread";
+                                                var icon = msg.Read > 0 ? "mif-drafts" : "mif-mail";
+                                                <tr>
+                                                    <td>
+                                                        <span class="icon @icon"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="@unread">@msg.Subject</span>
+                                                    </td>
+                                                    <td><span class="@unread">@UtilityHelper.TimePass(msg.Date)</span></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@message.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+        });
+
+        function NotifyUser(msg, title, typ) {
+            setTimeout(function () {
+                $.Notify({ keepOpen: true, type: typ.length > 0 ? typ : 'default', caption: title.length > 0 ? title : 'Alert!', content: msg.length > 0 ? msg : "Alert! Alert!! Alert!!!" });
+            }, 700);
+        }
+    </script>
+}

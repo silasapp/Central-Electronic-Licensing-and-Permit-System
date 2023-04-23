@@ -1,0 +1,190 @@
+﻿@using ELPS.Models
+@using ELPS.Domain.Entities
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+
+    bool alert = ViewBag.Alert != null ? true : false;
+    if (alert)
+    {
+        var alertMsg = (AlertModel)ViewBag.Alert;
+        msg = alertMsg.Message;
+        title = alertMsg.Title;
+        typ = alertMsg.AlertType;
+    }
+    var portals = (List<PortalCategory>)ViewBag.Portals;
+
+}
+
+<div class="loginForm" style="width: 100%; padding: 0; position: relative;">
+
+    <section class="infoSide" style="width: 60%; float: left; position: absolute; height: 100%; background-color: rgba(255, 255, 255, 0.79)">
+        <div>
+            <h4 class="align-center thin4">Electronic Licensing and Permit System</h4>
+        </div>
+        <div class="">
+            <h1 class="align-center thin1">ELPS</h1>
+            <p class="align-center">
+                <img src="~/Content/Images/naija_arms_btm.png" alt="" style="width: 110px;" />
+                @*@Html.ActionLink("Verify A Permit/License", "VerifyPermit", "Permit", null, new { appId = @ViewBag.appId, @class = "button primary epBtn", @style = "width: 220px; text-transform: uppercase; color: #FFF;" })*@
+            </p>
+            <br />
+            <hr class="bg-grayLight" />
+            <h3 class="thin1 align-center">Available PORTALS on ELPS</h3>
+
+            <div class="portal">
+
+                @foreach (var catIoPortal in portals)
+                {
+                    <div>@catIoPortal.Name</div>
+
+                    foreach (var item in catIoPortal.CategoryToPortals)
+                    {
+                        
+                        
+                            <div class="text-bold">@item.Category.Id</div>
+                        
+                        <a href="@Url.Action("Login", "Account", new { appId = item.Portal.PublicKey })">
+                            <div class="portal-tile">
+                                <h1 class="thin1">@item.Portal.ShortName</h1>
+
+                                <p>@item.Portal.LicenseName</p>
+                            </div>
+                        </a>
+                    }
+
+                }
+                @*<div class="portal-tile">
+            <h1 class="thin1">OGISP</h1>
+        </div>
+        <div class="portal-tile">
+            <h1 class="thin1">ROMS</h1>
+        </div>
+        <div class="portal-tile">
+            <h1 class="thin1">DEPOT</h1>
+        </div>
+        <div class="portal-tile">
+            <h1 class="thin1">CVL</h1>
+        </div>
+        <div class="portal-tile">
+            <h1 class="thin1">COTEX</h1>
+        </div>
+        <div class="portal-tile">
+            <h1 class="thin1">LPG DEPOT</h1>
+        </div>*@
+                <div class="clear"></div>
+            </div>
+            @*<ul class="portal-list clear-float">
+                    <li>
+                        <a href="#" title="">
+                            <div style="border-radius: 10px; overflow: hidden;">
+                                <img src="~/Content/Images/LicenseAssets/ogisp.png" alt="OGISP" />
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="~/Content/Images/LicenseAssets/roms.png" alt="ROMS" /></a>
+                    </li>
+                    <li>
+                        <a href="#" title=""><img src="~/Content/Images/LicenseAssets/depot.png" style="width: 200px; height: 60px;" alt="DEPOT" /></a>
+                    </li>
+                    <li>
+                        <a href="#"><img src="~/Content/Images/LicenseAssets/cvl.png" alt="CVL" /></a>
+                    </li>
+                    <li>
+                        <a href="#" title=""><img src="~/Content/Images/LicenseAssets/cotex.png" alt="COTEX" /></a>
+                    </li>
+                </ul>*@
+        </div>
+    </section>
+
+    <section class="" style="width: 40%; float: right; padding: 40px 20px;">
+        <div style="color: #FFF; position: relative;">
+            @*<h4 class="align-center thin4">Central Electronic Licensing and Permit System</h4>*@
+            <h2 class="align-center thin1">One account. All of DPR ELPS Portals</h2>
+        </div>
+
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="" style="width: 100%; max-width: 350px; margin: 0 auto;">
+
+                <div class="login-form block-shadow">
+                    @*<div class="center-login-logo">
+                            <img alt="DPR Logo" src="@Url.Content("/Content/Images/naija_arms_btm.png")" class="login-logo-bottom" />
+                        </div>*@
+                    <div class="center-login-header">
+                        <h1 class="thin1">Portal Login</h1>
+                    </div>
+
+                    <div class="row">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+                    <div class="align-center">
+                        <input type="hidden" name="appId" value="@ViewBag.appId" />
+                        <div class="input-control modern text" data-role="input">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "www", @style = "border-bottom: 2px solid #9a9a9a;" })
+                            <span class="label">You login email</span>
+                            <span class="informer">Please enter your user email</span>
+                            <span class="placeholder">Enter Login Email</span>
+                            <a class="button helper-button clear"><span class="mif-cross"></span></a>
+                        </div>
+                        <br />
+
+                        <div class="input-control modern password" data-role="input">
+                            @Html.PasswordFor(m => m.Password, new { @class = "www", @style = "border-bottom: 2px solid #9a9a9a;" })
+                            <span class="label">You password</span>
+                            <span class="informer">Please enter you login password</span>
+                            <span class="placeholder">Enter Password</span>
+                            <a class="button helper-button reveal"><span class="mif-looks"></span></a>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="form-actions">
+                            <button type="submit" class="button primary">Login</button>
+                        </div>
+                        <div class="form-actions">
+                            @Html.ActionLink("Verify A Permit/License", "VerifyPermit", "Permit", null, new { appId = @ViewBag.appId, @class = "button info epBtn", @style = "width: 200px; text-transform: uppercase; color: #FFF;" })
+                        </div>
+                        <br />
+                        <div class="margin30 no-margin-top no-margin-bottom">
+                            <div class="form-actions">
+                                @Html.ActionLink("Register as a new user", "Register", new { returnUrl = ViewBag.ReturnUrl, appId = ViewBag.appId }, new { @class = "fg-emerald" })
+                            </div>
+                            <div class="form-actions">
+                                @Html.ActionLink("Forgot your Password", "Forgotpassword", new { returnUrl = ViewBag.ReturnUrl, appId = ViewBag.appId }, new { @class = "fg-emerald" })
+                            </div>
+                            <div class="form-actions">
+                                @Html.ActionLink("Resend Activation Email", "ResendEmailActivation", new { appId = ViewBag.appId }, new { @class = "fg-emerald" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </section>
+    <div class="clear"></div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(function () {
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            }
+        });
+
+        function NotifyUser(msg, title, typ) {
+            setTimeout(function () {
+                $.Notify({ keepOpen: true, type: typ.length > 0 ? typ : 'default', caption: title.length > 0 ? title : 'Alert!', content: msg.length > 0 ? msg : "Alert! Alert!! Alert!!!" });
+            }, 700);
+        }
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿@model ELPS.Models.BranchFilterModel
+
+@{
+    Layout = null;
+    var Filter = Model;
+}
+
+<input type="hidden" id="_filterparam" value="@ViewBag.param" />
+<input type="hidden" id="_filterby" value="@ViewBag.by" />
+<input type="hidden" id="filterparam" name="filterparam" value="" />
+<select class="righty input-control" name="filterby" id="filterby" style="width: 150px">
+    <option value="">Filter by</option>
+    <option value="all">All</option>
+    <option value="zn">Zonal Office</option>
+    <option value="fd">Field Office</option>
+    <option value="st">States</option>
+</select>
+<select class="righty input-control selFilter" id="zn" style="width:190px; display: none;">
+    <option value="">Select Zonal Office</option>
+    @foreach (var item in Filter.Zones)
+    {
+        if (item.Name.ToLower() != "head quaters" && item.Name.ToLower() != "head office")
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    }
+</select>
+<select class="righty input-control selFilter" id="fd" style="width:190px; display: none;">
+    <option value="">Select Field Office</option>
+    @foreach (var item in Filter.Branches)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>
+<select class="righty input-control selFilter" id="st" style="width:190px; display: none;">
+    <option value="">Select State</option>
+    @foreach (var item in Filter.States)
+    {
+        <option value="@item.Id">@item.Name</option>
+    }
+</select>

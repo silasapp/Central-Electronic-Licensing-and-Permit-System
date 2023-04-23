@@ -1,0 +1,149 @@
+﻿@model ELPS.Domain.Entities.vCompanyDirector
+
+@{
+    Layout = null;
+}
+
+
+<div>
+
+    <div class="cell size6">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Address_Id)
+        
+        <div class="col-md-6 company">
+            <div class="form-group">
+                <label class="control-label">First Name</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "input-control", @tabindex = 1, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Phone Number</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "input-control", @tabindex = 3, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Address Line 1</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    @Html.TextAreaFor(model => model.address_1, new { htmlAttributes = new { @class = "input-control", @tabindex = 5, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.address_1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label">Postal Code</label>
+                <div class="">
+                    @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "input-control", @tabindex = 8 } })
+                    @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">City</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "input-control", @tabindex = 7, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Country</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    <select id="Country_Id" name="Country_Id" class="input-control countrySelect" data-state="StateId" tabindex="9" required>
+                        <option value="@Model.Country_Id" selected>@Model.CountryName</option>
+                        @*<option value="@Model.Country_Id">@Model.CountryName</option>*@
+                        @foreach (var item in (List<ELPS.Domain.Entities.Country>)ViewBag.country)
+                        {
+                            
+                                <option value="@item.Id">@item.Name</option>
+                           
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    <div class="cell size6">
+        <div class="col-md-6 company">
+            <div class="form-group">
+                <label class="control-label">Last Name</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "input-control", @tabindex = 2, @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Address Line 2</label>
+                <div class="">
+                    @Html.EditorFor(model => model.address_2, new { htmlAttributes = new { @class = "input-control", @tabindex = 6 } })
+                    @Html.ValidationMessageFor(model => model.address_2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Nationality</label>&nbsp;<span class="req">*</span>
+                <div class="">
+                    <select id="Nationality" name="Nationality" class="input-control" tabindex="4" required>
+                        @foreach (var item in (List<ELPS.Domain.Entities.Country>)ViewBag.country)
+                        {
+                            if (item.Id == Model.Nationality)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                        }
+
+                        @foreach (var item in (List<ELPS.Domain.Entities.Country>)ViewBag.country)
+                        {
+                            if (item.Id == Model.Nationality)
+                            {
+                                <option value="@item.Id" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        }
+
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">State</label>&nbsp;<span class="req">*</span>
+                <div class="">
+
+                    <select id="StateId" name="StateId" class="input-control" tabindex="10" required>
+                        <option value="@Model.StateId">@Model.StateName</option>
+
+                        @if (ViewBag.state != null)
+                        {
+                            foreach (var item in (List<ELPS.Domain.Entities.State>)ViewBag.state)
+                            {
+                                if (item.Id == Model.StateId)
+                                {
+                                    <option value="@item.Id" selected>@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(model => model.StateId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

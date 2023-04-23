@@ -1,0 +1,132 @@
+﻿@using ELPS.Models
+
+@{
+    ViewBag.Title = "ManualBank";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    string msg = string.Empty;
+    string typ = string.Empty;
+    string title = string.Empty;
+
+    bool alert = ViewBag.Message != null ? true : false;
+    if (alert)
+    {
+        //var alertMsg = new AlertModel(); //(AlertModel)ViewBag.Alert;
+        msg = ViewBag.Message;
+        title = "Manual Value";
+        typ = TempData["msgType"].ToString();
+    }
+}
+
+<div class="">
+    <div class="clear-float">
+        <h2 class="text-light place-left">Manual Value to Bank Payments</h2>
+    </div>
+
+    <hr class="thin bg-grayLighter" />
+    <div class="flex-grid">
+        <div class="row cells3">
+            <div class="cell colspan4">
+                <div class="form-group padding10">
+                    <label>Reference No/Company Name</label>
+                    <div class="input-control text full-size">
+                        <input type="text" placeholder="" id="query" name="query" class="" />
+                    </div>
+                </div>
+            </div>
+            <div class="cell colspan4">
+                <div class="form-group padding10">
+                    <br />
+                    <input type="button" class="button success" id="findApp" value="Find Application" />
+                </div>
+            </div>
+            @*<div class="cell colspan4">
+                    <form action="@Url.Action("CompletePayments", "Payment")" method="post">
+                        <div class="form-group padding10">
+                            <input type="text" name="noToPay" id="noToPay" /> <input type="submit" class="button success" id="payPple" value="Give Value" />
+                        </div>
+                    </form>
+                </div>*@
+        </div>
+    </div>
+    <hr />
+    <div id="coyApps">
+
+    </div>
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+        $(function(){
+            if ('@alert' === 'True') {
+                //alert("Oya lets go there");
+                var msg = '@msg.Replace("@", "")';
+                var typ = '@typ';
+                var title = '@title';
+                NotifyUser(msg, title, typ);
+            };
+            $("#lnkManualValue").addClass("active");
+
+            $("#findApp").click(function(){
+                if($("#query").val().length > 0){
+                    $("#coyApps").html('<br /><br /><h4 class="text-thin">Please Wait...</h4>');
+                    $.get('@Url.Action("FindApplication", "Payment")', { query: $("#query").val() })
+                    .done(function(data){
+                        $("#coyApps").html(data);
+                    })
+                    .fail(function(){
+                        $("#coyApps").html("");
+                        alert("An error has occured, Please try again");
+                    });
+                }
+                else{
+                    alert("NO VALUE ENTERED. Please enter the Application Reference Number or Company Name to continue");
+                }
+            });
+
+            $(document).on("click", ".givVal", function(){
+                var ind = $(this).data("i");
+                var ref = $(this).data("ref");
+                var me = $(this);
+
+                $("#reference").val(ref);
+                var st = $("#_newRRR_" + ind).val();
+                $("#stay").val(st);
+                console.log("Reference: " + $("#reference").val() + "; Stay: " + $("#stay").val());
+                me.attr("disabled", "disabled");
+
+                if(confirm("Please ensure that you have confirm payment before proceeding")){
+                    var url = '@Url.Action("ManualBank", "Payment")';
+                    $.post(url, { reference: ref, newRRR: st }, function (data) {
+                        console.log("We Back");
+                        console.log(data.code);
+                        if (data.code === "01") {
+                            NotifyUser("Value given successfully for Application with reference number: " + ref, "Success", "Success");
+                            
+                        }
+                        else {
+                            NotifyUser("Error: " + data.message, "Success", "Error");
+                            me.removeAttr("disabled");
+                        }
+                    });
+
+                    //var resp = GiveValue(ref, st);
+                    //console.log(resp);
+                    //if (resp === 1) {
+                        
+                    //}
+                }
+            });
+        });
+
+        function GiveValue(ref, newRef) {
+
+        }
+
+        function NotifyUser(msg, title, typ) {
+            setTimeout(function () {
+                $.Notify({ keepOpen: true, type: typ.length > 0 ? typ : 'default', caption: title.length > 0 ? title : 'Alert!', content: msg.length > 0 ? msg : "Alert! Alert!! Alert!!!" });
+            }, 700);
+        }
+    </script>
+}

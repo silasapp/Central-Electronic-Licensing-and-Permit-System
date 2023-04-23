@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Transaction Failed";
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+
+<div class=" clear-float">
+    <div class="place-left">
+        <h2 class="thin1">
+            <img alt="NUPRC Logo" src="@Url.Content("/Content/Images/naija_arms_btm.png")" style="height: 90px;" class="" />NUPRC ELPS
+        </h2>
+    </div>
+    <div class="place-right" style="margin-top: 20px;">
+        <h2 class="thin1"> @ViewBag.License Permit Payment</h2>
+    </div>
+</div>
+<hr />
+
+<div class="padding50">
+    <h2 class="thin1">Transaction Failed</h2>
+    <div class="grid">
+        <div class="row cells2">
+            <div class="cell size6">
+                <h4>Reason: @ViewBag.Message</h4>
+                <h4>Remita Retrieval Reference: @ViewBag.RRR</h4>
+                <h4>Your Order ID: @ViewBag.OrderId</h4>
+            </div>
+            <div class="cell size6">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+
+
+        <br /><br /><br />
+        <p>Click here to <a href="javascript:window.history.back()" class="button warning block-shadow-warning">Try Again!</a></p>
+    </div>
+</div>
